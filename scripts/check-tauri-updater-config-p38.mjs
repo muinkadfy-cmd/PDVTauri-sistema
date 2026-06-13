@@ -38,6 +38,7 @@ for (const token of [
   'VITE_DESKTOP_UPDATE_ENDPOINTS',
   'VITE_DESKTOP_UPDATE_PUBKEY',
   'createUpdaterArtifacts: true',
+  "installMode: 'passive'",
   'tauri.updater.conf.json',
 ]) {
   if (!builder.includes(token)) {

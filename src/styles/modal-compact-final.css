@@ -106,7 +106,7 @@ html[data-perf="1"] .modal-card {
   min-width: 0 !important;
 }
 
-.modal-body input,
+.modal-body input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),
 .modal-body select,
 .modal-body textarea,
 .modal-body .form-input,

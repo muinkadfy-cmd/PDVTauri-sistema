@@ -154,7 +154,9 @@ const generated = {
       endpoints,
       pubkey,
       windows: {
-        installMode: 'quiet',
+        // `quiet` nao consegue pedir elevacao/UAC em instalacoes por maquina.
+        // `passive` e o modo recomendado pelo Tauri para update MSI no Windows.
+        installMode: 'passive',
       },
     },
   },

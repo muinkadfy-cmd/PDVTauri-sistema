@@ -48,5 +48,8 @@
 /* P26: abas internas seguem o mesmo padrão visual da referência */
 @import "./reference-tabs.css";
 
+/* P45: demais abas seguem o padrao visual da aba Vendas, exceto Dashboard */
+@import "./vendas-tab-standard-final.css";
+
 /* P43: ajuste final dos modais, sempre por ultimo */
 @import "./modal-compact-final.css";

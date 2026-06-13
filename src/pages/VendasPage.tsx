@@ -735,7 +735,7 @@ const descNum = parseMoneyBR(rawDesc);
           </>
         )}
       >
-        <form id="venda-form" onSubmit={handleSubmit} className="standard-form">
+        <form id="venda-form" onSubmit={handleSubmit} className="standard-form vendas-form">
           {quickSale && (
             <div className="quick-sale-panel">
               <div className="quick-sale-header">

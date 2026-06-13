@@ -1062,26 +1062,17 @@ function OrdensPage() {
               </select>
             </FormField>
             <FormField label="Defeito Relatado" required fullWidth>
-              <div style={{ display: 'grid', gap: '0.75rem' }}>
-                <div style={{ fontSize: '0.9rem', opacity: 0.85 }}>
+              <div className="os-defeitos-field">
+                <div className="os-defeitos-hint">
                   Marque um ou mais defeitos da lista e, se precisar, adicione um defeito avulso/complemento.
                 </div>
-                <div
-                  style={{
-                    display: 'grid',
-                    gridTemplateColumns: 'repeat(auto-fit, minmax(210px, 1fr))',
-                    gap: '0.5rem 0.75rem',
-                    padding: '0.75rem',
-                    border: '1px solid rgba(255,255,255,0.08)',
-                    borderRadius: '12px'
-                  }}
-                >
+                <div className="os-defeitos-grid">
                   {DEFEITOS.map((defeito) => {
                     const checked = formData.defeitos_selecionados.includes(defeito);
                     return (
                       <label
                         key={defeito}
-                        style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: readOnly ? 'default' : 'pointer' }}
+                        className="os-defeito-option"
                       >
                         <input
                           type="checkbox"
@@ -1124,7 +1115,7 @@ function OrdensPage() {
                   placeholder="Defeito avulso ou complemento (opcional). Ex.: aparelho só liga aquecido / falha intermitente"
                   readOnly={readOnly}
                 />
-                <div style={{ fontSize: '0.9rem', opacity: 0.9 }}>
+                <div className="os-defeitos-preview">
                   <strong>Vai sair na OS:</strong>{' '}
                   {joinDefeitos(formData.defeitos_selecionados || [], formData.defeito_descricao || '') || 'Nenhum defeito informado'}
                 </div>

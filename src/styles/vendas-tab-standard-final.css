@@ -1,0 +1,365 @@
+/* P45 - Padrao Vendas para todas as abas operacionais, exceto Dashboard/Painel. */
+
+@media (min-width: 901px) {
+  html[data-perf="1"] .main-content > :is(.page-container, [class$="-page"], [class*="-page "]):not(.painel-page):not(.dashboard-page) {
+    width: 100% !important;
+    max-width: none !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    padding: 0 0 22px !important;
+    align-self: stretch !important;
+    box-sizing: border-box !important;
+  }
+
+  html[data-perf="1"] .main-content > :is(.page-container, [class$="-page"], [class*="-page "]):not(.painel-page):not(.dashboard-page) :is(
+    .st-page-header,
+    .page-header,
+    .updates-header,
+    .backup-page-header,
+    .diagnostico-header,
+    .health-routes-header,
+    .test-header,
+    .selftest-header,
+    .licenca-mensal-header,
+    .usados-page-header,
+    .devolucao-header-premium,
+    .config-notif-header,
+    .activation-header,
+    .setup-header
+  ) {
+    width: 100% !important;
+    max-width: none !important;
+    min-width: 0 !important;
+    margin: 0 0 12px !important;
+    padding: 0 !important;
+    border: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    text-align: left !important;
+  }
+
+  html[data-perf="1"] .main-content > :is(.page-container, [class$="-page"], [class*="-page "]):not(.painel-page):not(.dashboard-page) .st-page-header {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 6px !important;
+  }
+
+  html[data-perf="1"] .main-content > :is(.page-container, [class$="-page"], [class*="-page "]):not(.painel-page):not(.dashboard-page) .st-page-header__top {
+    display: flex !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    align-items: flex-start !important;
+    justify-content: space-between !important;
+    gap: 14px !important;
+    padding: 0 !important;
+  }
+
+  html[data-perf="1"] .main-content > :is(.page-container, [class$="-page"], [class*="-page "]):not(.painel-page):not(.dashboard-page) .st-page-header__titles {
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    margin: 0 !important;
+    text-align: left !important;
+  }
+
+  html[data-perf="1"] .main-content > :is(.page-container, [class$="-page"], [class*="-page "]):not(.painel-page):not(.dashboard-page) .st-page-header__right {
+    flex: 0 0 auto !important;
+    margin-left: auto !important;
+    align-items: flex-start !important;
+    justify-content: flex-end !important;
+    padding-top: 6px !important;
+  }
+
+  html[data-perf="1"] .main-content > :is(.page-container, [class$="-page"], [class*="-page "]):not(.painel-page):not(.dashboard-page) .st-page-header__actions {
+    display: flex !important;
+    align-items: flex-start !important;
+    justify-content: flex-end !important;
+    gap: 8px !important;
+    flex-wrap: wrap !important;
+  }
+
+  html[data-perf="1"] .main-content > :is(.page-container, [class$="-page"], [class*="-page "]):not(.painel-page):not(.dashboard-page) :is(
+    .page-header,
+    .updates-header,
+    .backup-page-header,
+    .diagnostico-header,
+    .health-routes-header,
+    .test-header,
+    .selftest-header,
+    .licenca-mensal-header,
+    .usados-page-header,
+    .devolucao-header-premium,
+    .config-notif-header,
+    .activation-header,
+    .setup-header
+  ) {
+    display: flex !important;
+    align-items: flex-start !important;
+    justify-content: space-between !important;
+    gap: 14px !important;
+    flex-wrap: wrap !important;
+  }
+
+  html[data-perf="1"] .main-content > :is(.page-container, [class$="-page"], [class*="-page "]):not(.painel-page):not(.dashboard-page) :is(
+    .st-page-header__kicker,
+    .page-kicker,
+    .usados-page-kicker
+  ) {
+    margin: 0 0 5px !important;
+    color: var(--st-ref-muted, #c8d2de) !important;
+    font-size: 12px !important;
+    line-height: 1 !important;
+    font-weight: 800 !important;
+    letter-spacing: 0 !important;
+    text-transform: uppercase !important;
+  }
+
+  html[data-perf="1"] .main-content > :is(.page-container, [class$="-page"], [class*="-page "]):not(.painel-page):not(.dashboard-page) :is(
+    .st-page-header__title,
+    .page-header h1,
+    .page-title,
+    .updates-header h1,
+    .backup-page-header h1,
+    .diagnostico-header h1,
+    .health-routes-header h1,
+    .test-header h1,
+    .selftest-header h1,
+    .licenca-mensal-header h1,
+    .usados-page-header h1,
+    .devolucao-header-premium h1,
+    .config-notif-header h1,
+    .activation-header h1,
+    .setup-header h1
+  ) {
+    margin: 0 !important;
+    color: var(--st-ref-text, #f4f8fc) !important;
+    font-size: 28px !important;
+    line-height: 1.05 !important;
+    font-weight: 800 !important;
+    letter-spacing: 0 !important;
+    text-align: left !important;
+    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.55) !important;
+  }
+
+  html[data-perf="1"] .main-content > :is(.page-container, [class$="-page"], [class*="-page "]):not(.painel-page):not(.dashboard-page) :is(
+    .st-page-header__subtitle,
+    .page-subtitle,
+    .page-header p,
+    .updates-header p,
+    .backup-page-subtitle,
+    .diagnostico-header p,
+    .health-routes-header p,
+    .test-header p,
+    .selftest-header p,
+    .licenca-mensal-header p,
+    .usados-page-header p,
+    .devolucao-header-premium p,
+    .config-notif-header p,
+    .activation-header p,
+    .setup-header p
+  ) {
+    max-width: 780px !important;
+    margin: 8px 0 0 !important;
+    color: rgba(214, 226, 239, 0.72) !important;
+    font-size: 14px !important;
+    line-height: 1.35 !important;
+    font-weight: 500 !important;
+    text-align: left !important;
+  }
+
+  html[data-perf="1"] .main-content > :is(.page-container, [class$="-page"], [class*="-page "]):not(.painel-page):not(.dashboard-page) :is(
+    .st-page-header__actions,
+    .page-header,
+    .updates-header,
+    .backup-page-header,
+    .usados-page-header,
+    .devolucao-header-premium
+  ) :is(.btn-primary, .btn-secondary, .btn, button:not(.btn-icon):not(.modal-close):not(.drawer-close):not(.topbar-quick-button)) {
+    min-height: 38px !important;
+    padding: 0 16px !important;
+    border-radius: 0 !important;
+    font-size: 14px !important;
+    font-weight: 750 !important;
+    letter-spacing: 0 !important;
+  }
+
+  html[data-perf="1"] .main-content > :is(.page-container, [class$="-page"], [class*="-page "]):not(.painel-page):not(.dashboard-page) :is(
+    .st-page-toolbar,
+    .page-toolbar,
+    .toolbar,
+    .filter-bar,
+    .filtros-bar,
+    .filters-bar,
+    .devolucao-toolbar,
+    .usuarios-access-toolbar,
+    .codigos-search-card,
+    .busca-container
+  ) {
+    width: 100% !important;
+    max-width: none !important;
+    min-width: 0 !important;
+    margin: 0 0 12px !important;
+    padding: 10px 12px !important;
+    border-radius: 0 !important;
+    border: 1px solid rgba(72, 105, 132, 0.78) !important;
+    background: linear-gradient(180deg, rgba(13, 29, 43, 0.96), rgba(8, 18, 30, 0.96)) !important;
+    box-shadow: inset 1px 1px 0 rgba(255, 255, 255, 0.06), inset -1px -1px 0 rgba(0, 0, 0, 0.55) !important;
+    overflow: hidden !important;
+    box-sizing: border-box !important;
+  }
+
+  html[data-perf="1"] .main-content > :is(.page-container, [class$="-page"], [class*="-page "]):not(.painel-page):not(.dashboard-page) :is(
+    .st-page-toolbar,
+    .page-toolbar,
+    .toolbar,
+    .filter-bar,
+    .filtros-bar,
+    .filters-bar,
+    .devolucao-toolbar,
+    .usuarios-access-toolbar,
+    .codigos-search-card,
+    .busca-container
+  ):first-of-type {
+    margin-top: 2px !important;
+  }
+
+  html[data-perf="1"] .main-content > :is(.page-container, [class$="-page"], [class*="-page "]):not(.painel-page):not(.dashboard-page) .st-page-toolbar::before {
+    display: none !important;
+  }
+
+  html[data-perf="1"] .main-content > :is(.page-container, [class$="-page"], [class*="-page "]):not(.painel-page):not(.dashboard-page) .st-page-toolbar__row--slots {
+    justify-content: space-between !important;
+    flex-wrap: nowrap !important;
+    gap: 12px !important;
+  }
+
+  html[data-perf="1"] .main-content > :is(.page-container, [class$="-page"], [class*="-page "]):not(.painel-page):not(.dashboard-page) .st-page-toolbar__left {
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+    justify-content: flex-start !important;
+  }
+
+  html[data-perf="1"] .main-content > :is(.page-container, [class$="-page"], [class*="-page "]):not(.painel-page):not(.dashboard-page) .st-page-toolbar__right {
+    flex: 0 0 auto !important;
+    margin-left: auto !important;
+    justify-content: flex-end !important;
+  }
+
+  html[data-perf="1"] .main-content > :is(.page-container, [class$="-page"], [class*="-page "]):not(.painel-page):not(.dashboard-page) :is(
+    .search-bar,
+    .clientes-search,
+    .produtos-search,
+    .ordens-search,
+    .cobrancas-search,
+    .recibo-search,
+    .encomendas-search,
+    .fornecedores-search
+  ) {
+    width: min(640px, 100%) !important;
+    max-width: 640px !important;
+    margin: 0 !important;
+  }
+
+  html[data-perf="1"] .main-content > :is(.page-container, [class$="-page"], [class*="-page "]):not(.painel-page):not(.dashboard-page) :is(
+    .search-bar input,
+    .search-input,
+    input[type="search"]
+  ) {
+    height: 38px !important;
+    min-height: 38px !important;
+    border-radius: 0 !important;
+    border-color: rgba(91, 121, 150, 0.90) !important;
+    background: rgba(6, 16, 27, 0.92) !important;
+    color: #f5f9fd !important;
+    font-size: 14px !important;
+    font-weight: 500 !important;
+    box-shadow: inset 1px 1px 0 rgba(0, 0, 0, 0.62), inset -1px -1px 0 rgba(255, 255, 255, 0.05) !important;
+  }
+
+  html[data-perf="1"] .main-content > :is(.page-container, [class$="-page"], [class*="-page "]):not(.painel-page):not(.dashboard-page) :is(
+    .search-bar input,
+    .search-input,
+    input[type="search"]
+  )::placeholder {
+    color: rgba(209, 221, 235, 0.48) !important;
+  }
+
+  html[data-perf="1"] .main-content > :is(.page-container, [class$="-page"], [class*="-page "]):not(.painel-page):not(.dashboard-page) :is(
+    .vendas-list,
+    .clientes-grid,
+    .produtos-grid,
+    .ordens-grid,
+    .cobrancas-grid,
+    .recibos-grid,
+    .estoque-grid,
+    .encomendas-grid,
+    .fornecedores-grid,
+    .devolucoes-grid,
+    .usados-grid,
+    .usados-estoque-grid,
+    .usuarios-card-list,
+    .updates-grid,
+    .cards,
+    .backup-cards,
+    .config-grid,
+    .usuarios-grid,
+    .lojas-grid,
+    .recursos-grid,
+    .servicos-grid,
+    .marcas-grid
+  ) {
+    width: 100% !important;
+    max-width: none !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+
+  html[data-perf="1"] .main-content > :is(.page-container, [class$="-page"], [class*="-page "]):not(.painel-page):not(.dashboard-page) :is(
+    .empty-state,
+    .table-empty-state,
+    .clientes-empty-state,
+    .sem-resultados
+  ) {
+    width: 100% !important;
+    max-width: none !important;
+    min-height: 270px !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    border-radius: 0 !important;
+    border-color: rgba(72, 105, 132, 0.78) !important;
+    background: linear-gradient(180deg, rgba(13, 34, 50, 0.98), rgba(8, 22, 34, 0.98)) !important;
+    box-shadow: none !important;
+  }
+}
+
+@media (min-width: 901px) and (max-width: 1280px) {
+  html[data-perf="1"] .main-content > :is(.page-container, [class$="-page"], [class*="-page "]):not(.painel-page):not(.dashboard-page) :is(
+    .st-page-header__title,
+    .page-header h1,
+    .page-title,
+    .updates-header h1,
+    .backup-page-header h1,
+    .diagnostico-header h1,
+    .health-routes-header h1,
+    .test-header h1,
+    .selftest-header h1,
+    .licenca-mensal-header h1,
+    .usados-page-header h1,
+    .devolucao-header-premium h1,
+    .config-notif-header h1,
+    .activation-header h1,
+    .setup-header h1
+  ) {
+    font-size: 24px !important;
+  }
+
+  html[data-perf="1"] .main-content > :is(.page-container, [class$="-page"], [class*="-page "]):not(.painel-page):not(.dashboard-page) :is(
+    .empty-state,
+    .table-empty-state,
+    .clientes-empty-state,
+    .sem-resultados
+  ) {
+    min-height: 250px !important;
+  }
+}

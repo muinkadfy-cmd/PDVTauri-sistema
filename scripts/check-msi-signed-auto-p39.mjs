@@ -31,6 +31,7 @@ for (const token of [
   'SMARTTECH_WINDOWS_CERTIFICATE_THUMBPRINT',
   'VITE_DESKTOP_UPDATE_ENDPOINTS',
   'createUpdaterArtifacts: withUpdater',
+  "installMode: 'passive'",
   'tauri.signed-msi.conf.json',
   'SmartTechPDV_',
 ]) {

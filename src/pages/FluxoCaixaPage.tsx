@@ -369,20 +369,20 @@ function FluxoCaixaPage() {
         <PageHeader
           title="Fluxo de Caixa"
           actions={
-            <>
+            <div className="fluxo-header-actions">
               <button className="btn btn-primary" onClick={() => setModalTipo('entrada')} disabled={isReadOnlyMode()}>
                 ⬆️ Entrada
               </button>
               <button className="btn btn-danger" onClick={() => setModalTipo('saida')} disabled={isReadOnlyMode()}>
                 ⬇️ Saída
               </button>
-              <button className="btn btn-secondary" onClick={handleRepairFinancial} disabled={repairing || isReadOnlyMode()}>
-                {repairing ? 'Conferindo...' : '🔄 Atualizar movimentações'}
+              <button className="btn btn-secondary" onClick={handleRepairFinancial} disabled={repairing || isReadOnlyMode()} title="Atualizar movimentações">
+                {repairing ? 'Conferindo...' : '🔄 Atualizar'}
               </button>
-              <button className="btn btn-secondary" onClick={exportCsv}>
+              <button className="btn btn-secondary" onClick={exportCsv} title="Exportar CSV">
                 ⬇️ Exportar CSV
               </button>
-            </>
+            </div>
           }
         />
 

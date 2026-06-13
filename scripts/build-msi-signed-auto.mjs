@@ -280,7 +280,9 @@ if (withUpdater) {
       endpoints: parseEndpoints(getEnv('VITE_DESKTOP_UPDATE_ENDPOINTS')),
       pubkey: updaterPubkey,
       windows: {
-        installMode: 'quiet',
+        // `quiet` nao consegue pedir elevacao/UAC em instalacoes por maquina.
+        // `passive` e o modo recomendado pelo Tauri para update MSI no Windows.
+        installMode: 'passive',
       },
     },
   };
