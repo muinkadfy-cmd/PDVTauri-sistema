@@ -21,8 +21,12 @@
 
 .topbar-brand,
 .topbar-home-button {
-  width: 44px !important;
+  width: 286px !important;
+  min-width: 286px !important;
+  max-width: 286px !important;
   height: 44px !important;
+  overflow: hidden !important;
+  text-decoration: none !important;
 }
 
 .logo-mark,

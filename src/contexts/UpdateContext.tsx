@@ -8,7 +8,7 @@ import { BUILD_COMMIT, BUILD_DATE, BUILD_ID, BUILD_VERSION } from '@/config/buil
 import { appendUpdateLog, getUpdateLogs, type UpdateLogEntry } from '@/lib/updateLog';
 import { isBrowserOnlineSafe } from '@/lib/capabilities/runtime-remote-adapter';
 import { isDesktopApp } from '@/lib/platform';
-import { checkDesktopNativeUpdate, isDesktopAutoUpdateConfigured, installDesktopNativeUpdateWithSafety, setDesktopUpdatePending, isDesktopUpdatePending, type DesktopNativeUpdateInfo } from '@/lib/desktop/native-updater';
+import { checkDesktopNativeUpdate, fetchDesktopLatestJsonUpdate, isDesktopAutoUpdateConfigured, installDesktopNativeUpdateWithSafety, setDesktopUpdatePending, isDesktopUpdatePending, type DesktopNativeUpdateInfo } from '@/lib/desktop/native-updater';
 
 type UpdateState = {
   manifest: UpdateManifest | null;
@@ -25,6 +25,7 @@ type UpdateState = {
   lastSeenCommit: string | null;
   desktopAutoUpdateConfigured: boolean;
   desktopNativeUpdate: DesktopNativeUpdateInfo | null;
+  desktopUpdateError: string | null;
   desktopInstallInProgress: boolean;
   desktopUpdatePending: boolean;
 
@@ -145,6 +146,7 @@ export function UpdateProvider({ children }: { children: React.ReactNode }) {
   const [lastSeenCommit, setLastSeenC] = useState<string | null>(() => getLastSeenCommit());
   const [logs, setLogs] = useState<UpdateLogEntry[]>(() => getUpdateLogs());
   const [desktopNativeUpdate, setDesktopNativeUpdate] = useState<DesktopNativeUpdateInfo | null>(null);
+  const [desktopUpdateError, setDesktopUpdateError] = useState<string | null>(null);
   const [desktopInstallInProgress, setDesktopInstallInProgress] = useState(false);
   const [desktopUpdatePending, setDesktopUpdatePendingState] = useState(() => isDesktopUpdatePending());
 
@@ -182,8 +184,34 @@ export function UpdateProvider({ children }: { children: React.ReactNode }) {
   const checkNow = useCallback(async () => {
     if (!desktop && !isUpdateEnabled()) return;
 
+    const nativeCheck = async () => {
+      if (!desktopAutoUpdateConfigured) return null;
+      try {
+        setDesktopUpdateError(null);
+        const nativeUpdate = await checkDesktopNativeUpdate();
+        if (nativeUpdate?.available) return nativeUpdate;
+
+        const fallback = await fetchDesktopLatestJsonUpdate();
+        if (fallback?.available) {
+          log('check', `latest.json indica atualização disponível (${fallback.version}).`);
+          return fallback;
+        }
+
+        return nativeUpdate || fallback;
+      } catch (error: any) {
+        const message = error?.message || String(error);
+        setDesktopUpdateError(message);
+        log('error', `Falha ao verificar updater nativo: ${message}`);
+        const fallback = await fetchDesktopLatestJsonUpdate(error);
+        if (fallback?.available) {
+          log('check', `latest.json indica atualização disponível (${fallback.version}).`);
+        }
+        return fallback;
+      }
+    };
+
     const [nativeUpdate, m, c, waiting] = await Promise.all([
-      desktopAutoUpdateConfigured ? checkDesktopNativeUpdate().catch(() => null) : Promise.resolve(null),
+      desktop ? nativeCheck() : Promise.resolve(null),
       fetchUpdateManifest(),
       fetchChangelog(),
       detectWaitingSW(),
@@ -235,6 +263,8 @@ export function UpdateProvider({ children }: { children: React.ReactNode }) {
         'check',
         nativeUpdate?.available
           ? `Atualização desktop encontrada (${nativeUpdate.version || 'versão não informada'}).`
+          : nativeUpdate?.error
+            ? `Auto-update desktop não confirmou atualização: ${nativeUpdate.error}`
           : 'Auto-update desktop verificado sem nova versão.'
       );
     } else if (unread) {
@@ -472,6 +502,7 @@ export function UpdateProvider({ children }: { children: React.ReactNode }) {
       lastSeenCommit,
       desktopAutoUpdateConfigured,
       desktopNativeUpdate,
+      desktopUpdateError,
       desktopInstallInProgress,
       desktopUpdatePending,
       logs,
@@ -492,6 +523,7 @@ export function UpdateProvider({ children }: { children: React.ReactNode }) {
       lastSeenCommit,
       desktopAutoUpdateConfigured,
       desktopNativeUpdate,
+      desktopUpdateError,
       desktopInstallInProgress,
       desktopUpdatePending,
       logs,

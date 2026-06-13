@@ -1,10 +1,16 @@
 {
-  "version": "2.0.43.20260613050726",
-  "build": "2026-06-13T05:07:26.636Z",
-  "commit": "28ecbfe",
+  "version": "2.0.45.20260613052848",
+  "build": "2026-06-13T05:28:48.875Z",
+  "commit": "2942add",
   "limit": 80,
   "sections": {
     "Manutenção": [
+      {
+        "hash": "2942add",
+        "date": "2026-06-13T02:14:51-03:00",
+        "type": "chore",
+        "text": "novo modal de atualizaçao"
+      },
       {
         "hash": "28ecbfe",
         "date": "2026-06-13T02:03:55-03:00",
@@ -41,5 +47,5 @@
       }
     ]
   },
-  "generated_at": "2026-06-13T05:07:26.636Z"
+  "generated_at": "2026-06-13T05:28:48.875Z"
 }

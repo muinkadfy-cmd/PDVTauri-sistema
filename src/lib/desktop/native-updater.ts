@@ -1,4 +1,6 @@
 import { isDesktopApp } from '@/lib/platform';
+import { compareVersions } from '@/lib/updates';
+import { BUILD_BASE_VERSION, BUILD_VERSION } from '@/config/buildInfo';
 
 const DESKTOP_UPDATE_PENDING_KEY = 'smart-tech:desktop-update-pending';
 export const DESKTOP_UPDATE_PENDING_EVENT = 'smarttech:desktop-update-pending-changed';
@@ -18,6 +20,8 @@ export type DesktopNativeUpdateInfo = {
   date?: string | null;
   target?: string | null;
   downloadUrl?: string | null;
+  source?: 'native' | 'latest-json';
+  error?: string | null;
 };
 
 export type DesktopNativeUpdateInstallResult = {
@@ -63,12 +67,6 @@ export function getDesktopUpdatePendingSync(): DesktopUpdatePendingState | null 
 
 export function isDesktopUpdatePending(): boolean {
   return Boolean(getDesktopUpdatePendingSync()?.pending);
-}
-
-export function isDesktopUpdateInstallOnCloseEnabled(): boolean {
-  if (!isDesktopApp()) return false;
-  const raw = String(import.meta.env.VITE_DESKTOP_UPDATE_INSTALL_ON_CLOSE || '').trim().toLowerCase();
-  return raw !== '0' && raw !== 'false' && raw !== 'off';
 }
 
 export function setDesktopUpdatePending(update: DesktopNativeUpdateInfo | null): DesktopUpdatePendingState | null {
@@ -131,7 +129,60 @@ export async function checkDesktopNativeUpdate(): Promise<DesktopNativeUpdateInf
   if (!config) return null;
 
   const { invoke } = await import('@tauri-apps/api/core');
-  return await invoke<DesktopNativeUpdateInfo>('desktop_check_update', { config });
+  const update = await invoke<DesktopNativeUpdateInfo>('desktop_check_update', { config });
+  return { ...update, source: 'native' };
+}
+
+type LatestJsonPayload = {
+  version?: string;
+  notes?: string;
+  pub_date?: string;
+  platforms?: Record<string, { signature?: string; url?: string }>;
+};
+
+export async function fetchDesktopLatestJsonUpdate(error?: unknown): Promise<DesktopNativeUpdateInfo | null> {
+  const config = getDesktopUpdaterConfig();
+  if (!config?.endpoints.length) return null;
+
+  const endpoint = config.endpoints[0];
+  const url = `${endpoint}${endpoint.includes('?') ? '&' : '?'}ts=${Date.now()}`;
+  const message = error ? String((error as any)?.message || error) : null;
+
+  try {
+    const res = await fetch(url, { cache: 'no-store' });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = (await res.json()) as LatestJsonPayload;
+    const version = String(data.version || '').trim();
+    if (!version) throw new Error('latest.json sem versão');
+
+    const platform = data.platforms?.['windows-x86_64'];
+    const currentVersion = BUILD_BASE_VERSION || BUILD_VERSION;
+    const available = compareVersions(version, currentVersion) > 0;
+
+    return {
+      available,
+      currentVersion,
+      version: available ? version : null,
+      body: data.notes || null,
+      date: data.pub_date || null,
+      target: 'windows-x86_64',
+      downloadUrl: platform?.url || null,
+      source: 'latest-json',
+      error: message,
+    };
+  } catch (fallbackError) {
+    return {
+      available: false,
+      currentVersion: BUILD_BASE_VERSION || BUILD_VERSION,
+      version: null,
+      body: null,
+      date: null,
+      target: 'windows-x86_64',
+      downloadUrl: null,
+      source: 'latest-json',
+      error: message || String((fallbackError as any)?.message || fallbackError),
+    };
+  }
 }
 
 export async function prepareDesktopNativeUpdateInstallation(options: DesktopNativeUpdateInstallOptions = {}): Promise<void> {

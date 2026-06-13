@@ -46,7 +46,9 @@
 }
 
 .topbar-brand {
-  min-width: 306px;
+  width: clamp(252px, 18vw, 306px);
+  min-width: 252px;
+  max-width: 306px;
   height: 60px;
   padding: 0 16px 0 0;
   display: inline-flex;
@@ -55,6 +57,7 @@
   text-decoration: none;
   color: #f5f8fc;
   border-right: 1px solid #314b64;
+  overflow: hidden;
 }
 
 .logo-mark,
@@ -82,22 +85,32 @@
 
 .topbar-brand-copy {
   min-width: 0;
+  max-width: 100%;
   display: grid;
   gap: 6px;
+  overflow: hidden;
 }
 
 .topbar-brand-copy strong {
+  display: block;
   color: #f5f8fc;
   font-size: 19px;
   line-height: 1;
   font-weight: 800;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
   white-space: nowrap;
 }
 
 .topbar-brand-copy span {
+  display: block;
   color: #c8d2de;
   font-size: 14px;
   line-height: 1;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
   white-space: nowrap;
 }
 

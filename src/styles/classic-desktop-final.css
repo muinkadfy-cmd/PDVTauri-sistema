@@ -96,12 +96,18 @@ textarea,
 
 .topbar-brand,
 .topbar-home-button {
-  width: 52px !important;
+  width: 286px !important;
+  min-width: 286px !important;
+  max-width: 286px !important;
   height: 52px !important;
+  padding: 0 12px 0 4px !important;
+  gap: 10px !important;
   border-radius: 0 !important;
   border: 1px solid var(--classic-border) !important;
   background: #08121d !important;
   box-shadow: inset 1px 1px 0 rgba(255,255,255,0.10), inset -1px -1px 0 rgba(0,0,0,0.85) !important;
+  overflow: hidden !important;
+  text-decoration: none !important;
 }
 
 .logo-mark,

@@ -6,22 +6,58 @@
   align-items: center;
   justify-content: center;
   padding: 18px;
-  background: rgba(2, 9, 14, 0.58);
+  background:
+    linear-gradient(180deg, rgba(2, 9, 14, 0.60), rgba(2, 9, 14, 0.72));
 }
 
 .welcome-after-login-box {
   position: relative;
-  width: min(460px, calc(100vw - 28px));
+  width: min(492px, calc(100vw - 28px));
+  overflow: hidden;
   border: 1px solid #2e6f52;
+  border-radius: 8px;
   background:
-    linear-gradient(180deg, rgba(15, 42, 55, 0.98) 0%, rgba(6, 18, 28, 0.99) 100%);
+    linear-gradient(180deg, rgba(14, 50, 58, 0.98) 0%, rgba(6, 18, 28, 0.99) 100%);
   color: #f3f8fb;
   box-shadow:
     inset 1px 1px 0 rgba(255, 255, 255, 0.10),
     inset -1px -1px 0 rgba(0, 0, 0, 0.72),
     0 24px 68px rgba(0, 0, 0, 0.48);
-  padding: 24px 24px 22px;
+  padding: 26px 28px 24px;
   text-align: center;
+}
+
+.welcome-after-login-box::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, rgba(34, 197, 94, 0.16), transparent 34%, rgba(47, 140, 255, 0.08)),
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.03) 0 1px, transparent 1px 82px);
+}
+
+.welcome-after-login-box > * {
+  position: relative;
+  z-index: 1;
+}
+
+.welcome-after-login-box--morning {
+  border-color: #4aa8d8;
+  background:
+    linear-gradient(180deg, rgba(24, 78, 96, 0.99) 0%, rgba(7, 24, 35, 0.99) 100%);
+}
+
+.welcome-after-login-box--afternoon {
+  border-color: #d9a843;
+  background:
+    linear-gradient(180deg, rgba(80, 55, 20, 0.98) 0%, rgba(11, 24, 28, 0.99) 100%);
+}
+
+.welcome-after-login-box--night {
+  border-color: #6f8ee8;
+  background:
+    linear-gradient(180deg, rgba(19, 30, 63, 0.99) 0%, rgba(5, 13, 27, 0.99) 100%);
 }
 
 .welcome-after-login-close {
@@ -31,7 +67,8 @@
   width: 34px;
   height: 34px;
   border: 1px solid #41627b;
-  background: #081520;
+  border-radius: 6px;
+  background: rgba(8, 21, 32, 0.86);
   color: #f3f8fb;
   font-size: 22px;
   line-height: 1;
@@ -45,8 +82,8 @@
 
 .welcome-after-login-badge {
   width: fit-content;
-  margin: 0 auto 12px;
-  padding: 5px 12px;
+  margin: 0 auto 14px;
+  padding: 6px 13px;
   border: 1px solid rgba(34, 197, 94, 0.48);
   background: rgba(18, 124, 72, 0.22);
   color: #90f0bc;
@@ -56,17 +93,163 @@
   text-transform: uppercase;
 }
 
-.welcome-after-login-icon {
-  width: 58px;
-  height: 58px;
-  margin: 0 auto 12px;
-  display: grid;
-  place-items: center;
-  border: 1px solid rgba(34, 197, 94, 0.42);
-  background: radial-gradient(circle, rgba(34, 197, 94, 0.22) 0%, rgba(4, 16, 24, 0.86) 68%);
-  color: #ffd166;
-  font-size: 30px;
-  font-weight: 900;
+.welcome-after-login-weather {
+  position: relative;
+  width: 86px;
+  height: 62px;
+  margin: 0 auto 14px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 8px;
+  background: rgba(3, 13, 22, 0.52);
+  box-shadow:
+    inset 1px 1px 0 rgba(255, 255, 255, 0.08),
+    inset -1px -1px 0 rgba(0, 0, 0, 0.46);
+}
+
+.welcome-after-login-weather--morning {
+  background: linear-gradient(180deg, rgba(60, 151, 191, 0.24), rgba(5, 22, 34, 0.72));
+}
+
+.welcome-after-login-weather--afternoon {
+  background: linear-gradient(180deg, rgba(255, 189, 78, 0.22), rgba(32, 19, 6, 0.66));
+}
+
+.welcome-after-login-weather--night {
+  background: linear-gradient(180deg, rgba(53, 72, 145, 0.24), rgba(4, 9, 23, 0.76));
+}
+
+.weather-cloud {
+  position: absolute;
+  left: 18px;
+  bottom: 18px;
+  width: 50px;
+  height: 18px;
+  border-radius: 999px;
+  background: #d9f1ff;
+  box-shadow: 0 6px 18px rgba(106, 190, 230, 0.22);
+}
+
+.weather-cloud::before,
+.weather-cloud::after {
+  content: "";
+  position: absolute;
+  bottom: 8px;
+  border-radius: 50%;
+  background: inherit;
+}
+
+.weather-cloud::before {
+  left: 8px;
+  width: 20px;
+  height: 20px;
+}
+
+.weather-cloud::after {
+  right: 8px;
+  width: 26px;
+  height: 26px;
+}
+
+.weather-cloud--back {
+  left: 12px;
+  bottom: 27px;
+  width: 42px;
+  height: 15px;
+  opacity: 0.45;
+  background: #8dd7ff;
+}
+
+.weather-cloud--front {
+  opacity: 0.95;
+}
+
+.weather-sun {
+  position: absolute;
+  left: 26px;
+  top: 14px;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: #ffd15c;
+  box-shadow:
+    0 0 0 5px rgba(255, 209, 92, 0.14),
+    0 0 24px rgba(255, 184, 54, 0.58);
+}
+
+.weather-ray {
+  position: absolute;
+  width: 4px;
+  height: 12px;
+  border-radius: 999px;
+  background: #ffe6a3;
+}
+
+.weather-ray--one {
+  left: 41px;
+  top: 4px;
+}
+
+.weather-ray--two {
+  left: 41px;
+  bottom: 4px;
+}
+
+.weather-ray--three {
+  left: 13px;
+  top: 29px;
+  transform: rotate(90deg);
+}
+
+.weather-ray--four {
+  right: 13px;
+  top: 29px;
+  transform: rotate(90deg);
+}
+
+.weather-moon {
+  position: absolute;
+  left: 29px;
+  top: 13px;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: #e9f0ff;
+  box-shadow: 0 0 24px rgba(153, 181, 255, 0.52);
+}
+
+.weather-moon::after {
+  content: "";
+  position: absolute;
+  top: -2px;
+  right: -5px;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: rgba(9, 16, 38, 0.96);
+}
+
+.weather-star {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.74);
+}
+
+.weather-star--one {
+  left: 16px;
+  top: 16px;
+}
+
+.weather-star--two {
+  right: 17px;
+  top: 13px;
+}
+
+.weather-star--three {
+  right: 20px;
+  bottom: 16px;
 }
 
 .welcome-after-login-box h2 {

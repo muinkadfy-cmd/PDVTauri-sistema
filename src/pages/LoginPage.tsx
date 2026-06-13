@@ -12,6 +12,42 @@ import { getMonthlyLicenseStatusSync, hydrateMonthlyLicenseFromDesktopKv, type M
 
 import './LoginPage.css';
 
+const LOGIN_BOOT_DELAY_MS = 4000;
+
+const LOGIN_BOOT_LINES = [
+  'smarttech-auth --validar-credenciais',
+  'sqlite-local-store --abrir-cofre',
+  'pdv-session --preparar-painel',
+  'desktop-shell --liberar-sistema'
+];
+
+function waitForLoginPaint(): Promise<void> {
+  return new Promise((resolve) => {
+    window.requestAnimationFrame(() => window.requestAnimationFrame(() => resolve()));
+  });
+}
+
+function runLoginBootProgress(setProgress: (value: number) => void): Promise<void> {
+  return new Promise((resolve) => {
+    const startedAt = performance.now();
+    setProgress(0);
+
+    const tick = (now: number) => {
+      const elapsed = now - startedAt;
+      const progress = Math.min(100, Math.round((elapsed / LOGIN_BOOT_DELAY_MS) * 100));
+      setProgress(progress);
+
+      if (progress >= 100) {
+        resolve();
+        return;
+      }
+
+      window.requestAnimationFrame(tick);
+    };
+
+    window.requestAnimationFrame(tick);
+  });
+}
 
 function EyeIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
@@ -162,6 +198,7 @@ export default function LoginPage() {
   const [rememberLogin, setRememberLogin] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [bootProgress, setBootProgress] = useState(0);
   const [error, setError] = useState('');
   const [okMsg, setOkMsg] = useState('');
 
@@ -242,9 +279,12 @@ export default function LoginPage() {
 
     setError('');
     setOkMsg('');
+    setBootProgress(0);
     setLoading(true);
 
     try {
+      await waitForLoginPaint();
+
       const normalizedStoreId = (isDesktop ? (storeId || '') : storeInput).trim();
       if (!isValidUUID(normalizedStoreId)) {
         setError(isDesktop ? 'Store ID interno inválido. Reinicie o app ou acione o suporte antes de vender.' : 'Store ID inválido.');
@@ -269,9 +309,12 @@ export default function LoginPage() {
 
       playAppSound('success');
 
+      await runLoginBootProgress(setBootProgress);
+
       const from = location?.state?.from;
       navigate(from || '/painel', { replace: true });
     } finally {
+      setBootProgress(0);
       setLoading(false);
     }
   }
@@ -314,7 +357,7 @@ export default function LoginPage() {
   const [licenseStatus, setLicenseStatus] = useState<MonthlyLicenseStatus>(() => getMonthlyLicenseStatusSync());
 
   return (
-    <div className="login-page">
+    <div className={`login-page ${loading ? 'login-page--booting' : ''}`}>
       <div className="login-window-title" aria-hidden="true">
         <img src="/icons/favicon-32.png" alt="" />
         <span>Smart Tech PDV - Login</span>
@@ -470,6 +513,31 @@ export default function LoginPage() {
                 <span>{isDesktop ? 'Configurar sistema local' : 'Criar conta da loja'}</span>
               </button>
             </div>
+
+            {loading ? (
+              <div className="login-boot-panel" role="status" aria-live="polite">
+                <div className="login-boot-head">
+                  <span>Inicializando sessão local</span>
+                  <strong>{bootProgress}%</strong>
+                </div>
+                <div className="login-boot-progress" aria-hidden="true">
+                  <span style={{ width: `${bootProgress}%` }} />
+                </div>
+                <div className="login-boot-console" aria-hidden="true">
+                  {LOGIN_BOOT_LINES.map((line, index) => {
+                    const start = index * 25;
+                    const lineProgress = Math.max(0, Math.min(100, Math.round((bootProgress - start) * 4)));
+                    const status = lineProgress >= 100 ? 'ok' : lineProgress > 0 ? 'run' : 'wait';
+                    return (
+                      <code className={`login-boot-line login-boot-line--${status}`} key={line}>
+                        <span>PS C:\SmartTech&gt; {line}</span>
+                        <b>{lineProgress}%</b>
+                      </code>
+                    );
+                  })}
+                </div>
+              </div>
+            ) : null}
           </form>
         </div>
 

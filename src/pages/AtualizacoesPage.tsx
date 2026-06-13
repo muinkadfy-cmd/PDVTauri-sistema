@@ -70,6 +70,7 @@ function AtualizacoesPage() {
     lastSeenCommit,
     desktopAutoUpdateConfigured,
     desktopNativeUpdate,
+    desktopUpdateError,
     desktopInstallInProgress,
     installDesktopUpdateNow,
   } = useUpdates();
@@ -356,8 +357,23 @@ function AtualizacoesPage() {
               <div><span>Servidor</span><strong>{updateEndpointLabel}</strong></div>
               <div><span>Assinatura</span><strong>{desktopAutoUpdateConfigured ? 'Pubkey OK' : 'Ausente'}</strong></div>
               <div><span>Update</span><strong>{desktopNativeUpdate?.available ? `Sim · ${desktopNativeUpdate.version}` : 'Não'}</strong></div>
-              <div><span>Ao abrir</span><strong>{desktopNativeUpdate?.available ? 'Aviso ativo' : 'Checagem ativa'}</strong></div>
+              <div><span>Fonte</span><strong>{desktopNativeUpdate?.source === 'latest-json' ? 'latest.json' : 'Tauri'}</strong></div>
             </div>
+
+            {desktopUpdateError ? (
+              <div className="updates-callout warn" style={{ marginTop: 10 }}>
+                <span className="updates-callout-icon">⚠️</span>
+                <div>
+                  <div className="updates-callout-title">Updater nativo não confirmou a leitura</div>
+                  <div className="updates-callout-sub">
+                    {desktopUpdateError}
+                    {desktopNativeUpdate?.source === 'latest-json'
+                      ? ' O app leu o latest.json como fallback para mostrar a versão disponível.'
+                      : ''}
+                  </div>
+                </div>
+              </div>
+            ) : null}
 
             <div className="updates-actions updates-actions--compact">
               <button className="updates-btn secondary" onClick={() => void checkNow()} disabled={!desktopAutoUpdateConfigured}>

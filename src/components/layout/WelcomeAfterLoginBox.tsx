@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 
+import { useCompany } from '@/contexts/CompanyContext';
 import { getCurrentSession, type UserSession } from '@/lib/auth-supabase';
 
 import './WelcomeAfterLoginBox.css';
@@ -10,10 +11,20 @@ type WelcomeAfterLoginBoxProps = {
 
 const SEEN_KEY_PREFIX = 'smart-tech:welcome-after-login-seen:';
 
-function getGreeting(hour = new Date().getHours()): 'Bom dia' | 'Boa tarde' | 'Boa noite' {
-  if (hour >= 5 && hour < 12) return 'Bom dia';
-  if (hour >= 12 && hour < 18) return 'Boa tarde';
-  return 'Boa noite';
+type WelcomeMood = {
+  greeting: 'Bom dia' | 'Boa tarde' | 'Boa noite';
+  period: 'morning' | 'afternoon' | 'night';
+  badge: string;
+};
+
+function getWelcomeMood(hour = new Date().getHours()): WelcomeMood {
+  if (hour >= 5 && hour < 12) {
+    return { greeting: 'Bom dia', period: 'morning', badge: 'Manhã tranquila' };
+  }
+  if (hour >= 12 && hour < 18) {
+    return { greeting: 'Boa tarde', period: 'afternoon', badge: 'Tarde produtiva' };
+  }
+  return { greeting: 'Boa noite', period: 'night', badge: 'Noite serena' };
 }
 
 function getSessionKey(session: UserSession): string {
@@ -22,13 +33,16 @@ function getSessionKey(session: UserSession): string {
   return `${SEEN_KEY_PREFIX}${user}:${loginTime}`;
 }
 
-function getDisplayName(session: UserSession): string {
-  const raw = session.username || session.email || 'Smart Tech';
+function getDisplayName(session: UserSession, companyName?: string): string {
+  const storeDisplay = companyName || session.storeName || '';
+  const raw = storeDisplay || session.username || session.email || 'Smart Tech';
   const first = String(raw).trim().split(/\s+/)[0] || 'Smart Tech';
-  return first.length > 18 ? `${first.slice(0, 18)}…` : first;
+  const display = storeDisplay ? String(raw).trim() : first;
+  return display.length > 28 ? `${display.slice(0, 28)}…` : display;
 }
 
 export default function WelcomeAfterLoginBox({ session }: WelcomeAfterLoginBoxProps) {
+  const { company } = useCompany();
   const activeSession = useMemo(() => session || getCurrentSession(), [session]);
   const [open, setOpen] = useState(false);
 
@@ -36,10 +50,14 @@ export default function WelcomeAfterLoginBox({ session }: WelcomeAfterLoginBoxPr
     return activeSession ? getSessionKey(activeSession) : '';
   }, [activeSession]);
 
-  const greeting = useMemo(() => getGreeting(), []);
+  const mood = useMemo(() => getWelcomeMood(), []);
+  const companyName = useMemo(() => {
+    const value = company?.nome_fantasia || company?.razao_social || '';
+    return String(value || '').trim();
+  }, [company?.nome_fantasia, company?.razao_social]);
   const displayName = useMemo(() => {
-    return activeSession ? getDisplayName(activeSession) : 'Smart Tech';
-  }, [activeSession]);
+    return activeSession ? getDisplayName(activeSession, companyName) : (companyName || 'Smart Tech');
+  }, [activeSession, companyName]);
 
   useEffect(() => {
     if (!activeSession || !sessionKey) {
@@ -81,7 +99,7 @@ export default function WelcomeAfterLoginBox({ session }: WelcomeAfterLoginBoxPr
   return (
     <div className="welcome-after-login-overlay" role="presentation" onClick={closeWelcome}>
       <section
-        className="welcome-after-login-box"
+        className={`welcome-after-login-box welcome-after-login-box--${mood.period}`}
         role="dialog"
         aria-modal="true"
         aria-labelledby="welcome-after-login-title"
@@ -96,14 +114,36 @@ export default function WelcomeAfterLoginBox({ session }: WelcomeAfterLoginBoxPr
           ×
         </button>
 
-        <div className="welcome-after-login-badge">Boas-vindas</div>
+        <div className="welcome-after-login-badge">{mood.badge}</div>
 
-        <div className="welcome-after-login-icon" aria-hidden="true">
-          ☀
+        <div className={`welcome-after-login-weather welcome-after-login-weather--${mood.period}`} aria-hidden="true">
+          {mood.period === 'morning' ? (
+            <>
+              <span className="weather-cloud weather-cloud--back" />
+              <span className="weather-cloud weather-cloud--front" />
+            </>
+          ) : null}
+          {mood.period === 'afternoon' ? (
+            <>
+              <span className="weather-sun" />
+              <span className="weather-ray weather-ray--one" />
+              <span className="weather-ray weather-ray--two" />
+              <span className="weather-ray weather-ray--three" />
+              <span className="weather-ray weather-ray--four" />
+            </>
+          ) : null}
+          {mood.period === 'night' ? (
+            <>
+              <span className="weather-moon" />
+              <span className="weather-star weather-star--one" />
+              <span className="weather-star weather-star--two" />
+              <span className="weather-star weather-star--three" />
+            </>
+          ) : null}
         </div>
 
         <h2 id="welcome-after-login-title">
-          {greeting}, {displayName}!
+          {mood.greeting}, {displayName}!
         </h2>
 
         <p>

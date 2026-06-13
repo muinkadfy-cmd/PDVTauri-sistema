@@ -635,14 +635,15 @@
 
   html[data-perf="1"] .topbar-brand,
   html[data-perf="1"] .topbar-home-button {
-    width: 268px !important;
-    min-width: 268px !important;
-    max-width: 268px !important;
+    width: 286px !important;
+    min-width: 286px !important;
+    max-width: 286px !important;
     height: 56px !important;
     min-height: 56px !important;
     padding: 0 12px 0 0 !important;
     gap: 12px !important;
     overflow: hidden !important;
+    text-decoration: none !important;
   }
 
   html[data-perf="1"] .logo-mark,
@@ -883,9 +884,9 @@
 @media (min-width: 901px) and (max-width: 1280px) {
   html[data-perf="1"] .topbar-brand,
   html[data-perf="1"] .topbar-home-button {
-    width: 228px !important;
-    min-width: 228px !important;
-    max-width: 228px !important;
+    width: 244px !important;
+    min-width: 244px !important;
+    max-width: 244px !important;
   }
 
   html[data-perf="1"] .topbar-brand-copy strong {

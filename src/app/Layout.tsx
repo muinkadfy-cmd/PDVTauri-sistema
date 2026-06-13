@@ -4,6 +4,7 @@ import Topbar from '@/components/layout/Topbar';
 import Sidebar from '@/components/layout/Sidebar';
 import ClassicStatusBar from '@/components/layout/ClassicStatusBar';
 import CloseBackupDialog from '@/components/layout/CloseBackupDialog';
+import WelcomeAfterLoginBox from '@/components/layout/WelcomeAfterLoginBox';
 import MonthlyLicenseGate from '@/components/license/MonthlyLicenseGate';
 import BottomNav from '@/components/layout/BottomNav';
 import DrawerMenu from '@/components/layout/DrawerMenu';
@@ -270,6 +271,7 @@ function Layout() {
           <Topbar onMenuToggle={toggleDrawer} />
           <UpdateBanner />
           <DesktopUpdateStartupDialog />
+          <WelcomeAfterLoginBox session={session} />
           {/* SyncStatusBar oculto - status já visível no Topbar */}
           <div className="app-container">
             {showSidebar && <Sidebar />}

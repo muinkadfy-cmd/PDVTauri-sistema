@@ -497,6 +497,189 @@
   cursor: not-allowed;
 }
 
+.login-boot-panel {
+  margin: 2px -18px 0;
+  padding: 7px 10px 8px;
+  border: 1px solid #35506a;
+  background:
+    linear-gradient(180deg, rgba(7, 22, 36, 0.94), rgba(3, 12, 21, 0.96));
+  box-shadow:
+    inset 1px 1px 0 rgba(255, 255, 255, 0.08),
+    inset -1px -1px 0 rgba(0, 0, 0, 0.62);
+}
+
+.login-boot-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 5px;
+  color: #e8f3ff;
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.login-boot-head strong {
+  min-width: 42px;
+  padding: 3px 7px;
+  border: 1px solid rgba(34, 197, 94, 0.45);
+  background: rgba(17, 101, 47, 0.34);
+  color: #8df3b6;
+  text-align: center;
+  font-size: 11px;
+  line-height: 1;
+}
+
+.login-boot-progress {
+  height: 10px;
+  padding: 2px;
+  border: 1px solid #4d6b86;
+  background: #04101c;
+  overflow: hidden;
+}
+
+.login-boot-progress span {
+  display: block;
+  width: 0;
+  height: 100%;
+  background:
+    linear-gradient(90deg, #16c760 0%, #31d978 48%, #74f2ff 100%);
+  box-shadow: 0 0 16px rgba(49, 217, 120, 0.38);
+  transition: width 90ms linear;
+}
+
+.login-boot-console {
+  margin-top: 5px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 3px 8px;
+  padding: 5px 7px;
+  border: 1px solid rgba(77, 107, 134, 0.62);
+  background:
+    repeating-linear-gradient(180deg, rgba(255, 255, 255, 0.025) 0 1px, transparent 1px 18px),
+    rgba(2, 9, 16, 0.76);
+  text-align: left;
+}
+
+.login-boot-console code {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  min-width: 0;
+  overflow: hidden;
+  color: #6f8aa2;
+  font-family: Consolas, "Courier New", monospace;
+  font-size: 9px;
+  line-height: 1.18;
+  white-space: nowrap;
+}
+
+.login-boot-console code span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.login-boot-console code b {
+  min-width: 30px;
+  color: #7fa1bc;
+  font-weight: 700;
+  text-align: right;
+}
+
+.login-boot-line--run {
+  color: #d6f8e4 !important;
+}
+
+.login-boot-line--run b {
+  color: #7df1ae !important;
+}
+
+.login-boot-line--ok {
+  color: #9ee7bd !important;
+}
+
+.login-boot-line--ok b {
+  color: #31d978 !important;
+}
+
+.login-page.login-page--booting {
+  align-items: flex-start !important;
+  padding-top: 42px !important;
+  padding-bottom: 88px !important;
+}
+
+.login-page--booting .login-brand-block {
+  gap: 3px !important;
+  margin-bottom: 6px !important;
+}
+
+.login-page--booting .login-kicker {
+  min-height: 20px !important;
+  font-size: 9px !important;
+}
+
+.login-page--booting .login-brand-logo {
+  width: 62px !important;
+  height: 62px !important;
+  border-radius: 11px !important;
+}
+
+.login-page--booting .login-title {
+  font-size: 24px !important;
+  margin-top: 1px !important;
+}
+
+.login-page--booting .login-subtitle {
+  font-size: 12px !important;
+}
+
+.login-page--booting .login-meta,
+.login-page--booting .login-card-intro p {
+  display: none !important;
+}
+
+.login-page--booting .login-card-title {
+  min-height: 36px !important;
+  height: 36px !important;
+}
+
+.login-page--booting .login-card-intro {
+  padding-top: 7px !important;
+}
+
+.login-page--booting .login-default-access {
+  min-height: 27px !important;
+}
+
+.login-page--booting .login-form {
+  gap: 7px !important;
+  padding-top: 8px !important;
+}
+
+.login-page--booting .login-input-shell {
+  height: 38px !important;
+}
+
+.login-page--booting .password-toggle {
+  height: 36px !important;
+}
+
+.login-page--booting .login-remember-row input[type="checkbox"] {
+  width: 24px !important;
+  height: 24px !important;
+}
+
+.login-page--booting .btn-primary {
+  height: 40px !important;
+}
+
+.login-page--booting .login-footer-action {
+  height: 36px !important;
+}
+
 .login-system-statusbar {
   position: fixed;
   z-index: 3;
@@ -1035,6 +1218,31 @@
     height: 40px !important;
   }
 
+  .login-boot-panel {
+    margin: 0 -14px 0 !important;
+    padding: 7px 9px 8px !important;
+  }
+
+  .login-boot-head {
+    margin-bottom: 5px !important;
+    font-size: 10px !important;
+  }
+
+  .login-boot-progress {
+    height: 9px !important;
+  }
+
+  .login-boot-console {
+    margin-top: 5px !important;
+    padding: 5px 7px !important;
+    gap: 2px !important;
+  }
+
+  .login-boot-console code {
+    font-size: 9px !important;
+    line-height: 1.15 !important;
+  }
+
   .login-system-statusbar {
     min-height: 50px !important;
     height: 50px !important;
@@ -1106,6 +1314,15 @@
 
   .login-card-actions {
     grid-template-columns: 1fr !important;
+  }
+
+  .login-boot-panel {
+    margin: 0 -14px 0 !important;
+    padding: 8px 9px !important;
+  }
+
+  .login-boot-console code {
+    font-size: 9px !important;
   }
 
   .login-system-statusbar {

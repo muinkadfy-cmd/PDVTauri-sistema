@@ -224,7 +224,7 @@ export default function Topbar({ onMenuToggle }: TopbarProps) {
           </button>
         )}
 
-        <Link className="topbar-brand topbar-home-button" to="/painel" title="Ir para o painel" aria-label="Ir para o painel">
+        <Link className="topbar-brand topbar-home-button" to="/painel" aria-label="Ir para o painel">
           <span className="logo-mark" aria-hidden="true">
             {logoOk ? (
               <img
