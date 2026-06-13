@@ -1,30 +1,16 @@
 {
-  "version": "2.0.48.20260613140254",
-  "build": "2026-06-13T14:02:54.552Z",
-  "commit": "fdbb7cd",
+  "version": "2.0.49.20260613142153",
+  "build": "2026-06-13T14:21:53.825Z",
+  "commit": "f7091de",
   "limit": 80,
   "sections": {
-    "Correções": [
-      {
-        "hash": "fdbb7cd",
-        "date": "2026-06-13T10:50:22-03:00",
-        "type": "fix",
-        "text": "melhorar deteccao do updater desktop"
-      },
-      {
-        "hash": "831e256",
-        "date": "2026-06-12T23:47:11-03:00",
-        "type": "fix",
-        "text": "separar build msi normal de updater assinado"
-      },
-      {
-        "hash": "0a2bba0",
-        "date": "2026-06-12T23:21:22-03:00",
-        "type": "fix",
-        "text": "corrigir type-check apos remover supabase desktop"
-      }
-    ],
     "Manutenção": [
+      {
+        "hash": "f7091de",
+        "date": "2026-06-13T11:05:43-03:00",
+        "type": "chore",
+        "text": "novo modal de atualizacao"
+      },
       {
         "hash": "25983ca",
         "date": "2026-06-13T10:23:46-03:00",
@@ -56,6 +42,26 @@
         "text": "remover arquivos temporarios do repositorio"
       }
     ],
+    "Correções": [
+      {
+        "hash": "fdbb7cd",
+        "date": "2026-06-13T10:50:22-03:00",
+        "type": "fix",
+        "text": "melhorar deteccao do updater desktop"
+      },
+      {
+        "hash": "831e256",
+        "date": "2026-06-12T23:47:11-03:00",
+        "type": "fix",
+        "text": "separar build msi normal de updater assinado"
+      },
+      {
+        "hash": "0a2bba0",
+        "date": "2026-06-12T23:21:22-03:00",
+        "type": "fix",
+        "text": "corrigir type-check apos remover supabase desktop"
+      }
+    ],
     "Outros": [
       {
         "hash": "cf4533a",
@@ -65,5 +71,5 @@
       }
     ]
   },
-  "generated_at": "2026-06-13T14:02:54.552Z"
+  "generated_at": "2026-06-13T14:21:53.825Z"
 }
