@@ -71,8 +71,6 @@ function AtualizacoesPage() {
     desktopAutoUpdateConfigured,
     desktopNativeUpdate,
     desktopInstallInProgress,
-    desktopUpdatePending,
-    desktopUpdateInstallOnClose,
     installDesktopUpdateNow,
   } = useUpdates();
 
@@ -334,7 +332,7 @@ function AtualizacoesPage() {
           </p>
           ) : (
           <p className="muted small">
-            No desktop, você pode instalar agora, deixar o update assinado aplicar ao fechar ou salvar o instalador para concluir manualmente.
+            No desktop, você pode instalar agora pelo aviso ao abrir, usar o botão de instalação ou salvar o instalador para concluir manualmente.
           </p>
           )}
         </div>
@@ -358,7 +356,7 @@ function AtualizacoesPage() {
               <div><span>Servidor</span><strong>{updateEndpointLabel}</strong></div>
               <div><span>Assinatura</span><strong>{desktopAutoUpdateConfigured ? 'Pubkey OK' : 'Ausente'}</strong></div>
               <div><span>Update</span><strong>{desktopNativeUpdate?.available ? `Sim · ${desktopNativeUpdate.version}` : 'Não'}</strong></div>
-              <div><span>Ao fechar</span><strong>{desktopUpdateInstallOnClose ? (desktopUpdatePending ? 'Pendente' : 'Ativado') : 'Desativado'}</strong></div>
+              <div><span>Ao abrir</span><strong>{desktopNativeUpdate?.available ? 'Aviso ativo' : 'Checagem ativa'}</strong></div>
             </div>
 
             <div className="updates-actions updates-actions--compact">
@@ -372,7 +370,7 @@ function AtualizacoesPage() {
 
             {desktopAutoUpdateConfigured ? (
               <p className="muted small updates-compact-note">
-                Feed Cloudflare + assinatura Tauri. Quando houver update, ele fica pendente e instala ao fechar.
+                Feed Cloudflare + assinatura Tauri. Quando houver update, o app avisa ao abrir e instala somente com confirmação.
               </p>
             ) : (
               <p className="muted small updates-compact-note">

@@ -233,26 +233,6 @@ async function notifyCloseBackupFailure(error: unknown): Promise<void> {
   }
 }
 
-async function installDesktopUpdateBeforeClose(): Promise<void> {
-  try {
-    const { installDesktopNativeUpdateIfAvailable } = await import('@/lib/desktop/native-updater');
-    const result = await installDesktopNativeUpdateIfAvailable({
-      backupBeforeInstall: false,
-      checkpointBeforeInstall: false,
-    });
-
-    if (result.installed) {
-      logger.info(
-        `[PersistenceGate] Atualização desktop assinada instalada ao fechar${result.version ? ` (${result.version})` : ''}.`
-      );
-    } else if (result.reason === 'no_update') {
-      logger.info('[PersistenceGate] Auto-update desktop verificado ao fechar: nenhuma versão nova.');
-    }
-  } catch (error) {
-    logger.warn('[PersistenceGate] Falha ao tentar instalar atualização desktop durante fechamento:', error);
-  }
-}
-
 export async function flushPendingWrites(timeoutMs = 15000): Promise<void> {
   const startedAt = Date.now();
 
@@ -309,9 +289,6 @@ export async function registerDesktopPersistenceCloseGuard(): Promise<void> {
             await notifyCloseBackupFailure(backupError);
           }
         }
-
-        notifyCloseProgress('updating', 'Verificando atualização Cloudflare antes de sair.', 78);
-        await installDesktopUpdateBeforeClose();
 
         notifyCloseProgress('closing', 'Fechando Smart Tech PDV com segurança.', 100);
         setCloseFlags({ allowImmediateClose: true });

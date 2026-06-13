@@ -1,9 +1,23 @@
 {
-  "version": "2.0.42.20260613045940",
-  "build": "2026-06-13T04:59:40.476Z",
-  "commit": "831e256",
+  "version": "2.0.43.20260613050726",
+  "build": "2026-06-13T05:07:26.636Z",
+  "commit": "28ecbfe",
   "limit": 80,
   "sections": {
+    "Manutenção": [
+      {
+        "hash": "28ecbfe",
+        "date": "2026-06-13T02:03:55-03:00",
+        "type": "chore",
+        "text": "atualizar sistema"
+      },
+      {
+        "hash": "9875e6e",
+        "date": "2026-06-12T23:09:08-03:00",
+        "type": "chore",
+        "text": "remover arquivos temporarios do repositorio"
+      }
+    ],
     "Correções": [
       {
         "hash": "831e256",
@@ -18,14 +32,6 @@
         "text": "corrigir type-check apos remover supabase desktop"
       }
     ],
-    "Manutenção": [
-      {
-        "hash": "9875e6e",
-        "date": "2026-06-12T23:09:08-03:00",
-        "type": "chore",
-        "text": "remover arquivos temporarios do repositorio"
-      }
-    ],
     "Outros": [
       {
         "hash": "cf4533a",
@@ -35,5 +41,5 @@
       }
     ]
   },
-  "generated_at": "2026-06-13T04:59:40.476Z"
+  "generated_at": "2026-06-13T05:07:26.636Z"
 }

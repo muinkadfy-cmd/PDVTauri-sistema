@@ -8,7 +8,7 @@ import { BUILD_COMMIT, BUILD_DATE, BUILD_ID, BUILD_VERSION } from '@/config/buil
 import { appendUpdateLog, getUpdateLogs, type UpdateLogEntry } from '@/lib/updateLog';
 import { isBrowserOnlineSafe } from '@/lib/capabilities/runtime-remote-adapter';
 import { isDesktopApp } from '@/lib/platform';
-import { checkDesktopNativeUpdate, isDesktopAutoUpdateConfigured, installDesktopNativeUpdateWithSafety, setDesktopUpdatePending, isDesktopUpdatePending, isDesktopUpdateInstallOnCloseEnabled, type DesktopNativeUpdateInfo } from '@/lib/desktop/native-updater';
+import { checkDesktopNativeUpdate, isDesktopAutoUpdateConfigured, installDesktopNativeUpdateWithSafety, setDesktopUpdatePending, isDesktopUpdatePending, type DesktopNativeUpdateInfo } from '@/lib/desktop/native-updater';
 
 type UpdateState = {
   manifest: UpdateManifest | null;
@@ -27,7 +27,6 @@ type UpdateState = {
   desktopNativeUpdate: DesktopNativeUpdateInfo | null;
   desktopInstallInProgress: boolean;
   desktopUpdatePending: boolean;
-  desktopUpdateInstallOnClose: boolean;
 
   logs: UpdateLogEntry[];
 
@@ -148,7 +147,6 @@ export function UpdateProvider({ children }: { children: React.ReactNode }) {
   const [desktopNativeUpdate, setDesktopNativeUpdate] = useState<DesktopNativeUpdateInfo | null>(null);
   const [desktopInstallInProgress, setDesktopInstallInProgress] = useState(false);
   const [desktopUpdatePending, setDesktopUpdatePendingState] = useState(() => isDesktopUpdatePending());
-  const desktopUpdateInstallOnClose = isDesktopUpdateInstallOnCloseEnabled();
 
   const refreshLogs = useCallback(() => {
     try {
@@ -476,7 +474,6 @@ export function UpdateProvider({ children }: { children: React.ReactNode }) {
       desktopNativeUpdate,
       desktopInstallInProgress,
       desktopUpdatePending,
-      desktopUpdateInstallOnClose,
       logs,
       checkNow,
       markAsRead,
@@ -497,7 +494,6 @@ export function UpdateProvider({ children }: { children: React.ReactNode }) {
       desktopNativeUpdate,
       desktopInstallInProgress,
       desktopUpdatePending,
-      desktopUpdateInstallOnClose,
       logs,
       checkNow,
       markAsRead,

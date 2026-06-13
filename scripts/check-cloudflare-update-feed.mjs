@@ -35,8 +35,8 @@ has('scripts/generate-tauri-latest-json.mjs', 'latest.json');
 has('scripts/publish-cloudflare-update.mjs', 'wrangler');
 has('scripts/publish-cloudflare-update.mjs', 'release:cloudflare:update');
 has('src/lib/desktop/native-updater.ts', 'DESKTOP_UPDATE_PENDING_KEY');
-has('src/lib/desktop/native-updater.ts', 'isDesktopUpdateInstallOnCloseEnabled');
-has('src/lib/persistence-gate.ts', 'backupBeforeInstall: false');
+has('src/components/updates/DesktopUpdateStartupDialog.tsx', 'Nova versão pronta para instalar');
+has('src/lib/persistence-gate.ts', 'Fechando Smart Tech PDV com segurança.');
 has('src/contexts/UpdateContext.tsx', 'desktopUpdatePending');
 has('src/pages/AtualizacoesPage.tsx', 'Cloudflare Pages');
 
@@ -57,4 +57,4 @@ for (const token of ['update-site/', '.updater-secrets/', 'release/']) {
 }
 
 if (!ok) process.exit(1);
-console.log('[cloudflare-update-check] OK: Cloudflare feed real + update pendente ao fechar configurados.');
+console.log('[cloudflare-update-check] OK: Cloudflare feed real + aviso de update ao abrir configurados.');
