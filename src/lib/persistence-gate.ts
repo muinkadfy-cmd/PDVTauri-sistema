@@ -236,7 +236,10 @@ async function notifyCloseBackupFailure(error: unknown): Promise<void> {
 async function installDesktopUpdateBeforeClose(): Promise<void> {
   try {
     const { installDesktopNativeUpdateIfAvailable } = await import('@/lib/desktop/native-updater');
-    const result = await installDesktopNativeUpdateIfAvailable();
+    const result = await installDesktopNativeUpdateIfAvailable({
+      backupBeforeInstall: false,
+      checkpointBeforeInstall: false,
+    });
 
     if (result.installed) {
       logger.info(
@@ -307,7 +310,7 @@ export async function registerDesktopPersistenceCloseGuard(): Promise<void> {
           }
         }
 
-        notifyCloseProgress('updating', 'Verificando atualização local antes de sair.', 78);
+        notifyCloseProgress('updating', 'Verificando atualização Cloudflare antes de sair.', 78);
         await installDesktopUpdateBeforeClose();
 
         notifyCloseProgress('closing', 'Fechando Smart Tech PDV com segurança.', 100);

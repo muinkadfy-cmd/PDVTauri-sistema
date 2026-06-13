@@ -8,7 +8,7 @@ import { BUILD_COMMIT, BUILD_DATE, BUILD_ID, BUILD_VERSION } from '@/config/buil
 import { appendUpdateLog, getUpdateLogs, type UpdateLogEntry } from '@/lib/updateLog';
 import { isBrowserOnlineSafe } from '@/lib/capabilities/runtime-remote-adapter';
 import { isDesktopApp } from '@/lib/platform';
-import { checkDesktopNativeUpdate, isDesktopAutoUpdateConfigured, installDesktopNativeUpdateWithSafety, type DesktopNativeUpdateInfo } from '@/lib/desktop/native-updater';
+import { checkDesktopNativeUpdate, isDesktopAutoUpdateConfigured, installDesktopNativeUpdateWithSafety, setDesktopUpdatePending, isDesktopUpdatePending, isDesktopUpdateInstallOnCloseEnabled, type DesktopNativeUpdateInfo } from '@/lib/desktop/native-updater';
 
 type UpdateState = {
   manifest: UpdateManifest | null;
@@ -26,6 +26,8 @@ type UpdateState = {
   desktopAutoUpdateConfigured: boolean;
   desktopNativeUpdate: DesktopNativeUpdateInfo | null;
   desktopInstallInProgress: boolean;
+  desktopUpdatePending: boolean;
+  desktopUpdateInstallOnClose: boolean;
 
   logs: UpdateLogEntry[];
 
@@ -145,6 +147,8 @@ export function UpdateProvider({ children }: { children: React.ReactNode }) {
   const [logs, setLogs] = useState<UpdateLogEntry[]>(() => getUpdateLogs());
   const [desktopNativeUpdate, setDesktopNativeUpdate] = useState<DesktopNativeUpdateInfo | null>(null);
   const [desktopInstallInProgress, setDesktopInstallInProgress] = useState(false);
+  const [desktopUpdatePending, setDesktopUpdatePendingState] = useState(() => isDesktopUpdatePending());
+  const desktopUpdateInstallOnClose = isDesktopUpdateInstallOnCloseEnabled();
 
   const refreshLogs = useCallback(() => {
     try {
@@ -187,7 +191,11 @@ export function UpdateProvider({ children }: { children: React.ReactNode }) {
       detectWaitingSW(),
     ]);
 
-    if (desktop) setDesktopNativeUpdate(nativeUpdate);
+    if (desktop) {
+      setDesktopNativeUpdate(nativeUpdate);
+      const pending = nativeUpdate?.available ? setDesktopUpdatePending(nativeUpdate) : setDesktopUpdatePending(null);
+      setDesktopUpdatePendingState(Boolean(pending?.pending));
+    }
     const nextManifest = desktop ? buildDesktopManifest(nativeUpdate) || m : m;
 
     if (nextManifest) setManifest(nextManifest);
@@ -292,6 +300,8 @@ export function UpdateProvider({ children }: { children: React.ReactNode }) {
         backupBeforeInstall: true,
         checkpointBeforeInstall: true,
       });
+      setDesktopUpdatePending(null);
+      setDesktopUpdatePendingState(false);
     } catch (error: any) {
       log('error', `Falha no auto-update desktop: ${error?.message || String(error)}`);
       showToast(error?.message || 'Falha ao instalar atualização do desktop.', 'error', 8000);
@@ -465,6 +475,8 @@ export function UpdateProvider({ children }: { children: React.ReactNode }) {
       desktopAutoUpdateConfigured,
       desktopNativeUpdate,
       desktopInstallInProgress,
+      desktopUpdatePending,
+      desktopUpdateInstallOnClose,
       logs,
       checkNow,
       markAsRead,
@@ -484,6 +496,8 @@ export function UpdateProvider({ children }: { children: React.ReactNode }) {
       desktopAutoUpdateConfigured,
       desktopNativeUpdate,
       desktopInstallInProgress,
+      desktopUpdatePending,
+      desktopUpdateInstallOnClose,
       logs,
       checkNow,
       markAsRead,

@@ -1,5 +1,8 @@
 import { isDesktopApp } from '@/lib/platform';
 
+const DESKTOP_UPDATE_PENDING_KEY = 'smart-tech:desktop-update-pending';
+export const DESKTOP_UPDATE_PENDING_EVENT = 'smarttech:desktop-update-pending-changed';
+
 export type DesktopUpdaterConfig = {
   endpoints: string[];
   pubkey: string;
@@ -29,6 +32,74 @@ export type DesktopNativeUpdateInstallOptions = {
   backupBeforeInstall?: boolean;
   checkpointBeforeInstall?: boolean;
 };
+
+export type DesktopUpdatePendingState = {
+  pending: boolean;
+  version?: string | null;
+  date?: string | null;
+  downloadUrl?: string | null;
+  savedAt: string;
+};
+
+function emitDesktopUpdatePendingChanged(state: DesktopUpdatePendingState | null): void {
+  try {
+    window.dispatchEvent(new CustomEvent(DESKTOP_UPDATE_PENDING_EVENT, { detail: state }));
+  } catch {
+    // ignore
+  }
+}
+
+export function getDesktopUpdatePendingSync(): DesktopUpdatePendingState | null {
+  if (!isDesktopApp()) return null;
+  try {
+    const raw = localStorage.getItem(DESKTOP_UPDATE_PENDING_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw) as DesktopUpdatePendingState;
+    return parsed?.pending ? parsed : null;
+  } catch {
+    return null;
+  }
+}
+
+export function isDesktopUpdatePending(): boolean {
+  return Boolean(getDesktopUpdatePendingSync()?.pending);
+}
+
+export function isDesktopUpdateInstallOnCloseEnabled(): boolean {
+  if (!isDesktopApp()) return false;
+  const raw = String(import.meta.env.VITE_DESKTOP_UPDATE_INSTALL_ON_CLOSE || '').trim().toLowerCase();
+  return raw !== '0' && raw !== 'false' && raw !== 'off';
+}
+
+export function setDesktopUpdatePending(update: DesktopNativeUpdateInfo | null): DesktopUpdatePendingState | null {
+  if (!isDesktopApp()) return null;
+
+  if (!update?.available) {
+    try {
+      localStorage.removeItem(DESKTOP_UPDATE_PENDING_KEY);
+    } catch {
+      // ignore
+    }
+    emitDesktopUpdatePendingChanged(null);
+    return null;
+  }
+
+  const state: DesktopUpdatePendingState = {
+    pending: true,
+    version: update.version || null,
+    date: update.date || null,
+    downloadUrl: update.downloadUrl || null,
+    savedAt: new Date().toISOString(),
+  };
+
+  try {
+    localStorage.setItem(DESKTOP_UPDATE_PENDING_KEY, JSON.stringify(state));
+  } catch {
+    // ignore
+  }
+  emitDesktopUpdatePendingChanged(state);
+  return state;
+}
 
 function parseList(raw: string | undefined): string[] {
   return String(raw || '')
@@ -103,6 +174,7 @@ export async function installDesktopNativeUpdateIfAvailable(options: DesktopNati
   const update = await checkDesktopNativeUpdate();
   if (!update?.available) return { installed: false, checked: true, reason: 'no_update' };
 
-  await installDesktopNativeUpdate();
-  return { installed: true, checked: true, version: update.version || null };
+  await installDesktopNativeUpdateWithSafety(options);
+  setDesktopUpdatePending(null);
+  return { installed: true, checked: true, safetyPrepared: true, version: update.version || null };
 }

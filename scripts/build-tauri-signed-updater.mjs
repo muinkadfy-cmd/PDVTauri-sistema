@@ -34,7 +34,7 @@ function parseEnvFile(filePath) {
 }
 
 function collectReleaseEnv() {
-  const names = ['.env', '.env.local', '.env.production', '.env.desktop'];
+  const names = ['.env', '.env.local', '.env.production', '.env.desktop', '.env.signing'];
   const merged = {};
   for (const name of names) Object.assign(merged, parseEnvFile(path.join(process.cwd(), name)));
   return merged;
@@ -44,6 +44,43 @@ const releaseEnv = collectReleaseEnv();
 
 function getEnv(name) {
   return String(process.env[name] || releaseEnv[name] || '').trim();
+}
+
+function getSigningPassword() {
+  return getEnv('TAURI_SIGNING_PRIVATE_KEY_PASSWORD') || getEnv('TAURI_PRIVATE_KEY_PASSWORD');
+}
+
+function getSigningEnv() {
+  const inlineKey = getEnv('TAURI_SIGNING_PRIVATE_KEY') || getEnv('TAURI_PRIVATE_KEY');
+  const keyPath = getEnv('TAURI_SIGNING_PRIVATE_KEY_PATH');
+  const password = getSigningPassword();
+
+  if (inlineKey && keyPath) {
+    fail('Configure apenas uma origem da chave privada do updater.', [
+      'Remova TAURI_SIGNING_PRIVATE_KEY/TAURI_PRIVATE_KEY para usar TAURI_SIGNING_PRIVATE_KEY_PATH.',
+      'Ou remova TAURI_SIGNING_PRIVATE_KEY_PATH para usar o conteúdo da chave por variável.',
+    ]);
+  }
+
+  if (keyPath && !fs.existsSync(keyPath)) {
+    fail('TAURI_SIGNING_PRIVATE_KEY_PATH aponta para um arquivo inexistente.', [keyPath]);
+  }
+
+  const privateKey = inlineKey || (keyPath ? readText(keyPath).trim() : '');
+  if (keyPath && !privateKey) {
+    fail('Arquivo de chave privada do updater está vazio.', [keyPath]);
+  }
+
+  const env = {};
+  if (privateKey) {
+    env.TAURI_SIGNING_PRIVATE_KEY = privateKey;
+    env.TAURI_PRIVATE_KEY = privateKey;
+  }
+  if (password) {
+    env.TAURI_SIGNING_PRIVATE_KEY_PASSWORD = password;
+    env.TAURI_PRIVATE_KEY_PASSWORD = password;
+  }
+  return env;
 }
 
 function fail(message, details = []) {
@@ -101,15 +138,23 @@ console.log(`   endpoints: ${endpoints.length}`);
 console.log('   pubkey: configurada');
 console.log('   createUpdaterArtifacts: true');
 
+const childEnv = { ...process.env };
+for (const name of [
+  'TAURI_SIGNING_PRIVATE_KEY',
+  'TAURI_PRIVATE_KEY',
+  'TAURI_SIGNING_PRIVATE_KEY_PATH',
+  'TAURI_SIGNING_PRIVATE_KEY_PASSWORD',
+  'TAURI_PRIVATE_KEY_PASSWORD',
+]) {
+  delete childEnv[name];
+}
+
 const result = spawnSync('tauri', ['build', '--config', outPath], {
   stdio: 'inherit',
   shell: process.platform === 'win32',
   env: {
-    ...process.env,
-    TAURI_SIGNING_PRIVATE_KEY: process.env.TAURI_SIGNING_PRIVATE_KEY || releaseEnv.TAURI_SIGNING_PRIVATE_KEY || '',
-    TAURI_SIGNING_PRIVATE_KEY_PATH: process.env.TAURI_SIGNING_PRIVATE_KEY_PATH || releaseEnv.TAURI_SIGNING_PRIVATE_KEY_PATH || '',
-    TAURI_PRIVATE_KEY: process.env.TAURI_PRIVATE_KEY || releaseEnv.TAURI_PRIVATE_KEY || '',
-    TAURI_PRIVATE_KEY_PASSWORD: process.env.TAURI_PRIVATE_KEY_PASSWORD || releaseEnv.TAURI_PRIVATE_KEY_PASSWORD || '',
+    ...childEnv,
+    ...getSigningEnv(),
   },
 });
 

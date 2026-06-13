@@ -66,3 +66,7 @@ Thumbs.db
 
 # Tauri configs temporárias de release
 src-tauri/.generated/
+.updater-secrets/
+.signing/
+.certificates/
+update-site/

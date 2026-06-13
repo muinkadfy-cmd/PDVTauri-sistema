@@ -24,6 +24,17 @@ function formatBytes(bytes: number): string {
   return `${gb.toFixed(2)} GB`;
 }
 
+function getUpdateEndpointLabel(): string {
+  const raw = String(import.meta.env.VITE_DESKTOP_UPDATE_ENDPOINTS || '').trim();
+  if (!raw) return 'Não configurado';
+  if (raw.includes('pages.dev') || raw.includes('cloudflare')) return 'Cloudflare Pages';
+  try {
+    return new URL(raw.split(',')[0]).hostname;
+  } catch {
+    return 'Endpoint configurado';
+  }
+}
+
 function getBaseVersion(version?: string) {
   const raw = String(version || '').trim();
   if (!raw) return '';
@@ -60,10 +71,13 @@ function AtualizacoesPage() {
     desktopAutoUpdateConfigured,
     desktopNativeUpdate,
     desktopInstallInProgress,
+    desktopUpdatePending,
+    desktopUpdateInstallOnClose,
     installDesktopUpdateNow,
   } = useUpdates();
 
   const desktop = isDesktopApp();
+  const updateEndpointLabel = getUpdateEndpointLabel();
 
   const [updatePkg, setUpdatePkg] = useState<any | null>(null);
   const [pkgError, setPkgError] = useState<string | null>(null);
@@ -151,7 +165,7 @@ function AtualizacoesPage() {
   const allSections = changelog?.sections || {};
 
   return (
-    <div className="updates-page">
+    <div className="updates-page updates-page--compact">
       <div className="updates-header">
         <div className="updates-title">
           <h1>🆕 Atualizações</h1>
@@ -159,7 +173,7 @@ function AtualizacoesPage() {
             {updateAvailable
               ? `${updateLabel}. ${updateExplanation}`
               : desktop
-                ? `Você está na versão Desktop (Tauri). Aqui você pode revisar o changelog, conferir a versão instalada e ${desktopAutoUpdateConfigured ? 'verificar atualização online nativa, instalar agora ou deixar aplicar ao fechar.' : 'aplicar atualização por pacote ou novo instalador.'}`
+                ? `Desktop Tauri: confira versão, novidades e ${desktopAutoUpdateConfigured ? 'update online assinado.' : 'pacote offline/instalador.'}`
                 : 'Você está atualizado. Aqui você pode revisar o changelog e forçar a atualização do PWA.'}
             {pwaNeedRefresh ? ' (SW novo pronto para aplicar)' : ''}
           </p>
@@ -193,7 +207,7 @@ function AtualizacoesPage() {
         {desktop ? (
           <div className="updates-actions">
             <div className="updates-tip">
-              💻 Você está na versão Desktop (Tauri). {desktopAutoUpdateConfigured ? 'Use a verificação online nativa abaixo ou feche o app para aplicar automaticamente quando houver update assinado.' : 'Para atualizar, use o pacote offline abaixo ou execute o novo instalador da versão mais recente.'}
+              💻 Desktop Tauri · {desktopAutoUpdateConfigured ? 'online assinado ativo' : 'use pacote offline ou novo MSI'}
             </div>
           </div>
         ) : (
@@ -328,64 +342,62 @@ function AtualizacoesPage() {
 
 
       {desktop && (
-        <div className="updates-card" style={{ marginTop: 12 }}>
-          <div className="updates-card-head">
-            <h2>🌐 Atualização Online (Tauri)</h2>
-          </div>
+        <div className="updates-desktop-grid">
+          <div className="updates-card updates-card--compact">
+            <div className="updates-card-head">
+              <h2>🌐 Online assinado</h2>
+            </div>
 
-          <p className="muted small">
-            {desktopAutoUpdateConfigured
-              ? 'Auto-update nativo habilitado. Ao abrir o app, se houver atualização assinada, o sistema avisa e instala com backup/checkpoint antes de aplicar.'
-              : 'O auto-update nativo ainda não foi configurado neste build. Enquanto isso, continue usando o pacote offline ou o instalador novo.'}
-          </p>
-
-          <div className="updates-production-grid">
-            <div><span>Auto-update</span><strong>{desktopAutoUpdateConfigured ? 'Configurado' : 'Não configurado'}</strong></div>
-            <div><span>Assinatura</span><strong>{desktopAutoUpdateConfigured ? 'Chave pública presente' : 'Ausente no build'}</strong></div>
-            <div><span>Update encontrado</span><strong>{desktopNativeUpdate?.available ? `Sim · ${desktopNativeUpdate.version}` : 'Não'}</strong></div>
-            <div><span>Modo seguro</span><strong>Backup + checkpoint</strong></div>
-          </div>
-
-          <div className="updates-actions" style={{ marginTop: 10 }}>
-            <button className="updates-btn secondary" onClick={() => void checkNow()} disabled={!desktopAutoUpdateConfigured}>
-              🔄 Verificar online
-            </button>
-            <button className="updates-btn primary" onClick={() => void installDesktopUpdateNow()} disabled={!desktopAutoUpdateConfigured || !updateAvailable || desktopInstallInProgress}>
-              {desktopInstallInProgress ? 'Instalando…' : '⬇️ Baixar e instalar com backup'}
-            </button>
-          </div>
-
-          {desktopAutoUpdateConfigured ? (
-            <p className="muted small" style={{ marginTop: 10 }}>
-              Quando houver nova versão, o app mostra aviso ao abrir, prepara backup/checkpoint e instala a atualização assinada de forma controlada.
+            <p className="muted small">
+              {desktopAutoUpdateConfigured
+                ? 'Ativo: avisa ao abrir, prepara backup/checkpoint e instala update assinado.'
+                : 'Não configurado neste build. Use pacote offline ou novo MSI.'}
             </p>
-          ) : (
-            <p className="muted small" style={{ marginTop: 10 }}>
-              Para ativar, configure <span className="mono">VITE_DESKTOP_UPDATE_ENDPOINTS</span> e <span className="mono">VITE_DESKTOP_UPDATE_PUBKEY</span> no build desktop.
+
+            <div className="updates-production-grid updates-production-grid--compact">
+              <div><span>Servidor</span><strong>{updateEndpointLabel}</strong></div>
+              <div><span>Assinatura</span><strong>{desktopAutoUpdateConfigured ? 'Pubkey OK' : 'Ausente'}</strong></div>
+              <div><span>Update</span><strong>{desktopNativeUpdate?.available ? `Sim · ${desktopNativeUpdate.version}` : 'Não'}</strong></div>
+              <div><span>Ao fechar</span><strong>{desktopUpdateInstallOnClose ? (desktopUpdatePending ? 'Pendente' : 'Ativado') : 'Desativado'}</strong></div>
+            </div>
+
+            <div className="updates-actions updates-actions--compact">
+              <button className="updates-btn secondary" onClick={() => void checkNow()} disabled={!desktopAutoUpdateConfigured}>
+                🔄 Verificar
+              </button>
+              <button className="updates-btn primary" onClick={() => void installDesktopUpdateNow()} disabled={!desktopAutoUpdateConfigured || !updateAvailable || desktopInstallInProgress}>
+                {desktopInstallInProgress ? 'Instalando…' : '⬇️ Instalar com backup'}
+              </button>
+            </div>
+
+            {desktopAutoUpdateConfigured ? (
+              <p className="muted small updates-compact-note">
+                Feed Cloudflare + assinatura Tauri. Quando houver update, ele fica pendente e instala ao fechar.
+              </p>
+            ) : (
+              <p className="muted small updates-compact-note">
+                Requer <span className="mono">ENDPOINTS</span> + <span className="mono">PUBKEY</span> no build admin.
+              </p>
+            )}
+          </div>
+
+          <div className="updates-card updates-card--compact">
+            <div className="updates-card-head">
+              <h2>📦 Pacote offline</h2>
+            </div>
+
+            <p className="muted small">
+              Selecione o <span className="mono">.zip</span> assinado recebido do admin e salve o instalador.
             </p>
-          )}
-        </div>
-      )}
 
-      {desktop && (
-        <div className="updates-card" style={{ marginTop: 12 }}>
-          <div className="updates-card-head">
-            <h2>📦 Atualização Offline (Pacote)</h2>
-          </div>
-
-          <p className="muted small">
-            Para atualizar <strong>sem internet</strong>: selecione o pacote <span className="mono">.zip</span> recebido do admin.
-            O app valida a assinatura e extrai o instalador para você executar.
-          </p>
-
-          <div className="updates-actions" style={{ marginTop: 10 }}>
-            <button className="updates-btn secondary" onClick={() => void onPickUpdatePackage()} disabled={pkgBusy}>
-              {pkgBusy ? 'Lendo pacote…' : '📦 Selecionar pacote (.zip)'}
-            </button>
-            <button className="updates-btn primary" onClick={() => void onSaveUpdatePayload()} disabled={!updatePkg || pkgSaving}>
-              {pkgSaving ? 'Salvando…' : '💾 Salvar instalador'}
-            </button>
-          </div>
+            <div className="updates-actions updates-actions--compact">
+              <button className="updates-btn secondary" onClick={() => void onPickUpdatePackage()} disabled={pkgBusy}>
+                {pkgBusy ? 'Lendo…' : '📦 Selecionar .zip'}
+              </button>
+              <button className="updates-btn primary" onClick={() => void onSaveUpdatePayload()} disabled={!updatePkg || pkgSaving}>
+                {pkgSaving ? 'Salvando…' : '💾 Salvar MSI'}
+              </button>
+            </div>
 
           {pkgError ? (
             <div className="updates-callout warn" style={{ marginTop: 10 }}>
@@ -428,6 +440,7 @@ function AtualizacoesPage() {
               ✅ Instalador salvo em: <span className="mono">{pkgSavedPath}</span>
             </p>
           ) : null}
+          </div>
         </div>
       )}
 
