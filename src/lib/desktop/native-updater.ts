@@ -137,6 +137,7 @@ type LatestJsonPayload = {
   version?: string;
   notes?: string;
   pub_date?: string;
+  url?: string;
   platforms?: Record<string, { signature?: string; url?: string }>;
 };
 
@@ -155,7 +156,10 @@ export async function fetchDesktopLatestJsonUpdate(error?: unknown): Promise<Des
     const version = String(data.version || '').trim();
     if (!version) throw new Error('latest.json sem versão');
 
-    const platform = data.platforms?.['windows-x86_64'];
+    const platform =
+      data.platforms?.[config.target || 'windows-x86_64'] ||
+      data.platforms?.['windows-x86_64'] ||
+      Object.values(data.platforms || {})[0];
     const currentVersion = BUILD_BASE_VERSION || BUILD_VERSION;
     const available = compareVersions(version, currentVersion) > 0;
 
@@ -165,8 +169,8 @@ export async function fetchDesktopLatestJsonUpdate(error?: unknown): Promise<Des
       version: available ? version : null,
       body: data.notes || null,
       date: data.pub_date || null,
-      target: 'windows-x86_64',
-      downloadUrl: platform?.url || null,
+      target: config.target || 'windows-x86_64',
+      downloadUrl: platform?.url || data.url || null,
       source: 'latest-json',
       error: message,
     };

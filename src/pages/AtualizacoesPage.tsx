@@ -360,6 +360,19 @@ function AtualizacoesPage() {
               <div><span>Fonte</span><strong>{desktopNativeUpdate?.source === 'latest-json' ? 'latest.json' : 'Tauri'}</strong></div>
             </div>
 
+            {desktopNativeUpdate?.available && desktopNativeUpdate.source === 'latest-json' ? (
+              <div className="updates-callout info" style={{ marginTop: 10 }}>
+                <span className="updates-callout-icon">ℹ️</span>
+                <div>
+                  <div className="updates-callout-title">Servidor encontrou versão nova</div>
+                  <div className="updates-callout-sub">
+                    O <span className="mono">latest.json</span> publicou a versão {desktopNativeUpdate.version}.
+                    Se a instalação nativa não iniciar, use o MSI assinado publicado no Cloudflare ou rode o instalador da pasta release.
+                  </div>
+                </div>
+              </div>
+            ) : null}
+
             {desktopUpdateError ? (
               <div className="updates-callout warn" style={{ marginTop: 10 }}>
                 <span className="updates-callout-icon">⚠️</span>

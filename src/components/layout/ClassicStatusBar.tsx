@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 
 import { useCompany } from '@/contexts/CompanyContext';
 import { getMonthlyLicenseStatusSync, hydrateMonthlyLicenseFromDesktopKv, type MonthlyLicenseStatus } from '@/lib/license/monthly-license';
+import { BUILD_BASE_VERSION } from '@/config/buildInfo';
 
 function pad2(value: number): string {
   return value.toString().padStart(2, '0');
@@ -116,7 +117,7 @@ export default function ClassicStatusBar() {
     return name || 'Smart Tech';
   }, [company?.nome_fantasia, company?.razao_social]);
 
-  const version = String(import.meta.env.VITE_APP_VERSION || '2.0.42');
+  const version = String(import.meta.env.VITE_APP_VERSION || BUILD_BASE_VERSION);
   const corporateBrand = 'Smart Tech Rolândia';
 
   return (

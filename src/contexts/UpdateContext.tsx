@@ -4,7 +4,7 @@ import { fetchChangelog, getLastSeenCommit, setLastSeenCommit, type ChangelogPay
 import { showToast } from '@/components/ui/ToastContainer';
 import { hardRepairPWA } from '@/lib/pwa-repair';
 import { isBrowserOnline, isUpdateEnabled } from '@/lib/mode';
-import { BUILD_COMMIT, BUILD_DATE, BUILD_ID, BUILD_VERSION } from '@/config/buildInfo';
+import { BUILD_BASE_VERSION, BUILD_COMMIT, BUILD_DATE, BUILD_ID, BUILD_VERSION } from '@/config/buildInfo';
 import { appendUpdateLog, getUpdateLogs, type UpdateLogEntry } from '@/lib/updateLog';
 import { isBrowserOnlineSafe } from '@/lib/capabilities/runtime-remote-adapter';
 import { isDesktopApp } from '@/lib/platform';
@@ -188,16 +188,27 @@ export function UpdateProvider({ children }: { children: React.ReactNode }) {
       if (!desktopAutoUpdateConfigured) return null;
       try {
         setDesktopUpdateError(null);
+        const latest = await fetchDesktopLatestJsonUpdate();
+        if (latest?.available) {
+          log('check', `latest.json online: ${latest.version} disponível para ${latest.currentVersion}.`);
+          try {
+            const nativeUpdate = await checkDesktopNativeUpdate();
+            if (nativeUpdate?.available) return nativeUpdate;
+            log('check', `Tauri não confirmou update, mas latest.json indica ${latest.version}.`);
+          } catch (nativeError: any) {
+            const message = nativeError?.message || String(nativeError);
+            setDesktopUpdateError(message);
+            log('error', `Tauri falhou, usando latest.json como diagnóstico: ${message}`);
+            return { ...latest, error: message };
+          }
+          return latest;
+        }
+
         const nativeUpdate = await checkDesktopNativeUpdate();
         if (nativeUpdate?.available) return nativeUpdate;
 
-        const fallback = await fetchDesktopLatestJsonUpdate();
-        if (fallback?.available) {
-          log('check', `latest.json indica atualização disponível (${fallback.version}).`);
-          return fallback;
-        }
-
-        return nativeUpdate || fallback;
+        log('check', `latest.json online sem update: servidor=${latest?.version || 'sem versão'} instalado=${BUILD_BASE_VERSION || BUILD_VERSION}.`);
+        return nativeUpdate || latest;
       } catch (error: any) {
         const message = error?.message || String(error);
         setDesktopUpdateError(message);
@@ -464,6 +475,12 @@ export function UpdateProvider({ children }: { children: React.ReactNode }) {
       if (desktop || isBrowserOnlineSafe()) void checkNow();
     };
 
+    const warmupTimers = desktop
+      ? [
+          window.setTimeout(maybeCheck, 5_000),
+          window.setTimeout(maybeCheck, 20_000),
+        ]
+      : [];
     const id = window.setInterval(maybeCheck, 2 * 60 * 60 * 1000);
     const onOnline = () => maybeCheck();
     const onVisibility = () => {
@@ -482,6 +499,7 @@ export function UpdateProvider({ children }: { children: React.ReactNode }) {
 
     return () => {
       stopped = true;
+      warmupTimers.forEach((timer) => window.clearTimeout(timer));
       window.clearInterval(id);
       window.removeEventListener('online', onOnline);
       document.removeEventListener('visibilitychange', onVisibility);

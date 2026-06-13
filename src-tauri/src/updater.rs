@@ -85,11 +85,24 @@ pub async fn desktop_check_update(
     app: AppHandle,
     config: DesktopUpdaterConfig,
 ) -> Result<DesktopUpdateInfo, String> {
+    let endpoint_count = config.endpoints.len();
     let updater = build_updater(&app, config)?;
     let current_version = app.package_info().version.to_string();
+    log::info!(
+        "[Updater] Verificando atualização desktop. current_version={} endpoints={}",
+        current_version,
+        endpoint_count
+    );
     let maybe_update = updater.check().await.map_err(|err| err.to_string())?;
 
     if let Some(update) = maybe_update {
+        log::info!(
+            "[Updater] Atualização encontrada. current_version={} next_version={} target={} url={}",
+            current_version,
+            update.version,
+            update.target,
+            update.download_url
+        );
         return Ok(DesktopUpdateInfo {
             available: true,
             current_version,
@@ -100,6 +113,11 @@ pub async fn desktop_check_update(
             download_url: Some(update.download_url.to_string()),
         });
     }
+
+    log::info!(
+        "[Updater] Nenhuma atualização encontrada. current_version={}",
+        current_version
+    );
 
     Ok(DesktopUpdateInfo {
         available: false,
@@ -117,9 +135,17 @@ pub async fn desktop_install_update(
     app: AppHandle,
     config: DesktopUpdaterConfig,
 ) -> Result<(), String> {
+    let endpoint_count = config.endpoints.len();
     let updater = build_updater(&app, config)?;
+    log::info!("[Updater] Instalando atualização desktop. endpoints={}", endpoint_count);
     let maybe_update = updater.check().await.map_err(|err| err.to_string())?;
     let update = maybe_update.ok_or_else(|| "Nenhuma atualização disponível no momento.".to_string())?;
+    log::info!(
+        "[Updater] Download/install iniciado. next_version={} target={} url={}",
+        update.version,
+        update.target,
+        update.download_url
+    );
 
     update
         .download_and_install(|_, _| {}, || {})

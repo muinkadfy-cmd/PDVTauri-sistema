@@ -9,6 +9,7 @@ import { clearRememberedLogin, getRememberedLogin, saveRememberedLogin } from '@
 import { getSupabaseClient } from '@/lib/supabaseClient';
 import { playAppSound } from '@/lib/sound-effects';
 import { getMonthlyLicenseStatusSync, hydrateMonthlyLicenseFromDesktopKv, type MonthlyLicenseStatus } from '@/lib/license/monthly-license';
+import { BUILD_BASE_VERSION } from '@/config/buildInfo';
 
 import './LoginPage.css';
 
@@ -353,7 +354,7 @@ export default function LoginPage() {
     }
   };
 
-  const version = String(import.meta.env.VITE_APP_VERSION || '2.0.42');
+  const version = String(import.meta.env.VITE_APP_VERSION || BUILD_BASE_VERSION);
   const [licenseStatus, setLicenseStatus] = useState<MonthlyLicenseStatus>(() => getMonthlyLicenseStatusSync());
 
   return (

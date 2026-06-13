@@ -1,7 +1,7 @@
 {
   "$schema": "../gen/schemas/desktop-schema.json",
   "productName": "Smart Tech PDV",
-  "version": "2.0.46",
+  "version": "2.0.47",
   "identifier": "br.com.smarttech.pdv",
   "build": {
     "beforeDevCommand": "npm run dev:desktop",
