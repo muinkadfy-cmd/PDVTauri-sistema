@@ -134,7 +134,7 @@ function ProfileDropdown({ isOpen, onClose }: ProfileDropdownProps) {
           title="Logout"
           aria-label="Sair do sistema"
         >
-          <span className="menu-icon" aria-hidden="true"><AppIcon name="home" size={18} /></span>
+          <span className="menu-icon" aria-hidden="true"><AppIcon name="undo" size={18} /></span>
           <span className="profile-logout-copy">
             <strong>Logout</strong>
             <small>Sair do sistema e voltar para o login</small>

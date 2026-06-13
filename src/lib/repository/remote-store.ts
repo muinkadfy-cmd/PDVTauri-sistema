@@ -94,7 +94,7 @@ export class RemoteStore<T extends { id: string }> {
       }
 
       // Converter de Supabase para formato do app
-      const converted = (data || []).map(item => fromSupabaseFormat(this.tableName, item) as T);
+      const converted = (data || []).map((item: any) => fromSupabaseFormat(this.tableName, item) as T);
       return { data: converted, error: null };
     } catch (err: any) {
       this.logError('list', null, err);

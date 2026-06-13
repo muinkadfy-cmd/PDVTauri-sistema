@@ -27,3 +27,21 @@ export function getLicenseRemoteClient(): null {
 export async function fetchLatestRemoteLicenseByStore(_storeId: string): Promise<{ data: any; error: any }> {
   return { data: null, error: { message: 'Licença remota/Supabase desativada no Desktop.' } };
 }
+
+
+export async function insertRemoteLicense(_payload: Record<string, any>): Promise<{ data: any | null; error: any }> {
+  return {
+    data: null,
+    error: { message: 'Inserção de licença remota desativada no Desktop.' },
+  };
+}
+
+export async function updateRemoteLicenseByStore(
+  _storeId: string,
+  _payload: Record<string, any>
+): Promise<{ data: any | null; error: any }> {
+  return {
+    data: null,
+    error: { message: 'Atualização de licença remota desativada no Desktop.' },
+  };
+}

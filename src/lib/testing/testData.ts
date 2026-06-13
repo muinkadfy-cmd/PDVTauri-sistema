@@ -152,7 +152,7 @@ export async function cleanupTestDataRemote(): Promise<number> {
     const { data: clientes } = await queryClientes;
 
     if (clientes && clientes.length > 0) {
-      const ids = clientes.map(c => c.id);
+      const ids = clientes.map((c: any) => c.id);
       // ✅ CRÍTICO: Adicionar filtro store_id antes de DELETE
       let deleteQuery = supabase.from('clientes').delete();
       if (STORE_ID_VALID && STORE_ID) {
@@ -175,7 +175,7 @@ export async function cleanupTestDataRemote(): Promise<number> {
     const { data: produtos } = await queryProdutos;
 
     if (produtos && produtos.length > 0) {
-      const ids = produtos.map(p => p.id);
+      const ids = produtos.map((p: any) => p.id);
       // ✅ CRÍTICO: Adicionar filtro store_id antes de DELETE
       let deleteQuery = supabase.from('produtos').delete();
       if (STORE_ID_VALID && STORE_ID) {
@@ -198,7 +198,7 @@ export async function cleanupTestDataRemote(): Promise<number> {
     const { data: vendas } = await queryVendas;
 
     if (vendas && vendas.length > 0) {
-      const ids = vendas.map(v => v.id);
+      const ids = vendas.map((v: any) => v.id);
       await supabase.from('vendas').delete().in('id', ids);
       count += ids.length;
     }
@@ -210,7 +210,7 @@ export async function cleanupTestDataRemote(): Promise<number> {
       .or(`cliente_nome.ilike.%${TEST_MARKER}%,observacoes.ilike.%${TEST_MARKER}%`);
 
     if (ordens && ordens.length > 0) {
-      const ids = ordens.map(o => o.id);
+      const ids = ordens.map((o: any) => o.id);
       await supabase.from('ordens_servico').delete().in('id', ids);
       count += ids.length;
     }
@@ -222,7 +222,7 @@ export async function cleanupTestDataRemote(): Promise<number> {
       .or(`descricao.ilike.%${TEST_MARKER}%,responsavel.ilike.%${TEST_MARKER}%`);
 
     if (financeiro && financeiro.length > 0) {
-      const ids = financeiro.map(f => f.id);
+      const ids = financeiro.map((f: any) => f.id);
       await supabase.from('financeiro').delete().in('id', ids);
       count += ids.length;
     }

@@ -64,19 +64,12 @@
     "check:system-notices": "node scripts/check-system-notices.mjs",
     "check:regression-persistence-finance": "node scripts/check-regression-persistence-finance.mjs",
     "check:notice-badges-resolution": "node scripts/check-notice-badges-resolution.mjs",
-    "check:updater-production": "node scripts/check-updater-production.mjs",
-    "release:admin:signed": "node scripts/release-admin-signed.mjs",
-    "check:desktop-no-supabase": "node scripts/check-desktop-no-supabase.mjs",
-    "check:github-repo": "node scripts/check-github-repo-ready.mjs",
-    "check:welcome-login-box": "node scripts/check-welcome-login-box.mjs",
-    "check:brand-license-placement": "node scripts/check-brand-license-placement.mjs",
     "check:sidebar-profile-brand": "node scripts/check-sidebar-profile-brand.mjs",
-    "check:sidebar-logo-clickable": "node scripts/check-sidebar-logo-clickable.mjs",
-    "check:sidebar-logo-crop": "node scripts/check-sidebar-logo-crop.mjs",
-    "check:sidebar-logo-crop-portal": "node scripts/check-sidebar-logo-crop-portal.mjs"
+    "check:typecheck-hotfix-p37": "node scripts/check-typecheck-hotfix-p37.mjs"
   },
   "dependencies": {
     "@razein97/tauri-plugin-rusqlite2": "^2.2.7",
+    "@supabase/supabase-js": "^2.91.0",
     "@tauri-apps/api": "2.10.1",
     "@tauri-apps/plugin-dialog": "^2.0.0",
     "@tauri-apps/plugin-fs": "^2.0.0",

@@ -33,7 +33,7 @@ export default function ResetSenhaPage() {
     }
 
     // Observa eventos (inclui PASSWORD_RECOVERY quando o link de reset é aberto)
-    const { data: authListener } = client.auth.onAuthStateChange((event) => {
+    const { data: authListener } = client.auth.onAuthStateChange((event: string) => {
       if (import.meta.env.DEV) console.log('[ResetSenha] auth event:', event);
       if (event === 'PASSWORD_RECOVERY' || event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
         setHasSession(true);
