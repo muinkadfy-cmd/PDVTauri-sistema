@@ -63,3 +63,6 @@ backups/
 Thumbs.db
 .vscode/settings.json
 .idea/
+
+# Tauri configs temporárias de release
+src-tauri/.generated/

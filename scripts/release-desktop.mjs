@@ -137,7 +137,11 @@ if (requireFeed && !getEnv('DESKTOP_UPDATE_BASE_URL')) {
 run('node', ['scripts/sync-tauri-version.mjs']);
 
 if (!skipBuild) {
-  run('npm', ['run', 'tauri:build']);
+  if (requireUpdaterSignature) {
+    run('npm', ['run', 'tauri:build:signed-updater']);
+  } else {
+    run('npm', ['run', 'tauri:build']);
+  }
 }
 
 const version = getAppVersion();

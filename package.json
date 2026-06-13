@@ -65,7 +65,9 @@
     "check:regression-persistence-finance": "node scripts/check-regression-persistence-finance.mjs",
     "check:notice-badges-resolution": "node scripts/check-notice-badges-resolution.mjs",
     "check:sidebar-profile-brand": "node scripts/check-sidebar-profile-brand.mjs",
-    "check:typecheck-hotfix-p37": "node scripts/check-typecheck-hotfix-p37.mjs"
+    "check:typecheck-hotfix-p37": "node scripts/check-typecheck-hotfix-p37.mjs",
+    "tauri:build:signed-updater": "node scripts/build-tauri-signed-updater.mjs",
+    "check:tauri-updater-config-p38": "node scripts/check-tauri-updater-config-p38.mjs"
   },
   "dependencies": {
     "@razein97/tauri-plugin-rusqlite2": "^2.2.7",

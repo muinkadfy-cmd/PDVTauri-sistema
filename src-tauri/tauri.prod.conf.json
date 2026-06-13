@@ -8,6 +8,7 @@
   "bundle": {
     "resources": [
       "resources/SumatraPDF.exe"
-    ]
+    ],
+    "createUpdaterArtifacts": false
   }
 }
