@@ -13,6 +13,7 @@ const ERROR_EVENT = 'smarttech:persistence-write-failed';
 const STATE_EVENT = 'smarttech:persistence-state-changed';
 const CLOSE_REQUEST_EVENT = 'smarttech:close-backup-request';
 const CLOSE_PROGRESS_EVENT = 'smarttech:close-backup-progress';
+const CLOSE_VISUAL_MIN_MS = 3000;
 
 export type CloseBackupChoice = 'backup' | 'skip' | 'cancel';
 export type CloseBackupProgressStage = 'idle' | 'waiting' | 'saving' | 'checkpoint' | 'updating' | 'closing' | 'error';
@@ -65,6 +66,15 @@ function notifyCloseProgress(stage: CloseBackupProgressStage, message: string, p
   } catch {
     // ignore
   }
+}
+
+function sleep(ms: number): Promise<void> {
+  return new Promise((resolve) => window.setTimeout(resolve, ms));
+}
+
+async function waitForCloseVisualMinimum(startedAt: number): Promise<void> {
+  const remaining = CLOSE_VISUAL_MIN_MS - (Date.now() - startedAt);
+  if (remaining > 0) await sleep(remaining);
 }
 
 export function beginWrite(_label?: string): void {
@@ -269,6 +279,7 @@ export async function registerDesktopPersistenceCloseGuard(): Promise<void> {
           return;
         }
 
+        const closeVisualStartedAt = Date.now();
         notifyCloseProgress('saving', choice === 'backup' ? 'Preparando backup seguro antes de sair.' : 'Preparando fechamento sem backup.', 12);
         await flushPendingWrites(15000);
         notifyCloseProgress('checkpoint', 'Conferindo gravações locais no SQLite.', 34);
@@ -290,6 +301,8 @@ export async function registerDesktopPersistenceCloseGuard(): Promise<void> {
           }
         }
 
+        notifyCloseProgress('closing', 'Finalizando proteção local e liberando fechamento.', 92);
+        await waitForCloseVisualMinimum(closeVisualStartedAt);
         notifyCloseProgress('closing', 'Fechando Smart Tech PDV com segurança.', 100);
         setCloseFlags({ allowImmediateClose: true });
         await appWindow.close();

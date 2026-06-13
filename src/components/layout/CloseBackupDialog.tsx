@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import Modal from '@/components/ui/Modal';
 import { getBackupAlertState, getAutoBackupRuntimeState } from '@/lib/auto-backup';
 import { getRuntimeStoreId } from '@/lib/runtime-context';
@@ -17,6 +17,15 @@ type ProgressDetail = {
   error?: string;
 };
 
+const CLOSE_VISUAL_MIN_MS = 3000;
+
+const CLOSE_BOOT_LINES = [
+  'PS C:\\SmartTech> persistence-gate --flush-pending-writes',
+  'PS C:\\SmartTech> sqlite-local-store --checkpoint TRUNCATE',
+  'PS C:\\SmartTech> backup-engine --compactar-dados-local',
+  'PS C:\\SmartTech> desktop-shell --liberar-fechamento'
+];
+
 function formatDateTime(value?: number | null): string {
   if (!value) return 'Nenhum backup manual registrado';
   const date = new Date(value);
@@ -31,9 +40,12 @@ export default function CloseBackupDialog() {
   const [stage, setStage] = useState<CloseBackupProgressStage>('idle');
   const [message, setMessage] = useState('Escolha como deseja fechar o sistema.');
   const [progress, setProgress] = useState(0);
+  const [visualProgress, setVisualProgress] = useState(0);
+  const [commandIndex, setCommandIndex] = useState(0);
   const [error, setError] = useState('');
   const [backupRuntime, setBackupRuntime] = useState(() => getAutoBackupRuntimeState());
   const [backupAlert, setBackupAlert] = useState(() => getBackupAlertState());
+  const busyStartedAtRef = useRef<number | null>(null);
 
   useEffect(() => {
     const w = window as any;
@@ -48,6 +60,9 @@ export default function CloseBackupDialog() {
       setStage('waiting');
       setMessage('Antes de sair, escolha se deseja salvar um backup de proteção.');
       setProgress(0);
+      setVisualProgress(0);
+      setCommandIndex(0);
+      busyStartedAtRef.current = null;
       setError('');
       setOpen(true);
     };
@@ -74,6 +89,38 @@ export default function CloseBackupDialog() {
 
   const busy = stage === 'saving' || stage === 'checkpoint' || stage === 'updating' || stage === 'closing';
   const storeId = getRuntimeStoreId();
+
+  useEffect(() => {
+    if (!busy) {
+      if (stage === 'error') setVisualProgress((current) => Math.max(current, progress));
+      else if (stage === 'waiting' || stage === 'idle') setVisualProgress(0);
+      busyStartedAtRef.current = null;
+      return;
+    }
+
+    if (busyStartedAtRef.current === null) {
+      busyStartedAtRef.current = performance.now();
+      setVisualProgress(0);
+      setCommandIndex(0);
+    }
+
+    const tick = () => {
+      const startedAt = busyStartedAtRef.current ?? performance.now();
+      const elapsed = performance.now() - startedAt;
+      const timedProgress = Math.min(96, Math.round((elapsed / CLOSE_VISUAL_MIN_MS) * 96));
+      const stageFloor = Math.min(96, Math.max(0, Number(progress || 0)));
+      const nextProgress = stage === 'closing' && progress >= 100
+        ? 100
+        : Math.min(96, Math.max(timedProgress, Math.min(stageFloor, timedProgress + 12)));
+
+      setVisualProgress(nextProgress);
+      setCommandIndex(Math.floor(elapsed / 550) % CLOSE_BOOT_LINES.length);
+    };
+
+    tick();
+    const timer = window.setInterval(tick, 80);
+    return () => window.clearInterval(timer);
+  }, [busy, progress, stage]);
 
   const statusText = useMemo(() => {
     if (stage === 'error') return 'Atenção';
@@ -121,8 +168,21 @@ export default function CloseBackupDialog() {
         </div>
 
         {(busy || progress > 0) && (
-          <div className="close-backup-dialog__progress" aria-label="Progresso do fechamento">
-            <div style={{ width: `${Math.max(progress, busy ? 18 : 0)}%` }} />
+          <div className="close-backup-dialog__boot" aria-label="Progresso do fechamento">
+            <div className="close-backup-dialog__boot-head">
+              <span>{stage === 'closing' ? 'FINALIZANDO FECHAMENTO LOCAL' : 'SALVANDO BACKUP LOCAL'}</span>
+              <strong>{Math.round(visualProgress)}%</strong>
+            </div>
+            <div className="close-backup-dialog__progress">
+              <div style={{ width: `${Math.max(0, Math.min(100, visualProgress))}%` }} />
+            </div>
+            <div className="close-backup-dialog__terminal" aria-hidden="true">
+              {CLOSE_BOOT_LINES.map((line, index) => (
+                <div key={line} className={index === commandIndex ? 'is-active' : ''}>
+                  {line} {index === commandIndex ? '-- executando' : '-- ok'}
+                </div>
+              ))}
+            </div>
           </div>
         )}
 

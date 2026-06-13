@@ -66,6 +66,34 @@
   line-height: 1.45;
 }
 
+.close-backup-dialog__boot {
+  display: grid;
+  gap: 8px;
+  padding: 10px;
+  border: 1px solid rgba(96, 165, 250, 0.28);
+  background: rgba(2, 6, 23, 0.76);
+}
+
+.close-backup-dialog__boot-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  min-height: 20px;
+  color: #dbeafe;
+  font-size: 0.72rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.close-backup-dialog__boot-head strong {
+  min-width: 42px;
+  padding: 2px 7px;
+  border: 1px solid rgba(34, 197, 94, 0.45);
+  color: #86efac;
+  text-align: center;
+}
+
 .close-backup-dialog__progress {
   height: 10px;
   overflow: hidden;
@@ -77,6 +105,31 @@
   height: 100%;
   background: linear-gradient(90deg, #16a34a, #22c55e, #7dd3fc);
   transition: width 260ms ease;
+}
+
+.close-backup-dialog__terminal {
+  display: grid;
+  gap: 3px;
+  max-height: 78px;
+  overflow: hidden;
+  padding: 8px;
+  border: 1px solid rgba(148, 163, 184, 0.16);
+  background: rgba(0, 0, 0, 0.24);
+  color: rgba(134, 239, 172, 0.68);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: 0.68rem;
+  line-height: 1.25;
+}
+
+.close-backup-dialog__terminal div {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.close-backup-dialog__terminal .is-active {
+  color: #86efac;
+  text-shadow: 0 0 10px rgba(34, 197, 94, 0.24);
 }
 
 .close-backup-dialog__details {
