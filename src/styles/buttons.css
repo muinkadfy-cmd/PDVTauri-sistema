@@ -1,0 +1,184 @@
+/* ============================================
+   BUTTONS - Clean / Bancário
+   Padrão global para botões do sistema
+   ============================================ */
+
+:root{
+  --btn-radius: 10px;
+  --btn-height: 40px;
+  --btn-font: 14px;
+  --btn-padding-x: 14px;
+  --btn-border: rgba(15, 23, 42, 0.12);
+  --btn-bg: #ffffff;
+  --btn-bg-muted: rgba(15, 23, 42, 0.04);
+  --btn-text: rgba(15, 23, 42, 0.92);
+}
+
+/* ============================================
+   Dark mode — corrigir tokens globais
+   (evita hover branco em sidebar/cards)
+   ============================================ */
+html[data-theme="dark"],
+[data-theme="dark"]{
+  --btn-border: rgba(255, 255, 255, 0.12);
+  --btn-bg: rgba(255, 255, 255, 0.06);
+  --btn-bg-muted: rgba(255, 255, 255, 0.10);
+  --btn-text: rgba(231, 237, 246, 0.92);
+}
+
+button.btn,
+a.btn,
+.btn{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: var(--btn-height);
+  padding: 0 var(--btn-padding-x);
+  border-radius: var(--btn-radius);
+  border: 1px solid var(--btn-border);
+  background: var(--btn-bg);
+  color: var(--btn-text);
+  font-size: var(--btn-font);
+  font-weight: 600;
+  line-height: 1;
+  cursor: pointer;
+  text-decoration: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color 120ms ease, border-color 120ms ease, transform 80ms ease;
+}
+
+button.btn:active,
+a.btn:active,
+.btn:active{
+  transform: translateY(1px);
+}
+
+button.btn:disabled,
+a.btn[aria-disabled="true"],
+.btn:disabled{
+  opacity: .55;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Variantes */
+button.btn-primary,
+a.btn-primary,
+.btn-primary{
+  background: var(--primary, #10b981) !important;
+  border-color: rgba(0,0,0,0) !important;
+  color: #fff !important;
+}
+
+button.btn-primary:hover,
+a.btn-primary:hover,
+.btn-primary:hover{
+  background: var(--primary-hover, #0ea371) !important;
+}
+
+button.btn-secondary,
+a.btn-secondary,
+.btn-secondary{
+  background: var(--btn-bg) !important;
+  border-color: var(--btn-border) !important;
+  color: var(--btn-text) !important;
+}
+
+button.btn-secondary:hover,
+a.btn-secondary:hover,
+.btn-secondary:hover{
+  background: var(--btn-bg-muted) !important;
+}
+
+button.btn-danger,
+a.btn-danger,
+.btn-danger{
+  background: #ef4444 !important;
+  border-color: rgba(0,0,0,0) !important;
+  color: #fff !important;
+}
+
+button.btn-danger:hover,
+a.btn-danger:hover,
+.btn-danger:hover{
+  background: #dc2626 !important;
+}
+
+/* Tamanhos */
+button.btn-sm,
+a.btn-sm,
+.btn-sm{
+  height: 34px;
+  padding: 0 12px;
+  font-size: 13px;
+  border-radius: 9px;
+}
+
+/* Ícones */
+button.btn-icon,
+a.btn-icon,
+.btn-icon{
+  width: 40px;
+  padding: 0;
+}
+
+button.btn-icon-small,
+a.btn-icon-small,
+.btn-icon-small{
+  width: 34px;
+  height: 34px;
+  padding: 0;
+}
+
+/* Footer de modal / ações: full-width no mobile (look bancário) */
+@media (max-width: 640px){
+  .modal-footer button.btn,
+  .modal-footer .btn,
+  .appmodal-footer button.btn,
+  .appmodal-footer .btn{
+    width: 100%;
+  }
+  .modal-footer,
+  .appmodal-footer{
+    flex-direction: column;
+    gap: 10px;
+  }
+}
+
+/* ============================================
+   NÍVEL S — Botões no dark mode
+   ============================================ */
+[data-theme="dark"] button.btn-secondary,
+[data-theme="dark"] a.btn-secondary,
+[data-theme="dark"] .btn-secondary {
+  background: rgba(255, 255, 255, 0.06) !important;
+  border-color: rgba(255, 255, 255, 0.12) !important;
+  color: rgba(231, 237, 246, 0.88) !important;
+}
+
+[data-theme="dark"] button.btn-secondary:hover,
+[data-theme="dark"] a.btn-secondary:hover,
+[data-theme="dark"] .btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.10) !important;
+  border-color: rgba(255, 255, 255, 0.18) !important;
+  color: #fff !important;
+}
+
+/* Botão primário: garantir acento correto */
+[data-theme="dark"] button.btn-primary,
+[data-theme="dark"] a.btn-primary,
+[data-theme="dark"] .btn-primary {
+  background: var(--accent) !important;
+  border-color: transparent !important;
+  color: #fff !important;
+  box-shadow: 0 2px 12px rgba(var(--accent-rgb), 0.30) !important;
+}
+
+[data-theme="dark"] button.btn-primary:hover,
+[data-theme="dark"] a.btn-primary:hover,
+[data-theme="dark"] .btn-primary:hover {
+  background: #16a34a !important;
+  box-shadow: 0 4px 16px rgba(var(--accent-rgb), 0.40) !important;
+}

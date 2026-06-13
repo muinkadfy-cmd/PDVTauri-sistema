@@ -1,0 +1,138 @@
+.resumo-financeiro {
+  background: var(--background-alt, #f8f9fa);
+  border-radius: 12px;
+  padding: var(--spacing-lg, 1.5rem);
+  margin: var(--spacing-md, 1rem) 0;
+  border: 2px solid var(--border-light, #e0e0e0);
+}
+
+.resumo-financeiro-compacto {
+  background: var(--background-alt, #f8f9fa);
+  border-radius: 8px;
+  padding: var(--spacing-md, 1rem);
+  margin: var(--spacing-sm, 0.5rem) 0;
+  border: 1px solid var(--border-light, #e0e0e0);
+}
+
+.resumo-titulo {
+  margin: 0 0 var(--spacing-md, 1rem) 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-primary, #1a1a1a);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.resumo-secao {
+  margin-bottom: var(--spacing-md, 1rem);
+  padding-bottom: var(--spacing-md, 1rem);
+  border-bottom: 1px solid var(--border-light, #e0e0e0);
+}
+
+.resumo-secao:last-child {
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.resumo-linha {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0;
+  font-size: 0.95rem;
+}
+
+.resumo-linha .label {
+  color: var(--text-secondary, #6c757d);
+  font-weight: 500;
+}
+
+.resumo-linha .valor {
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--text-primary, #1a1a1a);
+  font-family: 'Courier New', monospace;
+}
+
+.resumo-linha.desconto .valor,
+.resumo-linha.taxa .valor {
+  color: var(--warning, #ff9800);
+}
+
+.resumo-linha .valor.negativo {
+  color: var(--danger, #dc3545);
+}
+
+.resumo-linha .valor.positivo {
+  color: var(--success, #28a745);
+}
+
+.resumo-linha .valor.custo {
+  color: var(--text-secondary, #6c757d);
+}
+
+.resumo-linha.total .valor.destaque,
+.resumo-linha.total-liquido .valor.destaque-liquido {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--primary, #007bff);
+}
+
+.resumo-linha.lucro-final .label {
+  font-weight: 600;
+  color: var(--text-primary, #1a1a1a);
+}
+
+.resumo-linha.lucro-final .valor.destaque-lucro {
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.resumo-linha.lucro-final .valor.destaque-lucro.positivo {
+  color: var(--success, #28a745);
+}
+
+.resumo-linha.lucro-final .valor.destaque-lucro.negativo {
+  color: var(--danger, #dc3545);
+}
+
+.resumo-linha.margem {
+  background: rgba(40, 167, 69, 0.1);
+  padding: 0.5rem;
+  border-radius: 6px;
+  margin-top: 0.5rem;
+}
+
+.resumo-secao.lucros {
+  background: rgba(0, 123, 255, 0.05);
+  padding: var(--spacing-md, 1rem);
+  border-radius: 8px;
+  border: 1px solid var(--primary-light, #b3d7ff);
+}
+
+/* Responsivo */
+@media (max-width: 480px) {
+  .resumo-financeiro {
+    padding: var(--spacing-md, 1rem);
+  }
+  
+  .resumo-titulo {
+    font-size: 1rem;
+  }
+  
+  .resumo-linha {
+    font-size: 0.9rem;
+  }
+  
+  .resumo-linha .valor {
+    font-size: 0.95rem;
+  }
+  
+  .resumo-linha.total .valor.destaque,
+  .resumo-linha.total-liquido .valor.destaque-liquido,
+  .resumo-linha.lucro-final .valor.destaque-lucro {
+    font-size: 1.1rem;
+  }
+}

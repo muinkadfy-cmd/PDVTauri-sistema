@@ -1,0 +1,26 @@
+# Cloudflare Pages headers
+# Objetivo: updates confiáveis (evitar cache “preso”) sem perder performance.
+
+/index.html
+  Cache-Control: no-store, no-cache, must-revalidate, max-age=0
+
+/sw.js
+  Cache-Control: no-store, no-cache, must-revalidate, max-age=0
+
+/manifest.webmanifest
+  Cache-Control: no-store, no-cache, must-revalidate, max-age=0
+
+/version.json
+  Cache-Control: no-store, no-cache, must-revalidate, max-age=0
+
+/changelog.json
+  Cache-Control: no-store, no-cache, must-revalidate, max-age=0
+
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/icons/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/screenshot-*.png
+  Cache-Control: public, max-age=604800

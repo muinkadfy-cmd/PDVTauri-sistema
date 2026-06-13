@@ -1,0 +1,590 @@
+/*
+ * COMPONENTES UI CLÁSSICOS
+ * Arquivo: src/styles/classic-ui.css
+ * 
+ * Estilos base para interface desktop clássica
+ * Compatível com tema SHOficina/Delphi VCL
+ */
+
+/* ========================================
+   LAYOUT GERAL
+   ======================================== */
+
+body {
+  background: var(--bg-main);
+  font-family: var(--font-family);
+  color: var(--text-main);
+  margin: 0;
+  padding: 0;
+  font-size: var(--font-size-base);
+  line-height: 1.5;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* ========================================
+   MENU SUPERIOR (TOPBAR)
+   ======================================== */
+
+.topbar {
+  background: linear-gradient(to bottom, var(--topbar-bg-start) 0%, var(--topbar-bg-end) 100%);
+  border-bottom: var(--border-width-thick) solid var(--topbar-border);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  height: 48px;
+  display: flex;
+  align-items: center;
+  padding: 0;
+  position: sticky;
+  top: 0;
+  z-index: var(--z-sticky);
+}
+
+.topbar-menu {
+  display: flex;
+  gap: 0;
+  height: 100%;
+  align-items: stretch;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.topbar-menu-item {
+  padding: 0 var(--spacing-xl);
+  border-right: var(--border-width) solid var(--topbar-separator);
+  cursor: pointer;
+  transition: background var(--transition-fast);
+  display: flex;
+  align-items: center;
+  font-weight: var(--font-weight-medium);
+  color: var(--text-main);
+  text-decoration: none;
+}
+
+.topbar-menu-item:hover {
+  background: var(--topbar-hover);
+}
+
+.topbar-menu-item:active,
+.topbar-menu-item.active {
+  background: var(--topbar-active);
+  box-shadow: var(--shadow-inset);
+}
+
+/* ========================================
+   SIDEBAR (BARRA LATERAL)
+   ======================================== */
+
+.sidebar {
+  background: var(--sidebar-bg);
+  border-right: var(--border-width-thick) solid var(--sidebar-border);
+  width: 140px;
+  min-width: 140px;
+  box-shadow: 2px 0 4px rgba(0, 0, 0, 0.1);
+  overflow-y: auto;
+  height: 100%;
+}
+
+.sidebar-item {
+  padding: var(--spacing-md) var(--spacing-lg);
+  cursor: pointer;
+  border-bottom: var(--border-width) solid #C8C8C0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-sm);
+  transition: all var(--transition-normal);
+  text-decoration: none;
+  color: var(--sidebar-text);
+}
+
+.sidebar-item:hover {
+  background: var(--sidebar-hover);
+}
+
+.sidebar-item.active {
+  background: var(--sidebar-active);
+  border-left: 4px solid var(--btn-primary);
+  padding-left: calc(var(--spacing-lg) - 4px);
+}
+
+.sidebar-icon {
+  font-size: 32px;
+  filter: drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.3));
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sidebar-label {
+  font-size: var(--font-size-xs);
+  text-align: center;
+  font-weight: var(--font-weight-semibold);
+  color: var(--sidebar-text);
+  word-break: break-word;
+  max-width: 100%;
+}
+
+.sidebar-item.active .sidebar-label {
+  color: var(--sidebar-text-active);
+}
+
+/* ========================================
+   FORMULÁRIOS (CONTAINERS)
+   ======================================== */
+
+.form-container {
+  background: var(--form-bg);
+  border: var(--border-width-thick) solid var(--form-border);
+  border-radius: var(--border-radius);
+  padding: var(--spacing-xl);
+  margin: var(--spacing-lg);
+  box-shadow: var(--shadow-raised);
+}
+
+.form-title {
+  background: linear-gradient(to bottom, var(--form-title-bg-start) 0%, var(--form-title-bg-end) 100%);
+  border: var(--border-width) solid var(--form-border);
+  border-radius: var(--border-radius);
+  padding: var(--spacing-sm) var(--spacing-lg);
+  margin: calc(-1 * var(--spacing-xl)) calc(-1 * var(--spacing-xl)) var(--spacing-xl) calc(-1 * var(--spacing-xl));
+  font-weight: var(--font-weight-bold);
+  color: var(--form-title-text);
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
+  font-size: var(--font-size-base);
+}
+
+/* ========================================
+   CAMPOS DE INPUT
+   ======================================== */
+
+.form-field {
+  margin-bottom: var(--spacing-md);
+}
+
+.form-label {
+  display: block;
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-title);
+  margin-bottom: var(--spacing-xs);
+  font-size: var(--font-size-md);
+}
+
+.form-label-required::after {
+  content: " *";
+  color: var(--color-error);
+}
+
+.form-input {
+  width: 100%;
+  padding: 6px var(--spacing-sm);
+  border: var(--border-width-input) solid var(--border-input);
+  border-radius: var(--border-radius);
+  background: var(--bg-input);
+  font-size: var(--font-size-base);
+  font-family: var(--font-family);
+  transition: all var(--transition-normal);
+  box-shadow: var(--shadow-inset);
+  color: var(--text-main);
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: var(--border-active);
+  background: var(--bg-input-focus);
+  box-shadow: 0 0 5px rgba(107, 142, 95, 0.3);
+}
+
+.form-input:disabled {
+  background: var(--bg-input-disabled);
+  color: var(--text-muted);
+  cursor: not-allowed;
+}
+
+.form-input::placeholder {
+  color: var(--text-light);
+  font-style: italic;
+}
+
+/* Textarea */
+textarea.form-input {
+  min-height: 80px;
+  resize: vertical;
+  font-family: var(--font-family);
+}
+
+/* ========================================
+   SELECT/COMBOBOX
+   ======================================== */
+
+select.form-input {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12'%3E%3Cpath fill='%234A5D3F' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+  padding-right: 30px;
+  cursor: pointer;
+}
+
+select.form-input:disabled {
+  cursor: not-allowed;
+}
+
+/* ========================================
+   CHECKBOX E RADIO CLÁSSICOS
+   ======================================== */
+
+/* Wrapper para alinhamento */
+.checkbox-wrapper,
+.radio-wrapper {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-sm);
+}
+
+/* Checkbox clássico */
+input[type="checkbox"].checkbox-classic {
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border: var(--border-width-input) solid var(--border-input);
+  background: var(--bg-input);
+  cursor: pointer;
+  border-radius: var(--border-radius-small);
+  box-shadow: var(--shadow-inset);
+  position: relative;
+  flex-shrink: 0;
+}
+
+input[type="checkbox"].checkbox-classic:checked {
+  background: var(--btn-primary);
+  border-color: var(--border-active);
+}
+
+input[type="checkbox"].checkbox-classic:checked::after {
+  content: "✓";
+  position: absolute;
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
+  top: -2px;
+  left: 2px;
+}
+
+input[type="checkbox"].checkbox-classic:disabled {
+  background: var(--bg-input-disabled);
+  cursor: not-allowed;
+}
+
+/* Radio clássico */
+input[type="radio"].radio-classic {
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border: var(--border-width-input) solid var(--border-input);
+  border-radius: 50%;
+  background: var(--bg-input);
+  cursor: pointer;
+  box-shadow: var(--shadow-inset);
+  position: relative;
+  flex-shrink: 0;
+}
+
+input[type="radio"].radio-classic:checked {
+  background: radial-gradient(circle, var(--btn-primary) 40%, var(--bg-input) 45%);
+  border-color: var(--border-active);
+}
+
+input[type="radio"].radio-classic:disabled {
+  background: var(--bg-input-disabled);
+  cursor: not-allowed;
+}
+
+/* ========================================
+   BOTÕES CLÁSSICOS
+   ======================================== */
+
+.btn {
+  padding: var(--spacing-sm) var(--spacing-xl);
+  border: var(--border-width-thick) outset #C0C0A8;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  font-weight: var(--font-weight-semibold);
+  font-size: var(--font-size-base);
+  font-family: var(--font-family);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-sm);
+  transition: all var(--transition-fast);
+  box-shadow: var(--shadow-raised);
+  text-decoration: none;
+  min-width: 100px;
+}
+
+.btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-hover);
+}
+
+.btn:active:not(:disabled) {
+  transform: translateY(0);
+  border-style: inset;
+  box-shadow: var(--shadow-inset);
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Botão Primário (Salvar/Gravar) */
+.btn-primary {
+  background: linear-gradient(to bottom, #7BA86F 0%, var(--btn-primary) 100%);
+  color: var(--text-inverse);
+  border-color: var(--btn-primary-border);
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: linear-gradient(to bottom, var(--btn-primary) 0%, var(--btn-primary-hover) 100%);
+}
+
+/* Botão Danger (Cancelar/Excluir) */
+.btn-danger {
+  background: linear-gradient(to bottom, #D86C6C 0%, var(--btn-danger) 100%);
+  color: var(--text-inverse);
+  border-color: var(--btn-danger-border);
+}
+
+.btn-danger:hover:not(:disabled) {
+  background: linear-gradient(to bottom, var(--btn-danger) 0%, var(--btn-danger-hover) 100%);
+}
+
+/* Botão Info (Importar/Buscar) */
+.btn-info {
+  background: linear-gradient(to bottom, #6C8EC8 0%, var(--btn-info) 100%);
+  color: var(--text-inverse);
+  border-color: var(--btn-info-border);
+}
+
+.btn-info:hover:not(:disabled) {
+  background: linear-gradient(to bottom, var(--btn-info) 0%, var(--btn-info-hover) 100%);
+}
+
+/* Botão Secondary */
+.btn-secondary {
+  background: linear-gradient(to bottom, #B0B0A0 0%, var(--btn-secondary) 100%);
+  color: var(--text-main);
+  border-color: var(--btn-secondary-border);
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background: linear-gradient(to bottom, var(--btn-secondary) 0%, var(--btn-secondary-hover) 100%);
+}
+
+/* Botão com ícone */
+.btn-icon {
+  font-size: 18px;
+  line-height: 1;
+}
+
+/* Grupo de botões */
+.btn-group {
+  display: flex;
+  gap: var(--spacing-sm);
+  margin-top: var(--spacing-lg);
+}
+
+/* ========================================
+   TABELAS/GRIDS
+   ======================================== */
+
+.table-container {
+  background: white;
+  border: var(--border-width-thick) solid var(--table-border-header);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-inset);
+  overflow: hidden;
+  margin: var(--spacing-lg) 0;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+}
+
+.table thead {
+  background: linear-gradient(to bottom, var(--table-header-bg-start) 0%, var(--table-header-bg-end) 100%);
+}
+
+.table th {
+  padding: var(--spacing-sm) var(--spacing-md);
+  text-align: left;
+  font-weight: var(--font-weight-bold);
+  color: var(--table-header-text);
+  border-bottom: var(--border-width-thick) solid var(--table-border-header);
+  border-right: var(--border-width) solid #C0C0A8;
+  font-size: var(--font-size-md);
+}
+
+.table th:last-child {
+  border-right: none;
+}
+
+.table td {
+  padding: 6px var(--spacing-md);
+  border-bottom: var(--border-width) solid var(--table-border);
+  border-right: var(--border-width) solid #F0F0E8;
+  font-size: var(--font-size-base);
+}
+
+.table td:last-child {
+  border-right: none;
+}
+
+.table tbody tr:nth-child(even) {
+  background: var(--table-row-even);
+}
+
+.table tbody tr:nth-child(odd) {
+  background: var(--table-row-odd);
+}
+
+.table tbody tr:hover {
+  background: var(--table-row-hover);
+}
+
+.table tbody tr.selected {
+  background: var(--table-row-selected);
+  font-weight: var(--font-weight-medium);
+}
+
+/* ========================================
+   GROUPBOX (AGRUPAMENTO DE CAMPOS)
+   ======================================== */
+
+.groupbox {
+  border: var(--border-width-thick) solid var(--groupbox-border);
+  border-radius: var(--border-radius);
+  padding: var(--spacing-lg);
+  margin: var(--spacing-md) 0;
+  position: relative;
+  background: var(--groupbox-bg);
+}
+
+.groupbox-title {
+  position: absolute;
+  top: -12px;
+  left: var(--spacing-md);
+  background: var(--groupbox-title-bg);
+  padding: 0 var(--spacing-sm);
+  font-weight: var(--font-weight-bold);
+  color: var(--groupbox-title-text);
+  font-size: var(--font-size-md);
+}
+
+/* ========================================
+   STATUS BAR (RODAPÉ)
+   ======================================== */
+
+.statusbar {
+  background: var(--statusbar-bg);
+  color: var(--statusbar-text);
+  padding: 6px var(--spacing-lg);
+  font-size: var(--font-size-sm);
+  border-top: var(--border-width-thick) solid var(--statusbar-border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.4);
+  position: sticky;
+  bottom: 0;
+  z-index: var(--z-sticky);
+  font-family: var(--font-family-mono);
+}
+
+.statusbar-item {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.statusbar-separator {
+  width: 1px;
+  height: 16px;
+  background: var(--statusbar-text);
+  opacity: 0.3;
+  margin: 0 var(--spacing-md);
+}
+
+.statusbar-highlight {
+  color: var(--statusbar-highlight);
+  font-weight: var(--font-weight-bold);
+}
+
+/* ========================================
+   CARDS (ALTERNATIVA A FORMULÁRIOS)
+   ======================================== */
+
+.card {
+  background: white;
+  border: var(--border-width) solid var(--border-light);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-raised);
+  margin-bottom: var(--spacing-lg);
+  overflow: hidden;
+}
+
+.card-header {
+  background: linear-gradient(to bottom, var(--form-title-bg-start) 0%, var(--form-title-bg-end) 100%);
+  padding: var(--spacing-md) var(--spacing-lg);
+  border-bottom: var(--border-width) solid var(--border-main);
+  font-weight: var(--font-weight-bold);
+  color: var(--text-title);
+}
+
+.card-body {
+  padding: var(--spacing-lg);
+}
+
+.card-footer {
+  background: var(--bg-main);
+  padding: var(--spacing-md) var(--spacing-lg);
+  border-top: var(--border-width) solid var(--border-light);
+}
+
+/* ========================================
+   UTILITÁRIOS
+   ======================================== */
+
+.text-center { text-align: center; }
+.text-right { text-align: right; }
+.text-left { text-align: left; }
+
+.mt-sm { margin-top: var(--spacing-sm); }
+.mt-md { margin-top: var(--spacing-md); }
+.mt-lg { margin-top: var(--spacing-lg); }
+
+.mb-sm { margin-bottom: var(--spacing-sm); }
+.mb-md { margin-bottom: var(--spacing-md); }
+.mb-lg { margin-bottom: var(--spacing-lg); }
+
+.p-sm { padding: var(--spacing-sm); }
+.p-md { padding: var(--spacing-md); }
+.p-lg { padding: var(--spacing-lg); }
+
+.d-flex { display: flex; }
+.flex-column { flex-direction: column; }
+.flex-row { flex-direction: row; }
+.align-center { align-items: center; }
+.justify-between { justify-content: space-between; }
+.justify-center { justify-content: center; }
+.gap-sm { gap: var(--spacing-sm); }
+.gap-md { gap: var(--spacing-md); }
+.gap-lg { gap: var(--spacing-lg); }

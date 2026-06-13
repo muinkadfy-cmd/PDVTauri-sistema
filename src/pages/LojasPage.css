@@ -1,0 +1,318 @@
+.lojas-page {
+  padding: var(--spacing-xl);
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+  min-height: calc(100vh - 160px);
+}
+
+.lojas-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-md);
+}
+
+.lojas-kicker {
+  display: inline-flex;
+  align-items: center;
+  min-height: 26px;
+  padding: 0 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(var(--accent-rgb), 0.22);
+  background: rgba(var(--accent-rgb), 0.08);
+  color: var(--accent);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.lojas-header-button {
+  min-width: 112px;
+}
+
+.lojas-overview {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-md);
+}
+
+.lojas-overview-card {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: var(--spacing-md);
+  border-radius: 18px;
+  border: 1px solid rgba(148, 163, 184, 0.16);
+  background: linear-gradient(180deg, rgba(255,255,255,0.84), rgba(248,250,252,0.94));
+  box-shadow: 0 18px 36px -30px rgba(15, 23, 42, 0.2);
+}
+
+.lojas-overview-label {
+  color: var(--text-secondary);
+  font-size: var(--font-size-sm);
+  font-weight: 700;
+}
+
+.lojas-overview-card strong {
+  color: var(--text-primary);
+  font-size: clamp(28px, 4vw, 34px);
+  line-height: 1;
+}
+
+.lojas-overview-card p {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: var(--font-size-sm);
+}
+
+.lojas-section {
+  margin-bottom: var(--spacing-md);
+}
+
+.lojas-section-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-md);
+}
+
+.lojas-section-head h2 {
+  margin: 0;
+}
+
+.lojas-section-head p {
+  margin: 6px 0 0;
+  color: var(--text-secondary);
+}
+
+.lojas-section-count {
+  display: inline-flex;
+  align-items: center;
+  min-height: 30px;
+  padding: 0 12px;
+  border-radius: 999px;
+  background: rgba(148, 163, 184, 0.12);
+  color: var(--text-secondary);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.lojas-create-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.lojas-create-input {
+  flex: 1 1 360px;
+  min-width: 240px;
+}
+
+.lojas-create-button {
+  min-width: 144px;
+}
+
+.lojas-section-note {
+  margin: 10px 0 0;
+  color: var(--text-secondary);
+  font-size: var(--font-size-sm);
+}
+
+.lojas-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr));
+  gap: var(--spacing-md);
+}
+
+.lojas-store-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-md);
+  border-radius: 20px;
+  border: 1px solid rgba(148, 163, 184, 0.16);
+  background: linear-gradient(180deg, rgba(255,255,255,0.84), rgba(248,250,252,0.94));
+  box-shadow: 0 18px 36px -30px rgba(15, 23, 42, 0.22);
+  transition: transform var(--transition-fast), border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.lojas-store-card:hover {
+  transform: translateY(-1px);
+  border-color: rgba(var(--accent-rgb), 0.22);
+  box-shadow: 0 20px 40px -30px rgba(15, 23, 42, 0.28);
+}
+
+.lojas-store-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--spacing-sm);
+}
+
+.lojas-store-head-badges {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.lojas-store-head h3 {
+  margin: 0;
+  color: var(--text-primary);
+  font-size: 1.1rem;
+}
+
+.lojas-store-id {
+  margin-top: 6px;
+  color: var(--text-secondary);
+  font-size: 12px;
+  word-break: break-all;
+}
+
+.lojas-license-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 30px;
+  padding: 0 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(148, 163, 184, 0.16);
+  font-size: 12px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.lojas-active-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 30px;
+  padding: 0 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(59, 130, 246, 0.22);
+  background: rgba(59, 130, 246, 0.12);
+  color: #2563eb;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.lojas-license-badge.is-success {
+  color: #0f766e;
+  background: rgba(16, 185, 129, 0.12);
+  border-color: rgba(16, 185, 129, 0.22);
+}
+
+.lojas-license-badge.is-warning {
+  color: #b45309;
+  background: rgba(245, 158, 11, 0.12);
+  border-color: rgba(245, 158, 11, 0.2);
+}
+
+.lojas-license-badge.is-error {
+  color: #b91c1c;
+  background: rgba(239, 68, 68, 0.12);
+  border-color: rgba(239, 68, 68, 0.2);
+}
+
+.lojas-store-meta {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--spacing-sm);
+  flex-wrap: wrap;
+}
+
+.lojas-store-link {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.lojas-meta-label {
+  color: var(--text-secondary);
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.lojas-copy-button {
+  min-width: 112px;
+}
+
+.lojas-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.lojas-empty {
+  text-align: center;
+  padding: var(--spacing-2xl);
+  color: var(--text-secondary);
+  background: var(--bg-surface);
+  border-radius: var(--radius-lg);
+  border: 1px dashed var(--border-light);
+}
+
+[data-theme="dark"] .lojas-overview-card,
+[data-theme="dark"] .lojas-store-card {
+  background: linear-gradient(180deg, rgba(17, 24, 39, 0.88), rgba(15, 23, 42, 0.96));
+  border-color: rgba(255,255,255,0.08);
+  box-shadow: 0 24px 54px -36px rgba(0, 0, 0, 0.66);
+}
+
+[data-theme="dark"] .lojas-section-count {
+  background: rgba(255,255,255,0.06);
+  color: rgba(231, 237, 246, 0.72);
+}
+
+[data-theme="dark"] .lojas-empty {
+  background: rgba(255,255,255,0.02);
+  border-color: rgba(255,255,255,0.08);
+}
+
+[data-theme="dark"] .lojas-active-badge {
+  background: rgba(59, 130, 246, 0.16);
+  border-color: rgba(96, 165, 250, 0.28);
+  color: #93c5fd;
+}
+
+@media (max-width: 760px) {
+  .lojas-page {
+    padding: 12px;
+  }
+
+  .lojas-header,
+  .lojas-section-head,
+  .lojas-store-head,
+  .lojas-store-meta {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .lojas-header-button,
+  .lojas-create-button,
+  .lojas-copy-button,
+  .lojas-actions .btn-secondary,
+  .lojas-actions .btn-primary,
+  .lojas-actions .btn-danger {
+    width: 100%;
+  }
+
+  .lojas-actions {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .lojas-license-badge {
+    width: fit-content;
+  }
+}

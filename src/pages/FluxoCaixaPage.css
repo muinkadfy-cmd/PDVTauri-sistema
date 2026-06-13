@@ -1,0 +1,358 @@
+/* Fluxo de Caixa - layout profissional (web + mobile)
+   - Evita “tela quebrada” na primeira render
+   - Valores nunca estouram nem ficam com "..."
+   - Filtros e histórico com visual consistente
+*/
+
+.fluxo-page{
+  padding: 18px;
+}
+
+.fluxo-header{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:12px;
+  flex-wrap:wrap;
+}
+
+.fluxo-title h1{
+  margin:0;
+  font-size:28px;
+  letter-spacing:-0.02em;
+}
+
+.fluxo-title p{
+  margin:6px 0 0;
+  color: var(--text-secondary, #6b7280);
+}
+
+/* Ações */
+.fluxo-actions{
+  display:flex;
+  gap:10px;
+  align-items:center;
+  flex-wrap:wrap;
+}
+
+.btn{
+  border:0;
+  border-radius:12px;
+  padding:10px 14px;
+  font-weight:700;
+  cursor:pointer;
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  transition: transform .12s ease, filter .12s ease, opacity .12s ease;
+}
+
+.btn:active{ transform: translateY(1px); }
+.btn:disabled{ opacity:.55; cursor:not-allowed; }
+
+.btn-primary{
+  background: var(--success, #10b981);
+  color:#fff;
+}
+
+.btn-danger{
+  background: var(--danger, #ef4444);
+  color:#fff;
+}
+
+/* Cards de resumo: compatível com ambos nomes (fluxo-stats antigo / fluxo-cards novo) */
+.fluxo-stats,
+.fluxo-cards{
+  margin-top: 14px;
+  display:grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+}
+
+/* garante que o conteúdo dentro dos cards não force overflow */
+.fluxo-stats > *,
+.fluxo-cards > *{
+  min-width:0;
+}
+
+/* Filtros */
+.fluxo-filtros{
+  margin-top: 14px;
+  background: var(--surface, rgba(255,255,255,0.75));
+  border: 1px solid rgba(0,0,0,0.06);
+  border-radius: 14px;
+  padding: 14px;
+  display:grid;
+  grid-template-columns: 220px 180px 200px 1fr;
+  gap: 12px;
+}
+
+.filtro{
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+  min-width:0;
+}
+
+.filtro label{
+  font-weight:800;
+  color: var(--text, #111827);
+  font-size: 13px;
+}
+
+.fluxo-filtros select,
+.fluxo-filtros input{
+  height: 40px;
+  border-radius: 12px;
+  padding: 0 12px;
+  border: 1px solid rgba(0,0,0,0.10);
+  background: var(--input-bg, rgba(255,255,255,0.92));
+  color: var(--text, #111827);
+  outline: none;
+  min-width:0;
+}
+
+.fluxo-filtros input::placeholder{
+  color: rgba(17,24,39,0.45);
+}
+
+.fluxo-filtros select:focus,
+.fluxo-filtros input:focus{
+  border-color: rgba(59,130,246,0.55);
+  box-shadow: 0 0 0 3px rgba(59,130,246,0.14);
+}
+
+/* Lista / histórico */
+.fluxo-lista{
+  margin-top: 14px;
+  background: var(--surface);
+  border: 1px solid var(--border-light);
+  border-radius: 14px;
+  overflow:hidden;
+}
+
+.fluxo-lista-header{
+  padding: 14px 16px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.fluxo-lista-header h2{
+  margin:0;
+  font-size: 20px;
+  letter-spacing: -0.01em;
+  color: var(--text-primary);
+}
+
+.fluxo-items{display:flex;flex-direction:column;gap:14px;}
+
+.fluxo-item{
+  padding: 12px 16px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap: 12px;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.fluxo-item:last-child{ border-bottom:0; }
+
+.fluxo-item-main{
+  min-width:0;
+  flex: 1;
+}
+
+.fluxo-item-top{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap: 10px;
+}
+
+.fluxo-item-label{
+  font-weight:900;
+  font-size: 12px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.fluxo-item-valor{
+  font-weight: 900;
+  white-space: nowrap;
+  font-size: 16px;
+  color: var(--text-primary);
+}
+
+.fluxo-item-valor.pos{ color: #16a34a; }
+.fluxo-item-valor.neg{ color: #dc2626; }
+
+.fluxo-item-sub{
+  margin-top: 6px;
+  display:flex;
+  flex-wrap:wrap;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.fluxo-item-sub span{
+  min-width: 0;
+}
+
+.fluxo-item-desc{
+  overflow:hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 56ch;
+}
+
+/* Botão excluir (não flutua / com contraste) */
+.fluxo-del{
+  align-self: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border: 1px solid var(--border-light);
+  background: rgba(255,255,255,0.08);
+}
+
+[data-theme="light"] .fluxo-del{
+  background: rgba(15, 23, 42, 0.04);
+}
+
+.fluxo-del:hover{
+  filter: brightness(1.05);
+}
+
+/* Responsivo */
+
+@media (max-width: 980px){
+  .fluxo-stats,
+  .fluxo-cards{
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .fluxo-filtros{
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 520px){
+  .fluxo-page{ padding: 12px; }
+
+  .fluxo-title h1{ font-size: 22px; }
+
+  .fluxo-stats,
+  .fluxo-cards{
+    grid-template-columns: 1fr;
+  }
+
+  .fluxo-actions{
+    width: 100%;
+  }
+
+  .btn{
+    width: 100%;
+    justify-content: center;
+  }
+
+  .fluxo-filtros{
+    grid-template-columns: 1fr;
+  }
+
+  .fluxo-item{
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .fluxo-item-valor{
+    align-self: flex-end;
+  }
+}
+/* ============================
+   Modal Entrada/Saída (Fluxo)
+   ============================ */
+.fluxo-modal{
+  display: grid;
+  gap: 12px;
+}
+
+.fluxo-modal .form-row{
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.fluxo-modal label{
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.fluxo-modal textarea,
+.fluxo-modal input,
+.fluxo-modal select{
+  width: 100%;
+  min-width: 0;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(0,0,0,0.14);
+  background: rgba(255,255,255,0.92);
+  color: rgba(17,24,39,0.98);
+  outline: none;
+}
+
+.fluxo-modal textarea{
+  min-height: 96px;
+  resize: vertical;
+}
+
+.fluxo-modal textarea:focus,
+.fluxo-modal input:focus,
+.fluxo-modal select:focus{
+  border-color: rgba(16,185,129,0.8);
+  box-shadow: 0 0 0 3px rgba(16,185,129,0.18);
+}
+
+:root[data-theme="dark"] .fluxo-modal textarea,
+:root[data-theme="dark"] .fluxo-modal input,
+:root[data-theme="dark"] .fluxo-modal select{
+  border-color: rgba(255,255,255,0.16);
+  background: rgba(255,255,255,0.06);
+  color: rgba(255,255,255,0.92);
+}
+
+.form-grid{
+  display: grid;
+  grid-template-columns: 1fr 220px;
+  gap: 12px 16px;
+  align-items: start;
+}
+
+.fluxo-modal-footer{
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.btn-secondary{
+  background: rgba(0,0,0,0.06);
+  color: rgba(17,24,39,0.92);
+}
+
+:root[data-theme="dark"] .btn-secondary{
+  background: rgba(255,255,255,0.10);
+  color: rgba(255,255,255,0.92);
+}
+
+@media (max-width: 720px){
+  .form-grid{ grid-template-columns: 1fr; }
+  .fluxo-modal-footer{ flex-direction: column-reverse; }
+  .fluxo-modal-footer .btn{ width: 100%; justify-content: center; }
+}

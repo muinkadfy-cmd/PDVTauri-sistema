@@ -1,0 +1,17 @@
+-- Financeiro (movimentações)
+update financeiro
+set responsavel = 'Juninho'
+where responsavel = 'muinkadfy@gmail.com'
+  and store_id = '7371cfdc-7df5-4543-95b0-882da2de6ab9';
+
+-- Vendas (origem das movimentações de venda)
+update vendas
+set vendedor = 'Juninho'
+where vendedor = 'muinkadfy@gmail.com'
+  and store_id = '7371cfdc-7df5-4543-95b0-882da2de6ab9';
+
+-- OS (se você usa tecnico)
+update ordens_servico
+set tecnico = 'Juninho'
+where tecnico = 'muinkadfy@gmail.com'
+  and store_id = '7371cfdc-7df5-4543-95b0-882da2de6ab9';

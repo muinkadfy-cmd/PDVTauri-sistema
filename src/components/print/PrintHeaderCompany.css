@@ -1,0 +1,121 @@
+/**
+ * Estilos para cabeçalho de impressão da empresa
+ */
+
+.print-header-company {
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid #000;
+}
+
+.print-header-content {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.print-logo {
+  flex-shrink: 0;
+}
+
+.print-logo img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+.print-logo-small img {
+  max-width: 60px;
+  max-height: 60px;
+}
+
+.print-logo-medium img {
+  max-width: 100px;
+  max-height: 100px;
+}
+
+.print-logo-large img {
+  max-width: 150px;
+  max-height: 150px;
+}
+
+.print-company-details {
+  flex: 1;
+}
+
+.print-company-name {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin: 0 0 0.25rem 0;
+  color: #000;
+}
+
+.print-company-legal {
+  font-size: 0.875rem;
+  margin: 0 0 0.25rem 0;
+  color: #333;
+}
+
+.print-company-info {
+  font-size: 0.875rem;
+  margin: 0.125rem 0;
+  color: #555;
+}
+
+.print-company-contact {
+  margin-top: 0.5rem;
+}
+
+.print-document-title {
+  font-size: 1.25rem;
+  font-weight: bold;
+  margin: 1rem 0 0.5rem 0;
+  color: #000;
+  text-align: center;
+}
+
+/* Impressão A4 */
+@media print {
+  .print-header-company {
+    page-break-inside: avoid;
+    margin-bottom: 1rem;
+  }
+
+  .print-company-name {
+    font-size: 18pt;
+  }
+
+  .print-document-title {
+    font-size: 16pt;
+  }
+
+  .print-company-info {
+    font-size: 10pt;
+  }
+}
+
+/* Impressão 80mm (termica) */
+@media print and (max-width: 80mm) {
+  .print-header-content {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .print-logo-small img {
+    max-width: 50px;
+    max-height: 50px;
+  }
+
+  .print-company-name {
+    font-size: 14pt;
+  }
+
+  .print-document-title {
+    font-size: 12pt;
+  }
+
+  .print-company-info {
+    font-size: 9pt;
+  }
+}

@@ -1,0 +1,7 @@
+name = "smarttech-qz-sign"
+main = "src/index.ts"
+compatibility_date = "2026-04-01"
+
+[vars]
+QZ_SIGNATURE_ALGORITHM = "SHA-512"
+

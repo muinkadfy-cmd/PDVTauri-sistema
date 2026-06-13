@@ -1,0 +1,714 @@
+.usados-page .usados-banner-warning {
+  background: rgba(245, 158, 11, 0.12);
+  border: 1px solid rgba(245, 158, 11, 0.35);
+  color: rgba(241,245,249,0.95);
+  padding: 0.75rem 1rem;
+  border-radius: 12px;
+  margin-bottom: 1rem;
+}
+
+.usados-page-header {
+  margin-bottom: 1.1rem;
+}
+
+.usados-page-kicker {
+  display: inline-flex;
+  align-items: center;
+  min-height: 26px;
+  padding: 0 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(var(--accent-rgb), 0.24);
+  background: rgba(var(--accent-rgb), 0.08);
+  color: var(--accent);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin-bottom: 0.65rem;
+}
+
+.usados-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.usados-card {
+  background:
+    radial-gradient(circle at top right, rgba(34, 197, 94, 0.08), transparent 34%),
+    linear-gradient(180deg, rgba(20, 26, 37, 0.98), rgba(13, 18, 28, 0.98));
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 18px;
+  padding: 1rem;
+  box-shadow:
+    0 18px 42px -28px rgba(0,0,0,0.55),
+    inset 0 1px 0 rgba(255,255,255,0.04);
+}
+
+.usados-card h2 {
+  margin: 0 0 0.9rem 0;
+  font-size: 1.05rem;
+  letter-spacing: -0.02em;
+  color: rgba(241,245,249,0.97);
+}
+
+.usados-label {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin: 0.5rem 0 0.25rem 0;
+  color: rgba(203,213,225,0.82);
+}
+
+.usados-input {
+  width: 100%;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 14px;
+  padding: 0.8rem 0.9rem;
+  background: rgba(15, 23, 36, 0.92);
+  color: rgba(241,245,249,0.95);
+  transition: border-color 140ms ease, box-shadow 140ms ease, background 140ms ease;
+}
+
+.usados-textarea {
+  width: 100%;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 14px;
+  padding: 0.8rem 0.9rem;
+  background: rgba(15, 23, 36, 0.92);
+  color: rgba(241,245,249,0.95);
+  resize: vertical;
+  transition: border-color 140ms ease, box-shadow 140ms ease, background 140ms ease;
+}
+
+.usados-input:focus,
+.usados-textarea:focus {
+  outline: none;
+  border-color: rgba(var(--accent-rgb), 0.48);
+  box-shadow: 0 0 0 3px rgba(var(--accent-rgb), 0.12);
+  background: rgba(18, 27, 41, 0.98);
+}
+
+.usados-hint {
+  font-size: 0.9rem;
+  color: rgba(148,163,184,0.92);
+}
+
+.usados-muted {
+  color: rgba(148,163,184,0.92);
+}
+
+.usados-input::placeholder,
+.usados-textarea::placeholder {
+  color: rgba(148,163,184,0.72);
+}
+
+.usados-actions {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* ===========================================
+   TERMOS (COMPRA/VENDA) - POLIMENTO
+   =========================================== */
+
+.usados-terms-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.usados-terms-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.usados-badge {
+  display: inline-flex;
+  align-items: center;
+  height: 26px;
+  padding: 0 0.6rem;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  background: rgba(16, 185, 129, 0.12);
+  border: 1px solid rgba(16, 185, 129, 0.28);
+  color: rgba(241,245,249,0.97);
+}
+
+.usados-terms-textarea {
+  min-height: 180px;
+  line-height: 1.25;
+}
+
+.usados-terms-footer {
+  margin-top: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.usados-file-list {
+  margin: 0.5rem 0 0 0;
+  padding-left: 1.1rem;
+  color: rgba(226,232,240,0.92);
+}
+
+.usados-file-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.25rem 0;
+}
+
+.usados-file-main {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.usados-file-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.14rem 0.5rem;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  border: 1px solid transparent;
+}
+
+.usados-file-badge.is-local {
+  color: #f4d35e;
+  background: rgba(244, 211, 94, 0.12);
+  border-color: rgba(244, 211, 94, 0.28);
+}
+
+.usados-file-badge.is-remote {
+  color: #53d98b;
+  background: rgba(83, 217, 139, 0.12);
+  border-color: rgba(83, 217, 139, 0.28);
+}
+
+.usados-list {
+  margin: 0.5rem 0 0 0;
+  padding-left: 1.1rem;
+  color: rgba(226,232,240,0.92);
+}
+
+@media (max-width: 900px) {
+  .usados-grid {
+    grid-template-columns: 1fr;
+  }
+  .usados-actions {
+    justify-content: stretch;
+  }
+  .usados-actions > button {
+    width: 100%;
+  }
+}
+
+/* ===========================================
+   ESTOQUE USADOS - GRID COM MINIATURAS
+   =========================================== */
+
+.usados-estoque-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+.usados-stock-toolbar {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+  margin: 0.5rem 0 1rem;
+  flex-wrap: wrap;
+}
+
+.usados-stock-search {
+  flex: 1 1 320px;
+  margin: 0;
+}
+
+.usados-stock-count {
+  color: rgba(148,163,184,0.92);
+  font-size: 0.9rem;
+  font-weight: 800;
+  padding-bottom: 0.75rem;
+  white-space: nowrap;
+}
+
+.usado-estoque-card {
+  background:
+    radial-gradient(circle at top right, rgba(34, 197, 94, 0.08), transparent 34%),
+    linear-gradient(180deg, rgba(20, 26, 37, 0.98), rgba(13, 18, 28, 0.98));
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 18px;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+}
+
+.usado-estoque-card:hover {
+  border-color: rgba(var(--accent-rgb), 0.24);
+  box-shadow:
+    0 18px 42px -28px rgba(0,0,0,0.55),
+    inset 0 1px 0 rgba(255,255,255,0.04);
+  transform: translateY(-1px);
+}
+
+/* Miniatura */
+.usado-miniatura {
+  width: 100%;
+  aspect-ratio: 16/9;
+  border-radius: 8px;
+  overflow: hidden;
+  background: rgba(15, 23, 36, 0.92);
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
+.usado-miniatura-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.usado-miniatura-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  color: rgba(203,213,225,0.82);
+  background: linear-gradient(135deg, rgba(var(--accent-rgb), 0.08) 0%, rgba(148,163,184,0.08) 100%);
+}
+
+/* Informações */
+.usado-info {
+  flex: 1;
+}
+
+.usado-info h4 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.1rem;
+  color: rgba(241,245,249,0.97);
+  font-weight: 600;
+}
+
+.usado-imei {
+  margin: 0 0 0.5rem 0;
+  font-size: 0.9rem;
+  color: rgba(148,163,184,0.92);
+  font-family: monospace;
+}
+
+.usado-valor {
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--success, #10b981);
+}
+
+/* Botão Ver Fotos */
+.btn-ver-fotos {
+  width: 100%;
+  min-height: 40px;
+  padding: 0.75rem 1rem;
+  background: rgba(15, 23, 36, 0.92);
+  color: rgba(241,245,249,0.97);
+  border: 1px solid rgba(var(--accent-rgb), 0.18);
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background 140ms ease, border-color 140ms ease, transform 140ms ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.btn-ver-fotos:hover {
+  background: rgba(var(--accent-rgb), 0.16);
+  border-color: rgba(var(--accent-rgb), 0.28);
+  transform: translateY(-1px);
+}
+
+.usado-sem-fotos {
+  text-align: center;
+  padding: 0.75rem;
+  color: rgba(148,163,184,0.92);
+  font-size: 0.9rem;
+  font-style: italic;
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+  .usados-estoque-grid {
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .usados-estoque-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .usado-estoque-card {
+    padding: 0.75rem;
+  }
+}
+
+
+.btn-ver-docs{
+  min-height: 40px;
+  padding:0.65rem 0.9rem;
+  border:1px solid rgba(255,255,255,0.08);
+  border-radius:12px;
+  cursor:pointer;
+  background: rgba(15, 23, 36, 0.92);
+  color: rgba(241,245,249,0.97);
+  font-weight:700;
+  transition: background 140ms ease, border-color 140ms ease, transform 140ms ease;
+}
+.btn-ver-docs:hover{
+  background: rgba(21, 31, 46, 0.98);
+  border-color: rgba(var(--accent-rgb), 0.22);
+  transform: translateY(-1px);
+}
+
+
+/* CompraUsadosPage: detalhes do estoque + subtítulo */
+.usados-stock-sub{
+  color: rgba(255,255,255,0.7);
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+.usados-stock-details{
+  margin-top: 10px;
+  padding: 10px;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 12px;
+  background: rgba(0,0,0,0.15);
+  font-size: 13px;
+  color: rgba(255,255,255,0.85);
+}
+
+@media (max-width: 720px){
+  .usados-stock-actions{ flex-wrap: wrap; }
+  .usados-stock-actions > button{ flex: 1 1 auto; }
+}
+
+/* VendaUsadosPage refinements */
+.usados-toggle {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+
+.usados-info {
+  margin-top: 10px;
+  padding: 10px;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 10px;
+  background: rgba(15, 23, 36, 0.92);
+  font-size: 0.95rem;
+  color: rgba(241,245,249,0.95);
+}
+
+.muted {
+  color: rgba(148,163,184,0.92);
+  font-size: 0.875rem;
+}
+
+
+.usados-terms-textarea {
+  min-height: 160px;
+  font-size: 0.98rem;
+  line-height: 1.6;
+  padding: 1rem;
+}
+
+.usados-terms-textarea:disabled {
+  opacity: 0.9;
+}
+
+
+.usados-summary-grid{
+  display:grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  margin: 1rem 0 1.25rem;
+}
+
+.usados-summary-card{
+  display:flex;
+  flex-direction:column;
+  gap: 0.4rem;
+  padding: 1rem 1.1rem;
+  border-radius: 16px;
+  background:
+    radial-gradient(circle at top right, rgba(34, 197, 94, 0.12), transparent 38%),
+    linear-gradient(180deg, rgba(25, 33, 46, 0.98), rgba(15, 21, 31, 0.98));
+  border: 1px solid rgba(255,255,255,0.08);
+  box-shadow:
+    0 18px 42px -30px rgba(0,0,0,0.55),
+    inset 0 1px 0 rgba(255,255,255,0.04);
+}
+
+.usados-summary-label{
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: rgba(203,213,225,0.82);
+  font-weight: 800;
+}
+
+.usados-summary-value{
+  font-size: 1.15rem;
+  line-height: 1.2;
+  color: rgba(241,245,249,0.97);
+  font-weight: 900;
+}
+
+.usados-summary-helper{
+  font-size: 0.88rem;
+  line-height: 1.45;
+  color: rgba(148,163,184,0.92);
+}
+
+[data-theme="dark"] .usados-card{
+  background:
+    radial-gradient(circle at top right, rgba(34, 197, 94, 0.08), transparent 34%),
+    linear-gradient(180deg, rgba(20, 26, 37, 0.98), rgba(13, 18, 28, 0.98));
+  border-color: rgba(255,255,255,0.08);
+  box-shadow:
+    0 18px 42px -28px rgba(0,0,0,0.55),
+    inset 0 1px 0 rgba(255,255,255,0.04);
+}
+
+[data-theme="dark"] .usados-card h2,
+[data-theme="dark"] .usado-info h4,
+[data-theme="dark"] .usados-summary-value{
+  color: rgba(241,245,249,0.97);
+}
+
+[data-theme="dark"] .usados-label,
+[data-theme="dark"] .usados-summary-label{
+  color: rgba(203,213,225,0.82);
+}
+
+[data-theme="dark"] .usados-hint,
+[data-theme="dark"] .usados-muted,
+[data-theme="dark"] .usados-summary-helper,
+[data-theme="dark"] .usado-imei,
+[data-theme="dark"] .usados-stock-sub{
+  color: rgba(148,163,184,0.92);
+}
+
+[data-theme="dark"] .usados-input,
+[data-theme="dark"] .usados-textarea,
+[data-theme="dark"] .usados-info,
+[data-theme="dark"] .usados-stock-details{
+  background: rgba(15, 23, 36, 0.92);
+  border-color: rgba(255,255,255,0.08);
+  color: rgba(241,245,249,0.95);
+}
+
+[data-theme="dark"] .usados-input::placeholder,
+[data-theme="dark"] .usados-textarea::placeholder{
+  color: rgba(148,163,184,0.72);
+}
+
+[data-theme="dark"] .usados-summary-card{
+  background:
+    radial-gradient(circle at top right, rgba(34, 197, 94, 0.12), transparent 38%),
+    linear-gradient(180deg, rgba(25, 33, 46, 0.98), rgba(15, 21, 31, 0.98));
+  border-color: rgba(255,255,255,0.08);
+  box-shadow:
+    0 18px 42px -30px rgba(0,0,0,0.55),
+    inset 0 1px 0 rgba(255,255,255,0.04);
+}
+
+.usados-card--spaced{
+  margin-top: 1rem;
+}
+
+.usados-card--spaced-lg{
+  margin-top: 2rem;
+}
+
+.usados-inline-note{
+  margin-top: 0.35rem;
+}
+
+.usados-section-block{
+  margin-top: 1rem;
+}
+
+.usados-last-actions,
+.usados-stock-actions,
+.usados-page-head,
+.usados-page-head-actions,
+.usados-terms-actions-row,
+.venda-historico-actions{
+  display:flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.usados-last-actions{
+  justify-content:flex-end;
+}
+
+.usados-stock-actions{
+  margin-top: 0.5rem;
+}
+
+.usados-stock-file-row{
+  display:flex;
+  gap:0.5rem;
+  flex-wrap:wrap;
+}
+
+.usados-stock-inline-btn{
+  flex:1 1 140px;
+  min-height:40px;
+}
+
+.usados-action-button{
+  flex: 1 1 140px;
+}
+
+.usados-inline-button{
+  min-height: 38px;
+}
+
+.usados-danger-button{
+  min-height: 40px;
+  padding: 0.65rem 1rem;
+  border: 1px solid rgba(239,68,68,0.24);
+  border-radius: 12px;
+  cursor: pointer;
+  white-space: nowrap;
+  background: rgba(239,68,68,0.08);
+  color: #fca5a5;
+  font-weight: 700;
+  transition: background 140ms ease, border-color 140ms ease, transform 140ms ease;
+}
+
+.usados-danger-button:hover{
+  background: rgba(239,68,68,0.12);
+  border-color: rgba(239,68,68,0.34);
+  transform: translateY(-1px);
+}
+
+.usados-section-title{
+  margin-top: 0.75rem;
+}
+
+.usados-page-head{
+  align-items:center;
+  justify-content:space-between;
+}
+
+.usados-page-head-actions{
+  align-items:center;
+}
+
+.usados-label--spaced{
+  margin-top: 14px;
+}
+
+.usados-terms-actions-row{
+  align-items:center;
+  margin-top: 10px;
+}
+
+.usados-card--status{
+  margin-top: 1rem;
+}
+
+.usados-card--status-error{
+  border-color: var(--danger, #dc2626);
+  color: var(--danger, #dc2626);
+}
+
+.usados-card--status-success{
+  border-color: var(--success, #16a34a);
+  color: var(--success, #16a34a);
+}
+
+.vendas-list{
+  display:flex;
+  flex-direction:column;
+  gap: 1rem;
+}
+
+.venda-historico-card{
+  padding: 1rem;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 12px;
+  background:
+    radial-gradient(circle at top right, rgba(34, 197, 94, 0.08), transparent 34%),
+    linear-gradient(180deg, rgba(20, 26, 37, 0.98), rgba(13, 18, 28, 0.98));
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap: 1rem;
+  flex-wrap:wrap;
+}
+
+.venda-historico-main{
+  flex: 1;
+  min-width: 220px;
+}
+
+.venda-historico-meta{
+  font-size: 0.875rem;
+  color: rgba(148,163,184,0.92);
+  margin-top: 0.25rem;
+}
+
+.venda-historico-imei{
+  font-size: 0.85rem;
+  color: rgba(148,163,184,0.92);
+  margin-top: 0.2rem;
+}
+
+.venda-historico-valor{
+  font-size: 1rem;
+  font-weight: 800;
+  margin-top: 0.25rem;
+  color: rgba(241,245,249,0.97);
+}
+
+@media (max-width: 900px){
+  .usados-summary-grid{
+    grid-template-columns: 1fr;
+  }
+
+  .usados-page-head{
+    align-items:flex-start;
+  }
+}

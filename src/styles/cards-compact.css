@@ -1,0 +1,95 @@
+/* src/styles/cards-compact.css */
+/*
+  Polimento geral de cards em listas (Clientes/Produtos/Cobranças/etc)
+  Objetivo: cards menores, melhor alinhamento de texto/ícones, e grid mais denso.
+  Mantém o visual leve e responsivo (desktop/mobile).
+*/
+
+:root {
+  /* Largura mínima de card em grids */
+  --card-min: 240px;
+  --card-gap: var(--spacing-xs);
+  --card-padding: var(--spacing-sm);
+  --card-radius: calc(var(--radius) + 2px);
+}
+
+/* Grids de cards - aplica em várias páginas sem precisar mexer em cada CSS */
+:is(
+  .clientes-grid,
+  .produtos-grid,
+  .cobrancas-grid,
+  .backup-cards,
+  .diagnostico-grid,
+  .encomendas-grid,
+  .devolucoes-grid,
+  .recibos-grid,
+  .usados-grid,
+  .estoque-grid,
+  .fornecedores-grid
+) {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(var(--card-min), 1fr));
+  gap: var(--card-gap);
+}
+
+/* Cards comuns - compactos e consistentes */
+:is(
+  .cliente-card,
+  .produto-card,
+  .cobranca-card,
+  .backup-card,
+  .encomenda-card,
+  .devolucao-card,
+  .recibo-card,
+  .usados-card,
+  .estoque-card,
+  .fornecedor-card
+) {
+  padding: var(--card-padding);
+  border-radius: var(--card-radius);
+}
+
+/* Cabeçalho do card: impede ícone “invadir” conteúdo e evita overflow */
+:is(.cliente-header, .produto-header, .cobranca-header) {
+  gap: var(--spacing-xs);
+}
+
+:is(.cliente-header h3, .produto-header h3, .cobranca-header h3) {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+:is(.cliente-actions, .produto-actions) {
+  flex-shrink: 0;
+}
+
+/* Texto dentro dos cards: mais compacto e legível */
+:is(.cliente-info p, .produto-info p, .cobranca-info p) {
+  margin: 0;
+  line-height: 1.35;
+}
+
+/* Mobile: cards ocupam quase toda a largura e ficam ainda mais “tight” */
+@media (max-width: 520px) {
+  :root {
+    --card-min: 100%;
+    --card-gap: var(--spacing-sm);
+    --card-padding: var(--spacing-sm);
+  }
+
+  /* Botões de ação menores no mobile (sem perder toque) */
+  .btn-icon {
+    min-width: 36px;
+    min-height: 36px;
+  }
+}
+
+/* Preferência: “Modo Compacto” futuro (se existir no projeto)
+   Basta adicionar data-compact="true" no body/html e o grid fica mais denso.
+*/
+[data-compact="true"] {
+  --card-min: 220px;
+  --card-padding: calc(var(--spacing-sm) - 2px);
+}

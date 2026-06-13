@@ -1,0 +1,13 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "app": {
+    "security": {
+      "csp": "default-src 'self' asset: tauri:; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' asset: tauri: data: blob:; font-src 'self' data:; connect-src 'self' ipc: http://ipc.localhost https: wss:; media-src 'self' blob: data:; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'none'; frame-src 'self' blob: data:;"
+    }
+  },
+  "bundle": {
+    "resources": [
+      "resources/SumatraPDF.exe"
+    ]
+  }
+}

@@ -1,0 +1,237 @@
+.diagnostico-page {
+  padding: var(--spacing-xl, 24px);
+  max-width: 1400px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.diagnostico-header {
+  text-align: center;
+  margin-bottom: var(--spacing-xl, 24px);
+}
+
+.diagnostico-header h1 {
+  font-size: var(--font-size-2xl, 24px);
+  font-weight: var(--font-weight-bold, 700);
+  color: var(--text-primary, #1e293b);
+  margin: 0 0 var(--spacing-sm, 8px) 0;
+}
+
+.diagnostico-header p {
+  font-size: var(--font-size-base, 16px);
+  color: var(--text-secondary, #64748b);
+  margin: 0;
+}
+
+.diagnostico-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: var(--spacing-lg, 20px);
+}
+
+.diagnostico-card {
+  background: var(--bg-surface, #ffffff);
+  border-radius: var(--border-radius-md, 12px);
+  padding: var(--spacing-lg, 20px);
+  box-shadow: var(--shadow-md, 0 10px 15px -3px rgba(0, 0, 0, 0.1));
+  border: 1px solid var(--border-light, #e2e8f0);
+}
+
+.diagnostico-card-full {
+  grid-column: 1 / -1;
+}
+
+.diagnostico-card h2 {
+  font-size: var(--font-size-lg, 18px);
+  font-weight: var(--font-weight-bold, 700);
+  color: var(--text-primary, #1e293b);
+  margin: 0 0 var(--spacing-md, 16px) 0;
+  padding-bottom: var(--spacing-sm, 8px);
+  border-bottom: 2px solid var(--primary, var(--accent));
+}
+
+.diagnostico-info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm, 8px);
+}
+
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--spacing-xs, 4px) 0;
+}
+
+.info-label {
+  font-weight: var(--font-weight-semibold, 600);
+  color: var(--text-primary, #1e293b);
+  font-size: var(--font-size-sm, 14px);
+}
+
+.info-value {
+  font-size: var(--font-size-sm, 14px);
+  color: var(--text-secondary, #64748b);
+}
+
+.status-ok {
+  color: var(--primary, var(--accent));
+  font-weight: var(--font-weight-semibold, 600);
+}
+
+.status-warning {
+  color: #f59e0b;
+  font-weight: var(--font-weight-semibold, 600);
+}
+
+.status-error {
+  color: #ef4444;
+  font-weight: var(--font-weight-semibold, 600);
+}
+
+.diagnostico-table {
+  overflow-x: auto;
+  margin-bottom: var(--spacing-md, 16px);
+}
+
+.diagnostico-table table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.diagnostico-table th,
+.diagnostico-table td {
+  padding: var(--spacing-sm, 8px);
+  text-align: left;
+  border-bottom: 1px solid var(--border-light, #e2e8f0);
+  font-size: var(--font-size-sm, 14px);
+}
+
+.diagnostico-table th {
+  font-weight: var(--font-weight-bold, 700);
+  color: var(--text-primary, #1e293b);
+  background: var(--bg-secondary, #f1f5f9);
+}
+
+.diagnostico-table td {
+  color: var(--text-secondary, #64748b);
+}
+
+.diagnostico-actions {
+  display: flex;
+  gap: var(--spacing-sm, 8px);
+  margin-top: var(--spacing-md, 16px);
+}
+
+.btn-primary,
+.btn-secondary {
+  padding: var(--spacing-sm, 8px) var(--spacing-md, 16px);
+  border-radius: var(--border-radius, 8px);
+  font-size: var(--font-size-sm, 14px);
+  font-weight: var(--font-weight-semibold, 600);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+  min-height: 44px;
+}
+
+.btn-primary {
+  background: var(--primary, var(--accent));
+  color: var(--text-inverse, #ffffff);
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: var(--primary-dark, var(--primary-dark));
+}
+
+.btn-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn-secondary {
+  background: var(--bg-secondary, #f1f5f9);
+  color: var(--text-primary, #1e293b);
+  border: 1px solid var(--border-medium, #cbd5e1);
+}
+
+.btn-secondary:hover {
+  background: var(--bg-tertiary, #e2e8f0);
+}
+
+.diagnostico-routes {
+  margin-top: var(--spacing-md, 16px);
+}
+
+.routes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: var(--spacing-sm, 8px);
+}
+
+.route-item {
+  padding: var(--spacing-sm, 8px) var(--spacing-md, 12px);
+  border: 2px solid var(--border-light, #e2e8f0);
+  border-radius: var(--border-radius, 8px);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background: var(--bg-surface, #ffffff);
+}
+
+.route-item:hover {
+  border-color: var(--primary, var(--accent));
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm, 0 1px 3px 0 rgba(0, 0, 0, 0.1));
+}
+
+.route-item.ok {
+  border-color: var(--primary, var(--accent));
+  background: rgba(var(--accent-rgb), 0.05);
+}
+
+.route-item.warning {
+  border-color: #f59e0b;
+  background: rgba(245, 158, 11, 0.05);
+}
+
+.route-item.error {
+  border-color: #ef4444;
+  background: rgba(239, 68, 68, 0.05);
+}
+
+.route-path {
+  font-weight: var(--font-weight-bold, 700);
+  color: var(--text-primary, #1e293b);
+  font-size: var(--font-size-sm, 14px);
+  margin-bottom: var(--spacing-xs, 4px);
+}
+
+.route-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.route-element {
+  font-size: var(--font-size-xs, 12px);
+  color: var(--text-secondary, #64748b);
+}
+
+.route-status {
+  font-size: var(--font-size-xs, 12px);
+  font-weight: var(--font-weight-semibold, 600);
+}
+
+@media (max-width: 768px) {
+  .diagnostico-page {
+    padding: var(--spacing-md, 16px);
+  }
+
+  .diagnostico-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .routes-grid {
+    grid-template-columns: 1fr;
+  }
+}

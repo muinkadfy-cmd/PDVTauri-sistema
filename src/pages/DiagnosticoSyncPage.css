@@ -1,0 +1,156 @@
+.diagnostico-page {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.diagnostico-header {
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.diagnostico-header h1 {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+  color: var(--text-primary);
+}
+
+.diagnostico-header p {
+  color: var(--text-secondary);
+  font-size: 1.1rem;
+}
+
+.diagnostico-actions {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+.btn-primary {
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: white;
+  background: #3b82f6;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: #2563eb;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px rgba(59, 130, 246, 0.3);
+}
+
+.btn-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.diagnostico-results {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.diagnostico-card {
+  background: var(--bg-surface);
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-light);
+  transition: all 0.2s;
+}
+
+.diagnostico-card:hover {
+  box-shadow: var(--shadow);
+  transform: translateY(-2px);
+}
+
+.diagnostico-card-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.diagnostico-icon {
+  font-size: 1.5rem;
+}
+
+.diagnostico-card-header h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  color: var(--text-primary);
+}
+
+.diagnostico-message {
+  margin: 0;
+  padding-left: 2.25rem;
+  color: var(--text-secondary);
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.diagnostico-details {
+  margin-top: 1rem;
+  padding-left: 2.25rem;
+}
+
+.diagnostico-details summary {
+  cursor: pointer;
+  color: #3b82f6;
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.diagnostico-details summary:hover {
+  color: #2563eb;
+  text-decoration: underline;
+}
+
+.diagnostico-details pre {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-light);
+  border-radius: 0.375rem;
+  padding: 1rem;
+  overflow-x: auto;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: var(--text-primary);
+}
+
+.diagnostico-empty {
+  text-align: center;
+  padding: 3rem;
+  color: var(--text-secondary);
+}
+
+@media (max-width: 768px) {
+  .diagnostico-page {
+    padding: 1rem;
+  }
+
+  .diagnostico-header h1 {
+    font-size: 1.5rem;
+  }
+
+  .diagnostico-header p {
+    font-size: 1rem;
+  }
+
+  .diagnostico-card {
+    padding: 1rem;
+  }
+
+  .diagnostico-message {
+    padding-left: 0;
+  }
+
+  .diagnostico-details {
+    padding-left: 0;
+  }
+}

@@ -1,0 +1,183 @@
+.avatar-upload {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-md);
+  padding-bottom: var(--spacing-md);
+  border-bottom: 1px solid var(--border-light);
+}
+
+.avatar-preview {
+  position: relative;
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: linear-gradient(145deg, var(--primary) 0%, #2e7d32 50%, #1b5e20 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  cursor: pointer;
+  border: 2px solid var(--border-light);
+  box-shadow: 0 2px 8px rgba(var(--accent-rgb), 0.25);
+  transition: all var(--transition-base);
+  flex-shrink: 0;
+}
+
+.avatar-preview:hover {
+  transform: scale(1.02);
+  box-shadow: var(--shadow-md);
+}
+
+.avatar-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.avatar-initials {
+  color: rgba(255, 255, 255, 0.98);
+  font-weight: 700;
+  font-size: 1.35rem;
+  letter-spacing: 0.04em;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.avatar-info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+  flex: 1;
+  min-width: 0;
+}
+
+.avatar-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-xs);
+  opacity: 0;
+  transition: opacity var(--transition-base);
+  border-radius: 50%;
+}
+
+.avatar-preview:hover .avatar-overlay {
+  opacity: 1;
+}
+
+.avatar-upload-icon {
+  font-size: var(--font-size-xl);
+}
+
+.avatar-upload-text {
+  color: white;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  text-align: center;
+}
+
+.avatar-loading {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  z-index: 10;
+}
+
+.avatar-loading span {
+  font-size: var(--font-size-2xl);
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.avatar-remove-btn {
+  background: #fee2e2;
+  color: #dc2626;
+  border: 1px solid #fecaca;
+  padding: clamp(6px, 1.5vw, 8px) clamp(12px, 3vw, 16px);
+  border-radius: var(--border-radius);
+  font-size: clamp(11px, 1.8vw, 13px);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  min-height: 32px;
+  white-space: nowrap;
+  align-self: flex-start;
+}
+
+.avatar-remove-btn:hover {
+  background: #fecaca;
+  border-color: #f87171;
+}
+
+.avatar-hint {
+  font-size: var(--font-size-xs);
+  color: var(--text-muted);
+  text-align: left;
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .avatar-upload {
+    flex-direction: row;
+    align-items: center;
+    gap: var(--spacing-sm);
+  }
+
+  .avatar-preview {
+    width: 56px;
+    height: 56px;
+  }
+
+  .avatar-initials {
+    font-size: var(--font-size-base);
+  }
+
+  .avatar-info {
+    flex: 1;
+  }
+
+  .avatar-remove-btn {
+    align-self: flex-start;
+  }
+}
+
+@media (max-width: 480px) {
+  .avatar-preview {
+    width: 48px;
+    height: 48px;
+    border-width: 2px;
+  }
+
+  .avatar-initials {
+    font-size: var(--font-size-sm);
+  }
+
+  .avatar-hint {
+    font-size: 11px;
+  }
+}

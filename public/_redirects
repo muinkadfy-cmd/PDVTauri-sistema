@@ -1,0 +1,2 @@
+# SPA fallback: no redirect needed on Cloudflare Pages (handled by default).
+# For Netlify, add: /*  /index.html  200

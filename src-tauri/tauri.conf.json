@@ -1,0 +1,57 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "productName": "Smart Tech PDV",
+  "version": "2.0.42",
+  "identifier": "br.com.smarttech.pdv",
+  "build": {
+    "beforeDevCommand": "npm run dev:desktop",
+    "devUrl": "http://127.0.0.1:5173",
+    "beforeBuildCommand": "npm run build:desktop",
+    "frontendDist": "../dist"
+  },
+  "app": {
+    "windows": [
+      {
+        "label": "main",
+        "title": "Smart Tech PDV",
+        "theme": "Dark",
+        "width": 1280,
+        "height": 800,
+        "minWidth": 1024,
+        "minHeight": 700,
+        "resizable": true,
+        "fullscreen": false,
+        "devtools": false,
+        "maximized": true
+      }
+    ],
+    "security": {
+      "csp": "default-src 'self' asset: tauri:; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' asset: tauri: data: blob:; font-src 'self' data:; connect-src 'self' https: wss: ipc:; media-src 'self' blob: data:; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'none'"
+    }
+  },
+  "bundle": {
+    "active": true,
+    "createUpdaterArtifacts": true,
+    "targets": [
+      "msi"
+    ],
+    "icon": [
+      "icons/icon.ico",
+      "icons/icon.png",
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.icns"
+    ],
+    "windows": {
+      "digestAlgorithm": null,
+      "timestampUrl": null,
+      "tsp": false,
+      "certificateThumbprint": null,
+      "signCommand": null
+    },
+    "resources": [
+      "resources/SumatraPDF.exe"
+    ]
+  }
+}

@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gerador de Licença - Smart Tech PDV</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <div class="wrap">
+      <header class="header">
+        <div class="logo">🔐</div>
+        <div>
+          <h1>Gerador de Licença (Offline)</h1>
+          <p class="sub">Gera token assinado (RSA-PSS / SHA-256). Use <b>somente</b> no seu PC (admin).</p>
+        </div>
+      </header>
+
+      <div class="card">
+        <div class="grid">
+          <div>
+            <label>Chave privada (PKCS8 .pem)</label>
+            <input id="privateKeyFile" type="file" accept=".pem" />
+            <div class="hint">Arquivo deve iniciar com <code>-----BEGIN PRIVATE KEY-----</code></div>
+          </div>
+
+          <div>
+            <label>Machine ID (Device ID)</label>
+            <input id="deviceId" type="text" placeholder="device-XXXX" />
+          </div>
+
+          <div>
+            <label>Validade (dias)</label>
+            <input id="days" type="number" min="1" value="365" />
+          </div>
+
+          <div>
+            <label>Plano (opcional)</label>
+            <input id="plan" type="text" placeholder="mensal / anual / pro" />
+          </div>
+
+          <div>
+            <label>Store ID (opcional)</label>
+            <input id="storeId" type="text" placeholder="uuid (se usar)" />
+          </div>
+
+          <div>
+            <label>Features (opcional, separado por vírgula)</label>
+            <input id="features" type="text" placeholder="pwa,backup,relatorios" />
+          </div>
+
+          <div class="full">
+            <label>Observação (opcional)</label>
+            <input id="note" type="text" placeholder="Ex.: Cliente Adriano - 1 loja" />
+          </div>
+        </div>
+
+        <div class="row">
+          <button id="btnGenerate" class="btn primary">Gerar Token</button>
+          <button id="btnClear" class="btn">Limpar</button>
+          <div id="status" class="status"></div>
+        </div>
+
+        <div class="out">
+          <div class="out-head">
+            <div>
+              <div class="out-title">Token</div>
+              <div class="out-sub">Cole no PDV em <b>/ativacao</b> ou <b>/licenca</b></div>
+            </div>
+            <button id="btnCopy" class="btn" disabled>Copiar</button>
+          </div>
+          <textarea id="tokenOut" rows="6" readonly placeholder="(o token aparece aqui)"></textarea>
+        </div>
+
+        <details class="details">
+          <summary>Ver payload (debug)</summary>
+          <pre id="payloadOut" class="pre"></pre>
+        </details>
+      </div>
+
+      <footer class="footer">
+        <div class="warn">
+          ⚠️ Nunca envie a chave privada ao cliente. Guarde a chave privada em local seguro.
+        </div>
+        <div class="muted">Se o botão “Gerar Token” não funcionar, inicie via servidor local: <code>npm run license:ui</code>.</div>
+      </footer>
+    </div>
+
+    <script type="module" src="./app.js"></script>
+  </body>
+</html>

@@ -1,0 +1,74 @@
+.docs-usados{display:flex;flex-direction:column;gap:12px;min-height:0}
+.docs-loading,.docs-empty{padding:14px;border:1px dashed var(--border);border-radius:10px;text-align:center;color:var(--muted)}
+.docs-grid{display:grid;grid-template-columns:1fr;gap:10px;flex:1;min-height:0;overflow:auto;padding-right:4px}
+@media (min-width: 920px){.docs-grid{grid-template-columns:1fr 1fr}}
+.docs-item{display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px;align-items:center;border:1px solid var(--border, var(--border-light, rgba(255,255,255,.10)));background:var(--card, var(--card-bg, rgba(15,23,36,.92)));border-radius:12px;padding:10px;cursor:pointer;text-align:left;color:var(--foreground, rgba(241,245,249,.97))}
+.docs-item:hover{border-color:var(--primary)}
+.docs-item:focus-visible{outline:2px solid rgba(46, 204, 113, .45);outline-offset:2px}
+.docs-item-active{outline:2px solid rgba(46, 204, 113, .35);border-color:var(--primary)}
+.docs-icon{width:38px;height:38px;display:flex;align-items:center;justify-content:center;font-size:20px;background:rgba(0,0,0,.04);border-radius:10px}
+.docs-meta{min-width:0;flex:1}
+.docs-name{font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--foreground, rgba(241,245,249,.97))}
+.docs-sub{font-size:12px;color:var(--muted);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.docs-item-actions{grid-column:1 / -1;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.docs-footer{font-size:12px;color:var(--muted);text-align:center;flex-shrink:0;padding-top:4px}
+
+.docs-preview-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:9999;display:flex;align-items:center;justify-content:center;padding:16px}
+.docs-preview-card{width:min(980px, 96vw);height:min(720px, 92vh);background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 14px 40px rgba(0,0,0,.25);display:flex;flex-direction:column}
+.docs-preview-header{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 12px;border-bottom:1px solid rgba(0,0,0,.08)}
+.docs-preview-title{font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.docs-preview-actions{display:flex;gap:8px}
+.docs-btn{border:1px solid rgba(0,0,0,.15);background:#fff;border-radius:10px;padding:8px 10px;cursor:pointer}
+.docs-btn:hover{border-color:rgba(0,0,0,.35)}
+.docs-btn-compact{flex:1 1 120px;min-height:36px;font-size:12px;font-weight:700}
+.docs-btn-close{background:rgba(0,0,0,.06)}
+.docs-preview-body{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.02)}
+.docs-preview-img{max-width:100%;max-height:100%;object-fit:contain}
+.docs-preview-iframe{width:100%;height:100%;border:0}
+.docs-preview-unknown{padding:20px;text-align:center;color:#333}
+
+.docs-storage-badge{display:inline-flex;align-items:center;width:max-content;margin-top:6px;padding:4px 8px;border-radius:999px;font-size:11px;font-weight:700;border:1px solid transparent}
+.docs-storage-badge.is-local{color:#9a6700;background:rgba(255,206,84,.15);border-color:rgba(255,206,84,.32)}
+.docs-storage-badge.is-remote{color:#0f7a43;background:rgba(46,204,113,.14);border-color:rgba(46,204,113,.3)}
+.docs-preview-title-wrap{display:flex;flex-direction:column;min-width:0}
+
+[data-theme="dark"] .docs-item{
+  background: rgba(15, 23, 36, 0.92);
+  border-color: rgba(255,255,255,0.10);
+  color: rgba(241,245,249,0.97);
+}
+
+[data-theme="dark"] .docs-item:hover{
+  border-color: rgba(var(--accent-rgb), 0.36);
+}
+
+[data-theme="dark"] .docs-icon{
+  background: rgba(255,255,255,.06);
+}
+
+[data-theme="dark"] .docs-name{
+  color: rgba(241,245,249,0.97);
+}
+
+[data-theme="dark"] .docs-preview-card{
+  background: #121923;
+  color: rgba(241,245,249,0.97);
+}
+
+[data-theme="dark"] .docs-preview-header{
+  border-bottom-color: rgba(255,255,255,.10);
+}
+
+[data-theme="dark"] .docs-preview-body{
+  background: rgba(0,0,0,.20);
+}
+
+[data-theme="dark"] .docs-btn{
+  background: rgba(15, 23, 36, 0.95);
+  color: rgba(241,245,249,0.97);
+  border-color: rgba(255,255,255,0.14);
+}
+
+[data-theme="dark"] .docs-btn:hover{
+  border-color: rgba(var(--accent-rgb), 0.36);
+}

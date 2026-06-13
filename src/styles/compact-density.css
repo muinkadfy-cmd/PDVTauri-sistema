@@ -1,0 +1,965 @@
+/* P17 — Densidade desktop global
+   Ajuste final para deixar todas as abas no padrao compacto da referencia. */
+
+@media (min-width: 901px) {
+  :root {
+    --spacing-1: 3px;
+    --spacing-2: 6px;
+    --spacing-3: 8px;
+    --spacing-4: 10px;
+    --spacing-5: 12px;
+    --spacing-6: 14px;
+    --spacing-8: 18px;
+    --spacing-10: 24px;
+    --spacing-12: 30px;
+    --spacing-xs: 3px;
+    --spacing-sm: 6px;
+    --spacing-md: 10px;
+    --spacing-lg: 14px;
+    --spacing-xl: 18px;
+    --spacing-2xl: 24px;
+    --gap-grid: 8px;
+    --card-padding: 10px;
+    --card-padding-sm: 8px;
+    --font-size-xs: 10px;
+    --font-size-sm: 12px;
+    --font-size-base: 13px;
+    --font-size-lg: 15px;
+    --font-size-xl: 17px;
+    --font-size-2xl: 19px;
+    --font-size-3xl: 22px;
+    --font-size-4xl: 26px;
+    --input-height-sm: 28px;
+    --input-height: 32px;
+    --input-height-lg: 38px;
+    --touch-target-sm: 28px;
+    --touch-target: 32px;
+    --touch-target-lg: 38px;
+    --border-radius-sm: 0;
+    --border-radius: 0;
+    --border-radius-md: 0;
+    --border-radius-lg: 0;
+  }
+
+  html[data-perf="1"],
+  html[data-perf="1"] body,
+  html[data-perf="1"] #root,
+  html[data-perf="1"] .app {
+    background: #050b12 !important;
+  }
+
+  html[data-perf="1"] *,
+  html[data-perf="1"] *::before,
+  html[data-perf="1"] *::after {
+    letter-spacing: 0 !important;
+    transition: none !important;
+    animation: none !important;
+  }
+
+  html[data-perf="1"] :where(
+    .card,
+    .kpi-card,
+    .metric-card,
+    .panel-card,
+    .dashboard-card,
+    .summary-card,
+    .resumo-card-new,
+    .stat-card,
+    .quick-action-card,
+    .venda-card,
+    .cobranca-card,
+    .recibo-card,
+    .devolucao-card,
+    .devolucao-summary-card,
+    .recibo-stat-card,
+    .backup-card,
+    .backup-summary-card,
+    .backup-info,
+    .backup-control-block,
+    .finance-analysis-card,
+    .entrada-setor-card,
+    .analysis-card,
+    .empty-state,
+    .modal-card,
+    .modal-content,
+    .st-page-toolbar,
+    .st-page-header
+  ) {
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    transform: none !important;
+  }
+
+  html[data-perf="1"] :where(
+    .card:hover,
+    .card:active,
+    .kpi-card:hover,
+    .kpi-card:active,
+    .metric-card:hover,
+    .metric-card:active,
+    .panel-card:hover,
+    .panel-card:active,
+    .dashboard-card:hover,
+    .dashboard-card:active,
+    .summary-card:hover,
+    .summary-card:active,
+    .resumo-card-new:hover,
+    .resumo-card-new:active,
+    .stat-card:hover,
+    .stat-card:active,
+    .quick-action-card:hover,
+    .quick-action-card:active,
+    .venda-card:hover,
+    .venda-card:active,
+    .cobranca-card:hover,
+    .cobranca-card:active,
+    .recibo-card:hover,
+    .recibo-card:active,
+    .devolucao-card:hover,
+    .devolucao-card:active,
+    .quick-sale-item:hover,
+    .quick-sale-item:active,
+    .backup-card:hover,
+    .backup-card:active,
+    .btn:hover,
+    .btn:active,
+    .btn-primary:hover,
+    .btn-primary:active,
+    .btn-secondary:hover,
+    .btn-secondary:active,
+    .btn-action:hover,
+    .btn-action:active,
+    .btn-icon:hover,
+    .btn-icon:active
+  ) {
+    transform: none !important;
+    filter: none !important;
+  }
+
+  .topbar {
+    min-height: 58px !important;
+    height: 58px !important;
+    padding: 5px 10px !important;
+    gap: 8px !important;
+  }
+
+  .topbar-left,
+  .topbar-right {
+    gap: 7px !important;
+  }
+
+  .topbar-brand,
+  .topbar-home-button,
+  .menu-toggle,
+  .avatar-button {
+    width: 38px !important;
+    height: 38px !important;
+    min-width: 38px !important;
+    border-radius: 0 !important;
+  }
+
+  .logo-mark,
+  .logo-fallback {
+    width: 32px !important;
+    height: 32px !important;
+    border-radius: 0 !important;
+  }
+
+  .topbar-page-context {
+    gap: 2px !important;
+  }
+
+  .topbar-page-row {
+    gap: 5px !important;
+  }
+
+  .topbar-page-chip,
+  .topbar-page-badge {
+    height: 28px !important;
+    min-height: 28px !important;
+    min-width: 96px !important;
+    padding: 4px 14px !important;
+    font-size: 12px !important;
+    line-height: 1 !important;
+  }
+
+  .topbar-page-hint {
+    font-size: 12px !important;
+    line-height: 1.1 !important;
+  }
+
+  .topbar-clock,
+  .topbar-clock--compact {
+    height: 34px !important;
+    min-width: 70px !important;
+    padding: 0 12px !important;
+  }
+
+  .clock-time,
+  .avatar-initials {
+    font-size: 14px !important;
+    line-height: 1 !important;
+  }
+
+  .sidebar {
+    --sidebar-w: 286px !important;
+    width: var(--sidebar-w) !important;
+    min-width: var(--sidebar-w) !important;
+    height: calc(100vh - var(--topbar-height, 58px) - var(--classic-statusbar-height, 34px)) !important;
+    top: var(--topbar-height, 58px) !important;
+  }
+
+  .sidebar-header {
+    padding: 9px 12px !important;
+  }
+
+  .sidebar-brand {
+    gap: 9px !important;
+  }
+
+  .sidebar-brand-mark {
+    width: 38px !important;
+    height: 38px !important;
+  }
+
+  .sidebar-brand-kicker {
+    font-size: 10px !important;
+    line-height: 1.1 !important;
+  }
+
+  .sidebar-brand-text {
+    font-size: 15px !important;
+    line-height: 1.15 !important;
+  }
+
+  .sidebar-nav {
+    padding: 8px 9px 10px !important;
+    gap: 7px !important;
+  }
+
+  .sidebar-group {
+    gap: 4px !important;
+  }
+
+  .sidebar-group-label {
+    padding: 7px 5px 4px !important;
+    font-size: 11px !important;
+    line-height: 1 !important;
+  }
+
+  .sidebar-item,
+  .sidebar-item:hover,
+  .sidebar-item.active {
+    min-height: 34px !important;
+    height: 34px !important;
+    padding: 4px 8px !important;
+    gap: 9px !important;
+    border-width: 1px !important;
+    border-radius: 0 !important;
+    transform: none !important;
+  }
+
+  .sidebar-icon {
+    width: 26px !important;
+    height: 26px !important;
+    min-width: 26px !important;
+    border-radius: 0 !important;
+  }
+
+  .sidebar-icon svg {
+    width: 17px !important;
+    height: 17px !important;
+  }
+
+  .sidebar-label {
+    font-size: 13px !important;
+    line-height: 1.15 !important;
+    font-weight: 700 !important;
+  }
+
+  .sidebar-footer {
+    min-height: 44px !important;
+    padding: 8px 10px !important;
+  }
+
+  .copyright-main {
+    font-size: 12px !important;
+  }
+
+  .main-content {
+    padding: 8px 10px 6px !important;
+    padding-bottom: 6px !important;
+    overflow: auto !important;
+    overflow-anchor: none !important;
+    scrollbar-gutter: stable !important;
+  }
+
+  .main-content.with-sidebar {
+    margin-left: 0 !important;
+  }
+
+  .page-container,
+  .page-content,
+  .main-content > [class$="-page"],
+  .main-content > [class*="-page "],
+  .painel-page,
+  .clientes-page,
+  .vendas-page,
+  .produtos-page,
+  .ordens-page,
+  .financeiro-page,
+  .relatorios-page,
+  .fluxo-caixa-page,
+  .backup-page,
+  .configuracoes-page,
+  .usuarios-page,
+  .usados-page,
+  .fornecedores-page,
+  .cobrancas-page,
+  .encomendas-page,
+  .recibo-page,
+  .estoque-page,
+  .imei-page,
+    .simular-taxas-page,
+    .ajuda-page {
+    width: 100% !important;
+    max-width: none !important;
+    padding: 8px 10px !important;
+    overflow-anchor: none !important;
+  }
+
+  .page-head,
+  .painel-header,
+  .st-page-header,
+  .panel-section-heading,
+  .card-header,
+  .section-header,
+  .page-header,
+  [class$="-page-header"],
+  [class*="-page-header "],
+  [class$="-page-head"],
+  [class*="-page-head "],
+  .backup-header,
+  .configuracoes-header {
+    min-height: 0 !important;
+    margin: 0 0 8px !important;
+    padding: 0 !important;
+    gap: 8px !important;
+  }
+
+  :where(h1, h2, h3, .page-title, .st-page-header__title, .painel-page h1, .painel-page h2) {
+    margin-top: 0 !important;
+    margin-bottom: 6px !important;
+    line-height: 1.12 !important;
+  }
+
+  :where(h1, .page-title, .st-page-header__title, .painel-page h1) {
+    font-size: 19px !important;
+  }
+
+  :where(h2, .panel-section-heading h2, .card-title) {
+    font-size: 16px !important;
+  }
+
+  :where(h3, .modal-title, .dialog-title) {
+    font-size: 14px !important;
+  }
+
+  .st-page-header__subtitle,
+  .topbar-page-hint,
+  .helper-text,
+  .text-muted,
+  .muted,
+  small {
+    font-size: 12px !important;
+    line-height: 1.25 !important;
+  }
+
+  .st-page-header__top {
+    min-height: 38px !important;
+    align-items: flex-start !important;
+  }
+
+  .st-page-header__right,
+  .st-page-header__actions {
+    min-height: 30px !important;
+    align-items: flex-start !important;
+  }
+
+  .st-page-header__actions {
+    gap: 5px !important;
+  }
+
+  .kpi-grid,
+  .metrics-grid,
+  .summary-grid,
+  .resumo-cards-financeiro,
+  .resumo-cards-fluxo,
+  .resumo-cards-setores,
+  .cards-grid,
+  .stats-grid,
+  .dashboard-grid,
+  .quick-actions-grid,
+  .finance-grid,
+  .backup-grid,
+  .config-grid,
+  .usuarios-grid,
+  .form-grid {
+    gap: 8px !important;
+  }
+
+  .panel-section,
+  .section,
+  .content-section,
+  [class$="-section"],
+  [class*="-section "],
+  .backup-section,
+  .config-section {
+    margin-top: 8px !important;
+    margin-bottom: 8px !important;
+  }
+
+  .card,
+  .kpi-card,
+  .metric-card,
+  .panel-card,
+  .dashboard-card,
+  .summary-card,
+  .resumo-card-new,
+  .stat-card,
+  .quick-action-card,
+  .finance-analysis-card,
+  .entrada-setor-card,
+  .analysis-card,
+  .backup-card,
+  .backup-summary-card,
+  .backup-info,
+  .backup-control-block,
+  .empty-state {
+    padding: 9px 11px !important;
+    min-height: 0 !important;
+  }
+
+  .page-usage-hint {
+    margin: 0 0 8px !important;
+    padding: 10px 12px !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+  }
+
+  .page-usage-hint__head {
+    margin-bottom: 7px !important;
+  }
+
+  .page-usage-hint__badge {
+    min-height: 22px !important;
+    padding: 3px 10px !important;
+    border-radius: 0 !important;
+    font-size: 11px !important;
+    line-height: 1 !important;
+  }
+
+  .page-usage-hint__grid {
+    gap: 8px !important;
+  }
+
+  .page-usage-hint__item {
+    min-height: 54px !important;
+    padding: 8px 10px !important;
+    border-radius: 0 !important;
+  }
+
+  .page-usage-hint__label,
+  .page-usage-hint__text {
+    letter-spacing: 0 !important;
+  }
+
+  .page-usage-hint__text {
+    font-size: 12px !important;
+    line-height: 1.25 !important;
+  }
+
+  .kpi-card,
+  .metric-card,
+  .panel-card,
+  .resumo-card-new,
+  .stat-card {
+    min-height: 74px !important;
+  }
+
+  .st-stats-grid,
+  .st-stats-grid--dense {
+    display: grid !important;
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+    gap: 8px !important;
+    align-items: stretch !important;
+    margin: 8px 0 !important;
+  }
+
+  .st-stats-grid > *,
+  .st-stats-grid--dense > * {
+    min-width: 0 !important;
+  }
+
+  .st-filterbar {
+    min-height: 40px !important;
+    margin: 8px 0 !important;
+    padding: 6px 8px !important;
+    border-radius: 0 !important;
+    overflow-anchor: none !important;
+  }
+
+  .st-filterbar__head {
+    min-height: 28px !important;
+  }
+
+  .st-filterbar__toggle {
+    min-height: 28px !important;
+    padding: 4px 6px !important;
+    border-radius: 0 !important;
+    transform: none !important;
+  }
+
+  .st-filterbar__chev {
+    width: 16px !important;
+    min-width: 16px !important;
+  }
+
+  .st-filterbar__body {
+    margin-top: 8px !important;
+    gap: 8px !important;
+  }
+
+  .st-filterbar__row,
+  .chip-row {
+    gap: 5px !important;
+  }
+
+  .fluxo-page,
+  .financeiro-page,
+  .vendas-page,
+  .cobrancas-page,
+  .recibo-page,
+  .devolucao-page {
+    display: block !important;
+    min-height: calc(100vh - 90px) !important;
+  }
+
+  .fluxo-lista,
+  .financeiro-lista,
+  .movimentacoes-lista,
+  .vendas-list,
+  .cobrancas-grid,
+  .recibos-grid,
+  .devolucoes-grid {
+    margin-top: 8px !important;
+    border-radius: 0 !important;
+    overflow: visible !important;
+    min-height: 150px !important;
+    overflow-anchor: none !important;
+  }
+
+  .vendas-list {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 7px !important;
+  }
+
+  .cobrancas-grid,
+  .recibos-grid,
+  .devolucoes-grid {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)) !important;
+    gap: 8px !important;
+  }
+
+  .fluxo-lista-header,
+  .financeiro-lista-header,
+  .movimentacoes-lista-header {
+    min-height: 40px !important;
+    padding: 8px 10px !important;
+  }
+
+  .fluxo-lista-header h2,
+  .financeiro-lista-header h2,
+  .movimentacoes-lista-header h2 {
+    font-size: 15px !important;
+    line-height: 1.15 !important;
+    margin: 0 !important;
+  }
+
+  .fluxo-items,
+  .financeiro-items,
+  .movimentacoes-items,
+  .st-skeleton-list {
+    gap: 0 !important;
+  }
+
+  .st-skeleton-item {
+    min-height: 48px !important;
+    padding: 8px 10px !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+  }
+
+  .st-list-reserve {
+    min-height: 128px !important;
+    border: 1px solid transparent !important;
+    background: transparent !important;
+    pointer-events: none !important;
+    overflow-anchor: none !important;
+  }
+
+  .venda-card,
+  .cobranca-card,
+  .recibo-card,
+  .devolucao-card,
+  .devolucao-summary-card,
+  .recibo-stat-card,
+  .quick-sale-panel,
+  .quick-sale-item,
+  .devolucao-toolbar {
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    transform: none !important;
+  }
+
+  .venda-card,
+  .cobranca-card,
+  .recibo-card,
+  .devolucao-card {
+    padding: 9px 10px !important;
+    min-height: 116px !important;
+  }
+
+  .venda-header,
+  .cobranca-header,
+  .recibo-header,
+  .devolucao-header {
+    min-height: 32px !important;
+    margin-bottom: 7px !important;
+    gap: 6px !important;
+  }
+
+  .venda-header h3,
+  .cobranca-header h3,
+  .recibo-header h3,
+  .devolucao-title-block h3 {
+    font-size: 14px !important;
+    line-height: 1.15 !important;
+    margin: 0 !important;
+  }
+
+  .venda-info,
+  .cobranca-info,
+  .recibo-info,
+  .devolucao-info {
+    gap: 4px !important;
+  }
+
+  .venda-info p,
+  .cobranca-info p,
+  .recibo-info p,
+  .devolucao-info p,
+  .devolucao-detail-row,
+  .recibo-observacoes {
+    font-size: 12px !important;
+    line-height: 1.22 !important;
+  }
+
+  .recibo-valor,
+  .devolucao-valor,
+  .venda-total,
+  .venda-valor {
+    font-size: 17px !important;
+    line-height: 1.05 !important;
+    margin-bottom: 4px !important;
+  }
+
+  .recibo-stats,
+  .devolucao-summary-grid,
+  .quick-sale-grid {
+    gap: 8px !important;
+    margin-bottom: 8px !important;
+  }
+
+  .recibo-stat-card,
+  .devolucao-summary-card {
+    min-height: 70px !important;
+    padding: 8px 10px !important;
+  }
+
+  .st-section,
+  .devolucao-toolbar,
+  .quick-sale-panel {
+    margin-bottom: 8px !important;
+    padding: 8px 10px !important;
+  }
+
+  .finance-analysis-card,
+  .entrada-setor-card,
+  .analysis-card {
+    min-height: 112px !important;
+  }
+
+  .kpi-label,
+  .metric-label,
+  .card-label,
+  .stat-title,
+  .stat-subtitle,
+  .st-page-toolbar label,
+  label {
+    font-size: 12px !important;
+    line-height: 1.1 !important;
+  }
+
+  .kpi-value,
+  .metric-value,
+  .card-value,
+  .stat-value,
+  .money-value,
+  .total-value,
+  .amount,
+  .price {
+    font-size: 18px !important;
+    line-height: 1.05 !important;
+  }
+
+  .kpi-helper,
+  .metric-helper,
+  .card-helper,
+  .stat-subtitle,
+  .empty-state-message {
+    font-size: 12px !important;
+    line-height: 1.22 !important;
+  }
+
+  .kpi-icon,
+  .metric-icon,
+  .card-icon,
+  .stat-icon,
+  .quick-action-icon {
+    width: 28px !important;
+    height: 28px !important;
+    min-width: 28px !important;
+  }
+
+  .calc-details {
+    margin: 6px 0 8px !important;
+  }
+
+  .calc-details summary {
+    min-height: 28px !important;
+    padding: 5px 9px !important;
+    font-size: 14px !important;
+  }
+
+  .period-tabs,
+  .period-filter,
+  .panel-period-tabs,
+  .period-selector,
+  .period-toggle,
+  .tabs,
+  .tab-list,
+  .analysis-tabs,
+  .st-page-toolbar {
+    gap: 3px !important;
+    padding: 0 !important;
+  }
+
+  .period-tabs button,
+  .period-filter button,
+  .panel-period-tabs button,
+  .period-option,
+  .tab-button,
+  .analysis-tab,
+  .period-selector button,
+  .period-toggle button,
+  .tabs button,
+  .tab-list button,
+  .st-page-toolbar button,
+  .btn,
+  .btn-primary,
+  .btn-secondary,
+  .btn-action {
+    height: 30px !important;
+    min-height: 30px !important;
+    padding: 4px 10px !important;
+    border-radius: 0 !important;
+    font-size: 12px !important;
+    line-height: 1 !important;
+  }
+
+  .btn-sm,
+  .btn-icon,
+  .modal-close {
+    height: 28px !important;
+    min-height: 28px !important;
+    min-width: 28px !important;
+    padding: 0 8px !important;
+  }
+
+  .btn-icon,
+  .modal-close {
+    width: 28px !important;
+    padding: 0 !important;
+  }
+
+  .standard-form,
+  .form-section,
+  .form-row,
+  .form-grid {
+    gap: 8px !important;
+  }
+
+  .form-group {
+    margin-bottom: 8px !important;
+  }
+
+  .form-input,
+  .form-select,
+  .form-textarea,
+  input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="color"]):not([type="file"]),
+  select,
+  textarea {
+    min-height: 32px !important;
+    height: auto !important;
+    padding: 6px 8px !important;
+    border-radius: 0 !important;
+    font-size: 13px !important;
+    line-height: 1.2 !important;
+    transform: none !important;
+  }
+
+  textarea,
+  .form-textarea {
+    min-height: 76px !important;
+  }
+
+  .form-label {
+    position: static !important;
+    display: block !important;
+    transform: none !important;
+    padding: 0 !important;
+    margin-bottom: 3px !important;
+    background: transparent !important;
+  }
+
+  .form-input:focus ~ .form-label,
+  .form-input:not(:placeholder-shown) ~ .form-label,
+  .form-textarea:focus ~ .form-label,
+  .form-textarea:not(:placeholder-shown) ~ .form-label,
+  .form-select:focus ~ .form-label,
+  .form-select:valid ~ .form-label {
+    position: static !important;
+    transform: none !important;
+    font-size: 12px !important;
+    background: transparent !important;
+  }
+
+  .form-actions,
+  .modal-footer,
+  .dialog-footer,
+  .card-footer {
+    gap: 6px !important;
+    margin-top: 8px !important;
+    padding-top: 8px !important;
+  }
+
+  .table,
+  table,
+  .data-table,
+  .list-table,
+  .routes-table {
+    border-radius: 0 !important;
+    border-collapse: collapse !important;
+    border-spacing: 0 !important;
+    box-shadow: none !important;
+  }
+
+  .table th,
+  .table td,
+  table th,
+  table td,
+  .data-table th,
+  .data-table td,
+  .list-table th,
+  .list-table td {
+    padding: 6px 8px !important;
+    font-size: 12px !important;
+    line-height: 1.2 !important;
+    transform: none !important;
+  }
+
+  .table tbody tr,
+  .table tbody tr:hover,
+  .table tbody tr:active {
+    transform: none !important;
+    box-shadow: none !important;
+  }
+
+  .table tbody tr::before,
+  .table th::after,
+  .card::after {
+    display: none !important;
+  }
+
+  .badge,
+  .status-badge,
+  .pill,
+  .chip {
+    min-height: 20px !important;
+    height: 20px !important;
+    padding: 2px 7px !important;
+    border-radius: 0 !important;
+    font-size: 11px !important;
+    line-height: 1 !important;
+  }
+
+  .modal-content,
+  .modal-card,
+  .dialog,
+  .drawer-panel {
+    padding: 10px !important;
+  }
+
+  .modal-header,
+  .dialog-header {
+    padding: 0 0 8px !important;
+    margin-bottom: 8px !important;
+  }
+
+  .modal-body,
+  .dialog-body {
+    padding: 8px 0 !important;
+  }
+
+  .classic-statusbar {
+    height: 32px !important;
+    flex-basis: 32px !important;
+    font-size: 13px !important;
+  }
+
+  .classic-statusbar-cell {
+    padding: 0 8px !important;
+  }
+}
+
+@media (min-width: 901px) and (max-width: 1366px) {
+  .sidebar {
+    --sidebar-w: 268px !important;
+  }
+
+  .page-container,
+  .page-content,
+  .painel-page {
+    padding: 7px 8px !important;
+  }
+
+  .main-content {
+    padding-left: 8px !important;
+    padding-right: 8px !important;
+  }
+}

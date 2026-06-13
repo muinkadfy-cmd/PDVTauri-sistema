@@ -1,0 +1,49 @@
+/* src/styles/index.css */
+/* Ordem pensada: tokens -> tema -> layout -> componentes -> forms -> extras */
+
+@import "./tokens.css";
+@import "./theme.css";
+@import "./layout.css";
+
+@import "./components.css";
+@import "./forms.css";
+@import "./buttons.css";
+@import "./polish.css";
+
+@import "./mobile.css";
+@import "./web.css";
+@import "./accessibility.css";
+
+@import "./skeleton.css";
+@import "./spinners.css";
+@import "./empty-states.css";
+
+@import "./dark-mode-mobile-fix.css";
+
+/* Tema clássico (Desktop) */
+/* @import "./theme-classic.css";  (desativado: dark fixo) */
+/* @import "./classic-ui.css";  (desativado: dark fixo) */
+
+/* Lote P8: camada leve para Desktop/offline e PCs fracos */
+@import "./desktop-lite.css";
+
+/* P12: visual clássico final, quadrado e leve */
+@import "./classic-desktop-final.css";
+
+/* P13: ajuste fino 1:1 do tema clássico */
+@import "./classic-desktop-refine.css";
+
+/* P16: Sora como fonte padrão do sistema inteiro */
+@import "./sora-font-system.css";
+
+/* P17: densidade compacta global desativada para preservar hierarquia desktop */
+/* @import "./compact-density.css"; */
+
+/* P18: fundo desktop com profundidade sutil, sem preto chapado */
+@import "./desktop-background.css";
+
+/* P19: fidelidade visual das telas de referencia desktop/login */
+@import "./reference-fidelity.css";
+
+/* P26: abas internas seguem o mesmo padrão visual da referência */
+@import "./reference-tabs.css";

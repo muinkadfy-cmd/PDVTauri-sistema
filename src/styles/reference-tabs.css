@@ -1,0 +1,711 @@
+/* Ajuste final das abas desktop para acompanhar a referencia Smart Tech PDV. */
+
+@media (min-width: 901px) {
+  html[data-perf="1"] {
+    --st-ref-bg: #07121d;
+    --st-ref-panel: #0c2030;
+    --st-ref-panel-2: #0e2536;
+    --st-ref-panel-3: #081723;
+    --st-ref-line: #314b63;
+    --st-ref-line-2: #415d77;
+    --st-ref-line-soft: rgba(65, 93, 119, 0.58);
+    --st-ref-text: #f4f8fc;
+    --st-ref-muted: #c8d2de;
+    --st-ref-dim: #8fa4b8;
+    --st-ref-green: #18be62;
+    --st-ref-blue: #5da2ff;
+    --st-ref-amber: #f3ac25;
+    --st-ref-violet: #a566ff;
+  }
+
+  html[data-perf="1"] .main-content {
+    overflow-x: hidden !important;
+  }
+
+  html[data-perf="1"] .main-content > :where(
+    .page-container,
+    .clientes-page,
+    .vendas-page,
+    .produtos-page,
+    .ordens-page,
+    .financeiro-page,
+    .relatorios-page,
+    .fluxo-page,
+    .cobrancas-page,
+    .recibo-page,
+    .estoque-page,
+    .encomendas-page,
+    .fornecedores-page,
+    .codigos-page,
+    .backup-page,
+    .updates-page,
+    .configuracoes-page,
+    .usuarios-page,
+    .imei-page,
+    .ajuda-page,
+    .autoajuda-page,
+    .devolucao-page,
+    .simular-taxas-page,
+    .usados-page,
+    .licenca-mensal-page,
+    .diagnostico-page,
+    .diagnostico-dados-page,
+    .produtos-diagnostico-page,
+    .sync-status-page,
+    .system-test-page,
+    .health-routes-page,
+    .audit-page
+  ) {
+    width: 100% !important;
+    max-width: none !important;
+    min-width: 0 !important;
+    padding: 0 0 22px !important;
+    margin: 0 !important;
+    color: var(--st-ref-text) !important;
+  }
+
+  html[data-perf="1"] :where(
+    .page-header,
+    .st-page-header,
+    .updates-header,
+    .diagnostico-header,
+    .health-routes-header,
+    .test-header,
+    .selftest-header,
+    .licenca-mensal-header,
+    .usados-page-header,
+    .devolucao-header-premium,
+    .backup-page-header,
+    .config-notif-header,
+    .activation-header,
+    .setup-header
+  ) {
+    display: flex !important;
+    align-items: flex-end !important;
+    justify-content: space-between !important;
+    gap: 14px !important;
+    min-height: 42px !important;
+    margin: 0 0 12px !important;
+    padding: 0 !important;
+    border: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+  }
+
+  html[data-perf="1"] :where(
+    .page-header h1,
+    .st-page-header__title,
+    .updates-header h1,
+    .diagnostico-header h1,
+    .health-routes-header h1,
+    .test-header h1,
+    .selftest-header h1,
+    .licenca-mensal-header h1,
+    .usados-page-header h1,
+    .devolucao-header-premium h1,
+    .backup-page-header h1,
+    .config-notif-header h1,
+    .activation-header h1,
+    .setup-header h1
+  ) {
+    margin: 0 !important;
+    color: var(--st-ref-text) !important;
+    font-size: 22px !important;
+    line-height: 1.12 !important;
+    font-weight: 900 !important;
+    letter-spacing: 0 !important;
+    text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.72) !important;
+  }
+
+  html[data-perf="1"] :where(
+    .page-subtitle,
+    .page-header p,
+    .st-page-header__subtitle,
+    .updates-header p,
+    .diagnostico-header p,
+    .health-routes-header p,
+    .test-header p,
+    .selftest-header p,
+    .licenca-mensal-header p,
+    .usados-page-header p,
+    .devolucao-header-premium p,
+    .backup-page-subtitle,
+    .config-notif-header p,
+    .activation-header p,
+    .setup-header p
+  ) {
+    max-width: 780px !important;
+    margin: 4px 0 0 !important;
+    color: var(--st-ref-muted) !important;
+    font-size: 13px !important;
+    line-height: 1.35 !important;
+    font-weight: 500 !important;
+    opacity: 1 !important;
+  }
+
+  html[data-perf="1"] :where(.page-kicker, .st-page-header__kicker, .usados-page-kicker) {
+    margin: 0 0 5px !important;
+    color: var(--st-ref-muted) !important;
+    font-size: 12px !important;
+    line-height: 1 !important;
+    font-weight: 800 !important;
+    letter-spacing: 0 !important;
+    text-transform: uppercase !important;
+  }
+
+  html[data-perf="1"] :where(
+    .st-page-toolbar,
+    .page-toolbar,
+    .toolbar,
+    .devolucao-toolbar,
+    .usuarios-access-toolbar,
+    .backup-schedule-panel,
+    .codigos-search-card,
+    .search-bar,
+    .busca-container,
+    .status-card,
+    .updates-section,
+    .calc-details,
+    .details-soft,
+    .page-usage-hint,
+    .st-infobanner
+  ) {
+    border-radius: 0 !important;
+    border: 1px solid var(--st-ref-line-2) !important;
+    background: linear-gradient(180deg, rgba(13, 32, 48, 0.94), rgba(7, 19, 30, 0.98)) !important;
+    box-shadow: inset 1px 1px 0 rgba(255, 255, 255, 0.08), inset -1px -1px 0 rgba(0, 0, 0, 0.62) !important;
+    color: var(--st-ref-text) !important;
+    overflow: hidden !important;
+  }
+
+  html[data-perf="1"] .st-page-toolbar {
+    margin: 0 0 12px !important;
+    padding: 10px !important;
+    gap: 10px !important;
+  }
+
+  html[data-perf="1"] :where(
+    .clientes-grid,
+    .vendas-grid,
+    .produtos-grid,
+    .ordens-grid,
+    .cobrancas-grid,
+    .recibos-grid,
+    .estoque-grid,
+    .encomendas-grid,
+    .fornecedores-grid,
+    .devolucoes-grid,
+    .usados-grid,
+    .usados-estoque-grid,
+    .backup-cards,
+    .updates-grid,
+    .cards,
+    .recursos-grid,
+    .servicos-grid,
+    .marcas-grid,
+    .lojas-grid,
+    .usuarios-access-grid,
+    .usuarios-card-list
+  ) {
+    gap: 12px !important;
+  }
+
+  html[data-perf="1"] :where(
+    .card,
+    .config-card,
+    .cliente-card,
+    .venda-card,
+    .produto-card,
+    .ordem-card,
+    .cobranca-card,
+    .recibo-card,
+    .estoque-card,
+    .encomenda-card,
+    .fornecedor-card,
+    .devolucao-card,
+    .resumo-card,
+    .summary-card,
+    .stat-card,
+    .status-card,
+    .panel-glance-card,
+    .info-card,
+    .detalhes-card,
+    .integridade-card,
+    .backup-card,
+    .backup-summary-card,
+    .backup-diagnostic-card,
+    .updates-card,
+    .support-card,
+    .suporte-whatsapp-card,
+    .ajuda-overview-card,
+    .recurso-card,
+    .faq-item,
+    .sem-resultados,
+    .guia-rapido,
+    .recursos-sistema,
+    .codigos-overview-card,
+    .codigos-highlight-card,
+    .marca-card,
+    .imei-info-card,
+    .servico-card,
+    .taxas-bandeira-card,
+    .resultado-simulacao,
+    .simulacao-form,
+    .tabela-taxas,
+    .usados-card,
+    .usados-summary-card,
+    .usado-estoque-card,
+    .venda-historico-card,
+    .usuarios-summary-card,
+    .usuarios-access-card,
+    .usuarios-access-hero-card,
+    .usuarios-user-card,
+    .licenca-mensal-card,
+    .license-card,
+    .license-visibility-card,
+    .diagnostico-card,
+    .funcionalidade-card,
+    .lojas-overview-card,
+    .lojas-store-card,
+    .breakdown-card,
+    .recibo-stat-card,
+    .finance-analysis-card,
+    .entrada-setor-card,
+    .empty-state,
+    .table-empty-state
+  ) {
+    min-width: 0 !important;
+    border-radius: 0 !important;
+    border: 1px solid var(--st-ref-line-2) !important;
+    background: linear-gradient(180deg, var(--st-ref-panel-2) 0%, var(--st-ref-panel) 100%) !important;
+    box-shadow: inset 1px 1px 0 rgba(255, 255, 255, 0.08), inset -1px -1px 0 rgba(0, 0, 0, 0.70) !important;
+    color: var(--st-ref-text) !important;
+    transform: none !important;
+    filter: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  html[data-perf="1"] :where(
+    .card:hover,
+    .config-card:hover,
+    .cliente-card:hover,
+    .venda-card:hover,
+    .produto-card:hover,
+    .ordem-card:hover,
+    .cobranca-card:hover,
+    .recibo-card:hover,
+    .estoque-card:hover,
+    .encomenda-card:hover,
+    .fornecedor-card:hover,
+    .devolucao-card:hover,
+    .backup-card:hover,
+    .updates-card:hover,
+    .recurso-card:hover,
+    .marca-card:hover,
+    .servico-card:hover,
+    .usado-estoque-card:hover,
+    .diagnostico-card:hover,
+    .funcionalidade-card:hover
+  ) {
+    border-color: #5c7894 !important;
+    background: linear-gradient(180deg, #112b3f 0%, #081724 100%) !important;
+    box-shadow: inset 1px 1px 0 rgba(255, 255, 255, 0.10), inset -1px -1px 0 rgba(0, 0, 0, 0.72) !important;
+    transform: none !important;
+  }
+
+  html[data-perf="1"] :where(.card::after, .st-page-toolbar::before, .kpi-card::before) {
+    display: none !important;
+  }
+
+  html[data-perf="1"] :where(
+    .cliente-card,
+    .venda-card,
+    .produto-card,
+    .ordem-card,
+    .cobranca-card,
+    .recibo-card,
+    .estoque-card,
+    .encomenda-card,
+    .fornecedor-card,
+    .devolucao-card,
+    .backup-card,
+    .updates-card,
+    .usados-card,
+    .usado-estoque-card,
+    .usuarios-user-card,
+    .licenca-mensal-card
+  ) {
+    padding: 13px 14px !important;
+  }
+
+  html[data-perf="1"] :where(
+    .summary-grid,
+    .stats-grid,
+    .resumo-cards,
+    .resumo-card-grid,
+    .devolucao-summary-grid,
+    .backup-summary-grid,
+    .backup-diagnostic-mini-grid,
+    .codigos-overview-grid,
+    .usados-summary-grid,
+    .usuarios-summary-grid,
+    .status-cards,
+    .st-stats-grid,
+    .breakdown-grid
+  ) {
+    gap: 12px !important;
+  }
+
+  html[data-perf="1"] :where(
+    .resumo-card,
+    .panel-glance-card,
+    .summary-card,
+    .stat-card,
+    .backup-summary-card,
+    .codigos-overview-card,
+    .usados-summary-card,
+    .usuarios-summary-card,
+    .recibo-stat-card,
+    .breakdown-card
+  ) {
+    min-height: 88px !important;
+    padding: 14px 16px !important;
+  }
+
+  html[data-perf="1"] :where(
+    .cliente-header,
+    .venda-header,
+    .produto-header,
+    .ordem-header,
+    .cobranca-header,
+    .recibo-header,
+    .estoque-header,
+    .encomenda-header,
+    .fornecedor-card-header,
+    .devolucao-header,
+    .form-header,
+    .updates-card-head,
+    .backup-card h3,
+    .usuarios-section-header,
+    .licenca-card-title-row,
+    .funcionalidade-header,
+    .marca-header,
+    .taxas-bandeira-header,
+    .section-header,
+    .section-title
+  ) {
+    border-color: var(--st-ref-line-soft) !important;
+    color: var(--st-ref-text) !important;
+  }
+
+  html[data-perf="1"] :where(
+    .cliente-header h3,
+    .venda-header h3,
+    .produto-header h3,
+    .ordem-header h3,
+    .cobranca-header h3,
+    .recibo-header h3,
+    .estoque-header h3,
+    .encomenda-header h3,
+    .fornecedor-card-header h3,
+    .form-header h2,
+    .updates-card-head h2,
+    .config-card h2,
+    .card h2,
+    .card h3,
+    .usuarios-section-header h2,
+    .licenca-card-title-row h2,
+    .funcionalidade-header h3,
+    .marca-header h2,
+    .taxas-bandeira-header h4,
+    .section-header h2,
+    .section-title,
+    .fluxo-lista-header h2
+  ) {
+    color: var(--st-ref-text) !important;
+    font-size: 15px !important;
+    line-height: 1.2 !important;
+    font-weight: 900 !important;
+    letter-spacing: 0 !important;
+  }
+
+  html[data-perf="1"] :where(
+    .card p,
+    .config-card p,
+    .cliente-card p,
+    .venda-card p,
+    .produto-card p,
+    .ordem-card p,
+    .cobranca-card p,
+    .recibo-card p,
+    .estoque-card p,
+    .encomenda-card p,
+    .fornecedor-card-body,
+    .backup-card p,
+    .updates-card p,
+    .support-card__line,
+    .support-card__hint,
+    .recurso-card p,
+    .usados-card p,
+    .licenca-mensal-card p,
+    .empty-subtitle
+  ) {
+    color: var(--st-ref-muted) !important;
+    font-size: 13px !important;
+    line-height: 1.35 !important;
+  }
+
+  html[data-perf="1"] :where(
+    input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),
+    select,
+    textarea,
+    .form-input,
+    .form-select,
+    .form-textarea,
+    .st-input,
+    .search-input
+  ) {
+    min-height: 38px !important;
+    border-radius: 0 !important;
+    border: 1px solid var(--st-ref-line-2) !important;
+    background: #07131e !important;
+    color: var(--st-ref-text) !important;
+    box-shadow: inset 1px 1px 0 rgba(0, 0, 0, 0.62), inset -1px -1px 0 rgba(255, 255, 255, 0.05) !important;
+    transform: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  html[data-perf="1"] :where(
+    input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):focus,
+    select:focus,
+    textarea:focus,
+    .form-input:focus,
+    .form-select:focus,
+    .form-textarea:focus,
+    .st-input:focus,
+    .search-input:focus
+  ) {
+    border-color: var(--st-ref-green) !important;
+    background: #091a26 !important;
+    box-shadow: inset 1px 1px 0 rgba(0, 0, 0, 0.62), 0 0 0 2px rgba(24, 190, 98, 0.16) !important;
+    outline: none !important;
+  }
+
+  html[data-perf="1"] :where(label, .form-label) {
+    color: var(--st-ref-muted) !important;
+    font-size: 12px !important;
+    line-height: 1.2 !important;
+    font-weight: 750 !important;
+    letter-spacing: 0 !important;
+  }
+
+  html[data-perf="1"] :where(
+    .btn-primary,
+    .btn-secondary,
+    .btn-danger,
+    .btn-info,
+    .btn-soft,
+    .btn-action,
+    .empty-state-action,
+    button:not(.topbar-quick-button):not(.avatar-button):not(.menu-toggle)
+  ) {
+    min-height: 36px !important;
+    border-radius: 0 !important;
+    border: 1px solid var(--st-ref-line-2) !important;
+    box-shadow: inset 1px 1px 0 rgba(255, 255, 255, 0.12), inset -1px -1px 0 rgba(0, 0, 0, 0.68) !important;
+    transform: none !important;
+    font-weight: 850 !important;
+    letter-spacing: 0 !important;
+  }
+
+  html[data-perf="1"] :where(.btn-primary) {
+    border-color: var(--st-ref-green) !important;
+    background: linear-gradient(180deg, #168a43 0%, #0a5f30 100%) !important;
+    color: #ffffff !important;
+  }
+
+  html[data-perf="1"] :where(.btn-secondary, .btn-soft, .btn-action) {
+    background: linear-gradient(180deg, #10283b 0%, #07131e 100%) !important;
+    color: var(--st-ref-text) !important;
+  }
+
+  html[data-perf="1"] :where(.btn-danger) {
+    border-color: #a45656 !important;
+    background: linear-gradient(180deg, #6f2727 0%, #3e1414 100%) !important;
+    color: #ffe7e7 !important;
+  }
+
+  html[data-perf="1"] :where(.btn-icon) {
+    width: 34px !important;
+    min-width: 34px !important;
+    height: 34px !important;
+    min-height: 34px !important;
+    padding: 0 !important;
+    background: linear-gradient(180deg, #10283b 0%, #07131e 100%) !important;
+  }
+
+  html[data-perf="1"] :where(.table-container, .taxas-table, .comparativo-table, .routes-table, .diagnostico-table) {
+    border-radius: 0 !important;
+    border: 1px solid var(--st-ref-line-2) !important;
+    background: var(--st-ref-panel) !important;
+    box-shadow: inset 1px 1px 0 rgba(255, 255, 255, 0.06), inset -1px -1px 0 rgba(0, 0, 0, 0.70) !important;
+    overflow: auto !important;
+  }
+
+  html[data-perf="1"] :where(table, .table) {
+    border-radius: 0 !important;
+    border-collapse: collapse !important;
+    background: var(--st-ref-panel) !important;
+    box-shadow: none !important;
+  }
+
+  html[data-perf="1"] :where(th, .table th) {
+    height: 34px !important;
+    padding: 8px 10px !important;
+    border: 1px solid var(--st-ref-line-soft) !important;
+    background: #102436 !important;
+    color: var(--st-ref-muted) !important;
+    font-size: 12px !important;
+    line-height: 1.15 !important;
+    font-weight: 900 !important;
+    letter-spacing: 0 !important;
+    text-transform: none !important;
+  }
+
+  html[data-perf="1"] :where(td, .table td) {
+    padding: 8px 10px !important;
+    border: 1px solid rgba(49, 75, 99, 0.64) !important;
+    background: #0a1a28 !important;
+    color: var(--st-ref-text) !important;
+    font-size: 12px !important;
+    line-height: 1.25 !important;
+  }
+
+  html[data-perf="1"] :where(tbody tr:hover, .table tbody tr:hover) {
+    background: #10283b !important;
+    box-shadow: none !important;
+    transform: none !important;
+  }
+
+  html[data-perf="1"] :where(tbody tr:hover td, .table tbody tr:hover td) {
+    background: #10283b !important;
+  }
+
+  html[data-perf="1"] :where(.badge, .status-badge, .page-header-chip, .backup-directory-badge) {
+    border-radius: 0 !important;
+    border: 1px solid var(--st-ref-line-2) !important;
+    box-shadow: none !important;
+    font-weight: 850 !important;
+  }
+
+  html[data-perf="1"] :where(.modal-content, .modal-card, .dialog, .drawer-panel) {
+    border-radius: 0 !important;
+    border: 1px solid #5c7894 !important;
+    background: linear-gradient(180deg, #0d2030 0%, #07131e 100%) !important;
+    box-shadow: 0 18px 44px rgba(0, 0, 0, 0.58) !important;
+  }
+
+  html[data-perf="1"] :where(.modal-body, .modal-header, .modal-footer) {
+    border-color: var(--st-ref-line-soft) !important;
+  }
+}
+
+@media (min-width: 901px) and (max-width: 1280px) {
+  html[data-perf="1"] :where(
+    .page-header h1,
+    .st-page-header__title,
+    .updates-header h1,
+    .diagnostico-header h1,
+    .health-routes-header h1,
+    .test-header h1,
+    .selftest-header h1,
+    .licenca-mensal-header h1,
+    .usados-page-header h1,
+    .devolucao-header-premium h1,
+    .backup-page-header h1,
+    .config-notif-header h1
+  ) {
+    font-size: 20px !important;
+  }
+
+  html[data-perf="1"] :where(
+    .cliente-card,
+    .venda-card,
+    .produto-card,
+    .ordem-card,
+    .cobranca-card,
+    .recibo-card,
+    .estoque-card,
+    .encomenda-card,
+    .fornecedor-card,
+    .devolucao-card,
+    .backup-card,
+    .updates-card,
+    .usados-card,
+    .usado-estoque-card,
+    .usuarios-user-card,
+    .licenca-mensal-card
+  ) {
+    padding: 11px 12px !important;
+  }
+}
+
+/* Overrides especificos do Painel: vence regras antigas mais especificas do painel.css. */
+@media (min-width: 901px) {
+  html[data-perf="1"] .painel-page .panel-glance-card {
+    border-radius: 0 !important;
+    border: 1px solid var(--st-ref-line-2) !important;
+    background: linear-gradient(180deg, var(--st-ref-panel-2) 0%, var(--st-ref-panel) 100%) !important;
+    box-shadow: inset 1px 1px 0 rgba(255, 255, 255, 0.08), inset -1px -1px 0 rgba(0, 0, 0, 0.70) !important;
+  }
+
+  html[data-perf="1"] .painel-page .panel-glance-card:hover {
+    border-color: #5c7894 !important;
+    background: linear-gradient(180deg, #112b3f 0%, #081724 100%) !important;
+    transform: none !important;
+  }
+
+  html[data-perf="1"] .painel-page :where(.kpi-helper, .kpi-helper.is-zero, .metric-helper, .panel-glance-helper) {
+    color: var(--st-ref-muted) !important;
+  }
+
+  html[data-perf="1"] .sidebar-item--attention-warn,
+  html[data-perf="1"] .sidebar-item--attention-danger,
+  html[data-perf="1"] .sidebar-item--attention-warn:hover,
+  html[data-perf="1"] .sidebar-item--attention-danger:hover,
+  html[data-perf="1"] .sidebar-item--attention-warn.active,
+  html[data-perf="1"] .sidebar-item--attention-danger.active {
+    border-color: #ff6262 !important;
+    background: linear-gradient(180deg, rgba(112, 28, 34, 0.90), rgba(45, 9, 15, 0.96)) !important;
+    color: #ffffff !important;
+    box-shadow: inset 2px 0 0 #ef4444, inset 1px 1px 0 rgba(255, 255, 255, 0.10), inset -1px -1px 0 rgba(0, 0, 0, 0.72) !important;
+  }
+
+  html[data-perf="1"] .sidebar-attention-badge,
+  html[data-perf="1"] .topbar-quick-button--warn .topbar-quick-button__badge {
+    border-color: #ff9b9b !important;
+    background: linear-gradient(180deg, #f04444 0%, #a9141e 100%) !important;
+    color: #ffffff !important;
+  }
+
+  html[data-perf="1"] .topbar-quick-button--warn,
+  html[data-perf="1"] .topbar-quick-button--warn:visited,
+  html[data-perf="1"] .topbar-quick-button--warn:hover {
+    border-color: #e05252 !important;
+    background: linear-gradient(180deg, #3b1118 0%, #19070b 100%) !important;
+    color: #ffe3e3 !important;
+    box-shadow: inset 2px 0 0 #ef4444, inset 1px 1px 0 rgba(255, 255, 255, 0.10), inset -1px -1px 0 rgba(0, 0, 0, 0.72) !important;
+  }
+}
+
+@media (max-width: 900px) {
+  :where(.page-container, [class$="-page"]) {
+    max-width: 100%;
+  }
+
+  :where(.card, [class$="-card"], .st-page-toolbar, .page-toolbar) {
+    border-radius: 10px;
+  }
+}

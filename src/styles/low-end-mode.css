@@ -1,0 +1,217 @@
+/* =============================================================================
+   MODO PC LENTO — low-end-mode.css
+   Ativado via: html[data-low-end="1"]
+   Objetivo: máxima fluidez em hardware fraco (Celeron/Atom/Pentium, ≤4GB RAM)
+   Estratégia: eliminar todo custo de GPU, reduzir repaints, simplificar layout
+   ============================================================================= */
+
+/* ─── 1. ANIMAÇÕES E TRANSIÇÕES — ZERO ───────────────────────────────────── */
+html[data-low-end="1"] *,
+html[data-low-end="1"] *::before,
+html[data-low-end="1"] *::after {
+  animation: none !important;
+  animation-duration: 0ms !important;
+  animation-delay: 0ms !important;
+  transition: none !important;
+  transition-duration: 0ms !important;
+  transition-delay: 0ms !important;
+}
+
+/* ─── 2. GPU LAYERS — DESATIVAR ──────────────────────────────────────────── */
+html[data-low-end="1"] * {
+  will-change: auto !important;
+  transform: none !important;
+  backface-visibility: visible !important;
+  perspective: none !important;
+}
+
+/* Exceção: apenas transforms funcionais (ex: translate para posicionamento) */
+html[data-low-end="1"] .modal-overlay,
+html[data-low-end="1"] [role="dialog"] {
+  transform: none !important;
+}
+
+/* ─── 3. EFEITOS VISUAIS PESADOS — DESATIVAR ─────────────────────────────── */
+html[data-low-end="1"] *,
+html[data-low-end="1"] .topbar,
+html[data-low-end="1"] .sidebar,
+html[data-low-end="1"] .card,
+html[data-low-end="1"] .modal-overlay,
+html[data-low-end="1"] [class*="glass"],
+html[data-low-end="1"] [class*="blur"] {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  filter: none !important;
+}
+
+/* ─── 4. SOMBRAS — REMOVER ───────────────────────────────────────────────── */
+html[data-low-end="1"] .card,
+html[data-low-end="1"] .recibo-card,
+html[data-low-end="1"] .ordem-card,
+html[data-low-end="1"] .quick-action-card,
+html[data-low-end="1"] .stat-card,
+html[data-low-end="1"] .topbar,
+html[data-low-end="1"] .sidebar,
+html[data-low-end="1"] .modal-content,
+html[data-low-end="1"] .btn-primary,
+html[data-low-end="1"] .btn-secondary,
+html[data-low-end="1"] input,
+html[data-low-end="1"] select,
+html[data-low-end="1"] textarea {
+  box-shadow: none !important;
+  text-shadow: none !important;
+}
+
+/* ─── 5. GRADIENTES — SUBSTITUIR POR COR PLANA ──────────────────────────── */
+html[data-low-end="1"] .topbar {
+  background: var(--surface, #1e293b) !important;
+}
+
+html[data-low-end="1"] .sidebar {
+  background: var(--surface, #1e293b) !important;
+}
+
+html[data-low-end="1"] .btn-primary {
+  background: var(--primary, #10b981) !important;
+}
+
+/* ─── 6. IMAGENS DE FUNDO E ASSETS PESADOS ───────────────────────────────── */
+html[data-low-end="1"] [class*="bg-gradient"],
+html[data-low-end="1"] [style*="background-image"] {
+  background-image: none !important;
+}
+
+/* ─── 7. BORDER-RADIUS — REDUZIR (menos compositing) ────────────────────── */
+html[data-low-end="1"] .card,
+html[data-low-end="1"] .ordem-card,
+html[data-low-end="1"] .recibo-card {
+  border-radius: 4px !important;
+}
+
+html[data-low-end="1"] .btn-primary,
+html[data-low-end="1"] .btn-secondary {
+  border-radius: 4px !important;
+}
+
+/* ─── 8. SKELETON LOADER — VERSÃO ESTÁTICA ───────────────────────────────── */
+html[data-low-end="1"] .skeleton,
+html[data-low-end="1"] [class*="skeleton"] {
+  animation: none !important;
+  background: var(--border, #334155) !important;
+  opacity: 0.5;
+}
+
+/* ─── 9. SCROLL BEHAVIOR ─────────────────────────────────────────────────── */
+html[data-low-end="1"] {
+  scroll-behavior: auto !important;
+}
+
+html[data-low-end="1"] * {
+  scroll-behavior: auto !important;
+  /* Força scroll compositing barato */
+  overflow-anchor: none;
+}
+
+/* ─── 10. LISTA VIRTUALIZADA — ALTURA FIXA OBRIGATÓRIA ──────────────────── */
+html[data-low-end="1"] .virtual-list,
+html[data-low-end="1"] [data-virtualized] {
+  contain: strict;
+}
+
+/* ─── 11. BADGE DE STATUS MODO PC LENTO ─────────────────────────────────── */
+.low-end-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px;
+  background: rgba(245, 158, 11, 0.12);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  border-radius: 6px;
+  font-size: 0.72rem;
+  color: #f59e0b;
+  line-height: 1.2;
+  user-select: none;
+}
+
+html[data-low-end="1"] .low-end-badge {
+  /* Sem animação, claro */
+  animation: none !important;
+}
+
+/* ─── 12. TOGGLE NA UI DE CONFIGURAÇÕES ─────────────────────────────────── */
+.low-end-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--border, #334155);
+  cursor: pointer;
+}
+
+.low-end-toggle:last-child { border-bottom: none; }
+
+.low-end-toggle__info { flex: 1; }
+
+.low-end-toggle__title {
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.low-end-toggle__desc {
+  font-size: 0.78rem;
+  color: var(--text-secondary, #94a3b8);
+  margin-top: 2px;
+  line-height: 1.4;
+}
+
+.low-end-switch {
+  width: 40px;
+  height: 22px;
+  border-radius: 11px;
+  background: var(--border, #475569);
+  position: relative;
+  flex-shrink: 0;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+html[data-low-end="1"] .low-end-switch { transition: none !important; }
+
+.low-end-switch.on { background: #f59e0b; }
+
+.low-end-switch::after {
+  content: '';
+  position: absolute;
+  top: 3px; left: 3px;
+  width: 16px; height: 16px;
+  border-radius: 50%;
+  background: white;
+  transition: transform 0.15s;
+}
+
+html[data-low-end="1"] .low-end-switch::after { transition: none !important; }
+
+.low-end-switch.on::after { transform: translateX(18px); }
+
+/* ─── 13. BANNER DE SUGESTÃO AUTOMÁTICA ─────────────────────────────────── */
+.low-end-suggestion-banner {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 12px 14px;
+  background: rgba(245, 158, 11, 0.08);
+  border: 1px solid rgba(245, 158, 11, 0.25);
+  border-radius: 8px;
+  margin-bottom: 12px;
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: var(--text);
+}
+
+.low-end-suggestion-banner strong { color: #f59e0b; }

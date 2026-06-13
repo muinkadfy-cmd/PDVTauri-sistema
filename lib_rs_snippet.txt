@@ -1,0 +1,11 @@
+
+// --- lib.rs integration snippet ---
+mod printers;
+
+// inside invoke_handler(...)
+tauri::generate_handler![
+  // ... your other commands
+  printers::list_printers,
+  printers::get_default_printer,
+  printers::set_default_printer,
+]

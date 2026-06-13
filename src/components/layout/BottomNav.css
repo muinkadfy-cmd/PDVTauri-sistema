@@ -1,0 +1,227 @@
+/* BottomNav Premium Mobile - PWA Android Compatible */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: var(--bg-surface);
+  border-top: 1px solid var(--border-light);
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: var(--spacing-1) 0;
+  padding-bottom: calc(var(--spacing-1) + env(safe-area-inset-bottom));
+  z-index: var(--z-fixed);
+  box-shadow: 0 -2px 12px rgba(0, 0, 0, 0.12);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  min-height: calc(56px + env(safe-area-inset-bottom));
+  /* Safe area para Android (barra de navegação) */
+  padding-left: max(0px, env(safe-area-inset-left));
+  padding-right: max(0px, env(safe-area-inset-right));
+  transition: box-shadow var(--transition-base);
+}
+
+.bottom-nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  padding: var(--spacing-1) var(--spacing-2);
+  cursor: pointer;
+  color: var(--text-secondary);
+  font-size: var(--font-size-xs);
+  transition: all var(--transition-fast);
+  flex: 1;
+  min-height: var(--touch-target);
+  text-decoration: none;
+  background: none;
+  border: none;
+  font-family: inherit;
+  border-radius: var(--border-radius-sm);
+  -webkit-tap-highlight-color: rgba(var(--accent-rgb), 0.1);
+  min-width: 0;
+}
+
+.bottom-nav-item .icon {
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  transition: transform var(--transition-fast);
+}
+
+.bottom-nav-item .icon svg {
+  width: 20px;
+  height: 20px;
+}
+
+.bottom-nav-item .label {
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  line-height: 1.2;
+  white-space: nowrap;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.bottom-nav-item.active {
+  color: var(--primary);
+  position: relative;
+}
+
+.bottom-nav-item.active::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40px;
+  height: 3px;
+  background: var(--primary);
+  border-radius: 0 0 3px 3px;
+}
+
+.bottom-nav-item.active .icon {
+  transform: scale(1.15);
+  filter: drop-shadow(0 2px 4px rgba(var(--accent-rgb), 0.3));
+}
+
+.bottom-nav-item:active {
+  background: var(--bg-secondary);
+  transform: scale(0.95);
+}
+
+.bottom-nav-item:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: -2px;
+}
+
+.bottom-nav-more {
+  font-weight: var(--font-weight-bold);
+}
+
+.bottom-nav-more .icon {
+  width: 24px;
+  height: 24px;
+}
+
+.bottom-nav-more .icon svg {
+  width: 22px;
+  height: 22px;
+}
+
+/* Modo compacto */
+body.compact .bottom-nav {
+  min-height: calc(48px + env(safe-area-inset-bottom));
+  padding: 2px 0;
+  padding-bottom: calc(2px + env(safe-area-inset-bottom));
+}
+
+body.compact .bottom-nav-item {
+  gap: 1px;
+  padding: 2px var(--spacing-1);
+  min-height: var(--touch-target-sm);
+}
+
+body.compact .bottom-nav-item .icon {
+  font-size: 1.1rem;
+}
+
+body.compact .bottom-nav-item .label {
+  font-size: 10px;
+}
+
+/* Modo Ajustável */
+body.ajustavel .bottom-nav {
+  padding-bottom: calc(2px + env(safe-area-inset-bottom));
+}
+
+body.ajustavel .bottom-nav-item {
+  gap: 2px;
+  padding: 2px var(--spacing-1);
+}
+
+body.ajustavel .bottom-nav-item .label {
+  font-size: 10px;
+}
+
+@media (min-width: 901px) {
+  .bottom-nav {
+    display: none;
+  }
+}
+
+
+/* UX/UI Senior Polish: bottom nav mais limpo */
+.bottom-nav{
+  box-shadow: 0 -1px 0 rgba(0,0,0,0.06);
+}
+
+.bottom-nav-item .icon{
+  opacity: 0.9;
+}
+
+.bottom-nav-item .label{
+  font-size: 11px;
+  opacity: 0.85;
+}
+
+.bottom-nav-item.active .label{
+  opacity: 1;
+  font-weight: 700;
+}
+
+/* iPhones antigos / telas muito estreitas */
+@media (max-width: 360px) {
+  .bottom-nav-item {
+    padding: 2px 4px;
+  }
+  .bottom-nav-item .label {
+    font-size: 10px;
+  }
+}
+
+@media (max-width: 420px) {
+  .bottom-nav {
+    padding-top: 4px;
+    padding-bottom: calc(4px + env(safe-area-inset-bottom));
+    min-height: calc(52px + env(safe-area-inset-bottom));
+  }
+
+  .bottom-nav-item {
+    gap: 1px;
+    padding: 4px 3px;
+  }
+
+  .bottom-nav-item .icon {
+    width: 20px;
+    height: 20px;
+  }
+
+  .bottom-nav-item .icon svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .bottom-nav-item .label {
+    font-size: 10px;
+    letter-spacing: -0.01em;
+  }
+
+  .bottom-nav-item:not(.active) .label {
+    display: none;
+  }
+
+  .bottom-nav-item.active {
+    gap: 2px;
+  }
+
+  .bottom-nav-item.active::before {
+    width: 28px;
+  }
+}

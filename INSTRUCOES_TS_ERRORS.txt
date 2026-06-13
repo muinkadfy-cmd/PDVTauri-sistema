@@ -1,0 +1,35 @@
+
+CORRECAO DE 127 ERROS TYPESCRIPT — Smart Tech PDV
+===================================================
+
+ARQUIVOS MODIFICADOS (substituir na pasta C:\PDVTauri):
+  tsconfig.json                          — desativa noUnusedLocals/Params
+  src/hooks/useOrdens.ts                 — canEdit/Create/Delete, tecnico, cast
+  src/hooks/useVendas.ts                 — ItemVenda campos + numero_venda + cast
+  src/lib/company-lock.ts                — adiciona export CompanyCriticalSnapshot
+  src/pages/ConfiguracoesPage.tsx        — handleLockCompany prefixado com _
+
+APOS SUBSTITUIR:
+  npm run build:desktop
+  (ou: cargo tauri build)
+
+RESUMO DOS ERROS CORRIGIDOS:
+  117x TS6133/TS6192  — variaveis/imports nao usados
+     tsconfig.json: noUnusedLocals: false, noUnusedParameters: false
+  
+   3x TS2554  — canEdit/canCreate/canDelete chamados com argumento
+     useOrdens.ts: removido o argumento 'ordens'
+  
+   2x TS2345 + 2x TS2322  — ItemVenda incompleto, FormaPagamento/string
+     useVendas.ts: adicionados produtoNome, precoUnitario, subtotal nos maps
+     useVendas.ts: cast 'as FormaPagamento'
+     useOrdens.ts: cast 'as FormaPagamento | undefined'
+  
+   1x TS2339  — v.numero nao existe em Venda
+     useVendas.ts: corrigido para v.numero_venda
+  
+   1x TS2561  — tecnicoId nao existe em OrdemServico
+     useOrdens.ts: corrigido para 'tecnico: session?.username'
+  
+   1x TS2305  — CompanyCriticalSnapshot nao exportado de company-lock
+     company-lock.ts: adicionado 'export type CompanyCriticalSnapshot = CompanyCriticalFields'

@@ -1,0 +1,146 @@
+/* Table Mobile - Cards para substituir tabelas no mobile */
+.table-mobile-container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.table-mobile-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-light);
+  border-radius: var(--border-radius);
+  padding: var(--spacing-md);
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition-base);
+  position: relative;
+}
+
+.table-mobile-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--primary);
+  opacity: 0;
+  transition: opacity var(--transition-base);
+}
+
+.table-mobile-card:hover::after {
+  opacity: 0.3;
+}
+
+.table-mobile-card.clickable {
+  cursor: pointer;
+}
+
+.table-mobile-card.clickable:active {
+  background: var(--bg-hover);
+  transform: scale(0.98);
+}
+
+.table-mobile-primary {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+  margin-bottom: var(--spacing-sm);
+}
+
+.table-mobile-field {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  font-size: var(--font-size-sm);
+}
+
+.table-mobile-field.main {
+  margin-bottom: var(--spacing-xs);
+}
+
+.table-mobile-main-value {
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+}
+
+.table-mobile-label {
+  font-size: var(--font-size-xs);
+  color: var(--text-secondary);
+  font-weight: var(--font-weight-medium);
+  min-width: 60px;
+}
+
+.table-mobile-value {
+  font-size: var(--font-size-xs);
+  color: var(--text-primary);
+  font-weight: var(--font-weight-medium);
+  flex: 1;
+  text-align: right;
+}
+
+.table-mobile-secondary {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-1);
+  padding-top: var(--spacing-sm);
+  border-top: 1px solid var(--border-light);
+  font-size: var(--font-size-xs);
+}
+
+.table-mobile-empty {
+  text-align: center;
+  padding: var(--spacing-xl);
+  color: var(--text-secondary);
+  background: var(--bg-surface);
+  border-radius: var(--border-radius);
+  border: 1px solid var(--border-light);
+}
+
+.table-mobile-empty p {
+  margin: 0;
+  font-size: var(--font-size-sm);
+}
+
+/* Modo Compacto */
+body.compact .table-mobile-card {
+  padding: var(--spacing-sm);
+}
+
+body.compact .table-mobile-main-value {
+  font-size: var(--font-size-sm);
+}
+
+body.compact .table-mobile-label,
+body.compact .table-mobile-value {
+  font-size: 10px;
+}
+
+/* Modo Ajustável */
+body.ajustavel .table-mobile-card {
+  padding: var(--spacing-sm);
+  gap: var(--spacing-xs);
+}
+
+body.ajustavel .table-mobile-label,
+body.ajustavel .table-mobile-value {
+  font-size: var(--font-size-xs);
+}
+
+/* Desktop - Esconder cards mobile */
+@media (min-width: 901px) {
+  .table-mobile-container {
+    display: none !important;
+  }
+}
+
+/* Mobile - Esconder tabela desktop */
+@media (max-width: 900px) {
+  .table-container {
+    display: none !important;
+  }
+  
+  .table-mobile-container {
+    display: block;
+  }
+}

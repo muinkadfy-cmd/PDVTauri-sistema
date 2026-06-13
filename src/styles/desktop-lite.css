@@ -1,0 +1,116 @@
+/* Lote P8 — Interface leve Desktop Offline
+   Objetivo: reduzir heranças visuais pesadas sem quebrar layout. */
+
+html[data-perf="1"] * {
+  animation-duration: 0.001ms !important;
+  animation-iteration-count: 1 !important;
+  scroll-behavior: auto !important;
+}
+
+html[data-perf="1"] .app-shell,
+html[data-perf="1"] .topbar,
+html[data-perf="1"] .sidebar,
+html[data-perf="1"] .status-footer,
+html[data-perf="1"] .kpi-card,
+html[data-perf="1"] .metric-card,
+html[data-perf="1"] .panel-card,
+html[data-perf="1"] .dashboard-card,
+html[data-perf="1"] .card,
+html[data-perf="1"] .modal,
+html[data-perf="1"] .dialog,
+html[data-perf="1"] .btn {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+html[data-perf="1"] .kpi-card,
+html[data-perf="1"] .metric-card,
+html[data-perf="1"] .panel-card,
+html[data-perf="1"] .dashboard-card {
+  box-shadow: none !important;
+}
+
+html[data-perf="1"] .kpi-card,
+html[data-perf="1"] .metric-card,
+html[data-perf="1"] .panel-card {
+  transition: border-color 80ms ease, background-color 80ms ease !important;
+}
+
+html[data-perf="1"] .kpi-card:hover,
+html[data-perf="1"] .metric-card:hover,
+html[data-perf="1"] .panel-card:hover {
+  transform: none !important;
+}
+
+html[data-perf="1"] .icon-3d,
+html[data-perf="1"] .menu-icon,
+html[data-perf="1"] .nav-icon {
+  filter: none !important;
+  box-shadow: none !important;
+}
+
+html[data-perf="1"] .topbar,
+html[data-perf="1"] .status-footer,
+html[data-perf="1"] .sidebar {
+  box-shadow: none !important;
+}
+
+html[data-perf="1"] .panel-section {
+  margin-top: 1.15rem;
+}
+
+/* Navegação desktop precisa parecer troca de painel nativo, sem "tremida". */
+html[data-perf="1"] .app,
+html[data-perf="1"] .app-container,
+html[data-perf="1"] .main-content,
+html[data-perf="1"] .main-content.with-sidebar,
+html[data-perf="1"] .page-container,
+html[data-perf="1"] .topbar,
+html[data-perf="1"] .sidebar,
+html[data-perf="1"] .sidebar-nav,
+html[data-perf="1"] .sidebar-item,
+html[data-perf="1"] .sidebar-icon,
+html[data-perf="1"] .sidebar-label,
+html[data-perf="1"] .topbar-page-context,
+html[data-perf="1"] .topbar-page-row,
+html[data-perf="1"] .topbar-page-chip,
+html[data-perf="1"] .topbar-page-hint {
+  transition: none !important;
+  transform: none !important;
+}
+
+html[data-perf="1"] .main-content {
+  contain: layout paint style;
+  will-change: auto;
+}
+
+html[data-perf="1"] .sidebar-item,
+html[data-perf="1"] .sidebar-item:hover,
+html[data-perf="1"] .sidebar-item.active {
+  min-height: 40px;
+  border-width: 1px;
+  padding: 0.4rem 0.55rem;
+}
+
+html[data-perf="1"] .topbar-page-chip {
+  min-width: 168px;
+}
+
+html[data-perf="1"] .calc-details {
+  box-shadow: none !important;
+}
+
+@media (max-width: 1366px) {
+  html[data-perf="1"] .painel-page {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+
+  html[data-perf="1"] .kpi-grid {
+    gap: 0.75rem !important;
+  }
+
+  html[data-perf="1"] .kpi-card {
+    min-height: auto !important;
+  }
+}

@@ -1,0 +1,4 @@
+/target
+**/*.rs.bk
+# gerado pelo tauri-build
+/gen/

@@ -1,0 +1,92 @@
+.route-error {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-2xl);
+  background: radial-gradient(1200px 800px at 20% 10%, rgba(34, 197, 94, 0.14), transparent 55%),
+    radial-gradient(900px 700px at 80% 0%, rgba(59, 130, 246, 0.12), transparent 55%),
+    var(--bg);
+}
+
+.route-error-card {
+  width: 100%;
+  max-width: 540px;
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--card-radius, 16px);
+  padding: var(--card-padding, 20px);
+  box-shadow: var(--shadow-lg);
+  text-align: center;
+}
+
+.route-error-icon {
+  font-size: 2.5rem;
+  opacity: 0.85;
+  margin-bottom: var(--spacing-md);
+}
+
+.route-error-title {
+  font-size: 1.4rem;
+  margin: 0 0 var(--spacing-sm);
+  color: var(--text);
+}
+
+.route-error-message {
+  margin: 0 0 var(--spacing-lg);
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.route-error-actions {
+  display: flex;
+  gap: var(--spacing-sm);
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: var(--spacing-sm);
+}
+
+.route-error-actions .btn {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.route-error-links {
+  margin-top: var(--spacing-xs);
+}
+
+.route-error-link {
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.route-error-link:hover {
+  text-decoration: underline;
+}
+
+.route-error-details {
+  margin-top: var(--spacing-lg);
+  text-align: left;
+  opacity: 0.95;
+}
+
+.route-error-details pre {
+  white-space: pre-wrap;
+  word-break: break-word;
+  background: rgba(0, 0, 0, 0.06);
+  border-radius: 12px;
+  padding: var(--spacing-md);
+  overflow: auto;
+}
+
+body.dark .route-error-details pre {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+@media (max-width: 480px) {
+  .route-error {
+    padding: var(--spacing-xl);
+  }
+}

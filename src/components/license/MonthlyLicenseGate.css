@@ -1,0 +1,99 @@
+.monthly-license-blocked {
+  min-height: calc(100vh - 140px);
+  display: grid;
+  place-items: center;
+  padding: 24px;
+}
+
+.monthly-license-blocked-card {
+  width: min(820px, 100%);
+  border: 1px solid var(--classic-border, #526274);
+  background: linear-gradient(180deg, #102436 0%, #07131d 100%);
+  color: var(--classic-text, #f2f6fb);
+  padding: 22px;
+  display: grid;
+  gap: 16px;
+  box-shadow: inset 1px 1px 0 rgba(255,255,255,0.10), inset -1px -1px 0 rgba(0,0,0,0.85);
+}
+
+.monthly-license-blocked-icon {
+  width: 46px;
+  height: 46px;
+  border: 1px solid var(--classic-border, #526274);
+  display: inline-grid;
+  place-items: center;
+  background: #091622;
+  font-size: 1.35rem;
+}
+
+.monthly-license-blocked h1 {
+  margin: 0 0 6px;
+  font-size: 1.35rem;
+}
+
+.monthly-license-blocked p {
+  margin: 0;
+  color: var(--classic-muted, #c7d0dc);
+  line-height: 1.5;
+}
+
+.monthly-license-blocked-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.monthly-license-blocked-grid > div {
+  border: 1px solid var(--classic-border-soft, #2f4358);
+  background: #081520;
+  padding: 10px;
+  display: grid;
+  gap: 4px;
+}
+
+.monthly-license-blocked-grid strong {
+  font-size: 0.72rem;
+  color: var(--classic-dim, #93a4b6);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.monthly-license-blocked-grid span {
+  font-weight: 700;
+  color: var(--classic-text, #f2f6fb);
+}
+
+.monthly-license-blocked-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.monthly-license-blocked-note {
+  border-top: 1px solid var(--classic-border-soft, #2f4358);
+  padding-top: 12px;
+  font-size: 0.84rem;
+}
+
+@media (max-width: 720px) {
+  .monthly-license-blocked-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.classic-statusbar-license--active .classic-statusbar-dot,
+.classic-statusbar-license--warning .classic-statusbar-dot {
+  background: #18c76b !important;
+}
+
+.classic-statusbar-license--expired .classic-statusbar-dot,
+.classic-statusbar-license--blocked .classic-statusbar-dot,
+.classic-statusbar-license--not_found .classic-statusbar-dot {
+  background: #ff8a4c !important;
+}
+
+.classic-statusbar-license--expired,
+.classic-statusbar-license--blocked,
+.classic-statusbar-license--not_found {
+  color: #ffd6c2 !important;
+}

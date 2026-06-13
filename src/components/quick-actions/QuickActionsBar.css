@@ -1,0 +1,211 @@
+/**
+ * Estilos para barra de ações rápidas
+ */
+
+.quick-actions-bar {
+  display: flex;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  background: var(--glass-2);
+  border: 1px solid var(--glass-border);
+  border-radius: 14px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.05);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  z-index: 100;
+}
+
+.quick-actions-bar.icon-only {
+  /* Igual ao mock: dock horizontal com ícones */
+  flex-direction: row;
+  gap: 8px;
+}
+
+.quick-action-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background 160ms ease, border-color 160ms ease, transform 160ms ease;
+  font-weight: var(--font-weight-semibold, 600);
+  color: var(--text-primary, rgba(231,237,246,0.92));
+  flex: 1;
+  min-width: 0;
+}
+
+.quick-action-btn:hover {
+  background: rgba(255,255,255,0.06);
+  border-color: rgba(255,255,255,0.18);
+  transform: translateY(-1px);
+}
+
+.quick-action-btn:active {
+  transform: translateY(0);
+}
+
+.quick-action-icon {
+  font-size: 1.25rem;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.quick-action-label {
+  font-size: 0.875rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Posição top */
+.quick-actions-top {
+  position: sticky;
+  top: 0;
+  margin-bottom: 1rem;
+}
+
+/* Posição bottom */
+.quick-actions-bottom {
+  position: sticky;
+  bottom: 0;
+  margin-top: 1rem;
+}
+
+/* Posição floating */
+.quick-actions-floating {
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  max-width: 300px;
+  flex-wrap: wrap;
+  transition: opacity 200ms ease, transform 200ms ease;
+}
+
+/* Dock horizontal (sem quebra de linha) */
+.quick-actions-floating.icon-only{
+  flex-wrap: nowrap;
+  max-width: none;
+}
+
+/* Estado hidden (auto-hide ao focar input) */
+.quick-actions-floating.hidden {
+  opacity: 0;
+  transform: translateY(10px);
+  pointer-events: none;
+}
+
+/* Icon only */
+.quick-actions-bar.icon-only .quick-action-btn {
+  justify-content: center;
+  padding: 0;
+  width: 48px;
+  height: 46px;
+  min-width: 48px;
+}
+
+.quick-actions-bar.icon-only .quick-action-icon {
+  font-size: 1.35rem;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  /* Ocultar barra de ações rápidas no modo mobile (apenas web/desktop) */
+  .quick-actions-bar {
+    display: none !important;
+  }
+  .quick-actions-floating {
+    bottom: 4.5rem; /* Acima do bottom nav */
+    right: 0.5rem;
+    max-width: calc(100vw - 1rem);
+  }
+
+  .quick-actions-bar {
+    flex-wrap: wrap;
+    gap: 0.25rem;
+  }
+
+  .quick-action-btn {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.875rem;
+  }
+
+  .quick-action-icon {
+    font-size: 1rem;
+  }
+}
+
+/* Dark mode */
+[data-theme="dark"] .quick-actions-bar {
+  background: rgba(30, 41, 59, 0.95);
+  border: 1px solid rgba(226, 232, 240, 0.1);
+}
+
+[data-theme="dark"] .quick-action-btn {
+  background: rgba(15, 23, 42, 0.5);
+  border-color: rgba(226, 232, 240, 0.1);
+  color: var(--text-primary, #f1f5f9);
+}
+
+[data-theme="dark"] .quick-action-btn:hover {
+  background: rgba(76, 175, 80, 0.2);
+  border-color: var(--primary, #4CAF50);
+}
+
+/* ============================================
+   Monochrome v2 (dark) - Quick Actions
+   ============================================ */
+[data-theme="dark"] .quick-actions-bar {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  box-shadow: none;
+  border-radius: 14px;
+  padding: 8px;
+}
+
+[data-theme="dark"] .quick-action-btn {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  border-radius: 12px;
+  padding: 10px 12px;
+  color: rgba(231, 237, 246, 0.90);
+  transform: none;
+}
+
+/* Garantir tamanhos do dock no dark */
+[data-theme="dark"] .quick-actions-bar.icon-only .quick-action-btn{
+  padding: 0;
+  width: 48px;
+  height: 46px;
+  min-width: 48px;
+}
+
+[data-theme="dark"] .quick-action-btn:hover {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(var(--accent-rgb), 0.28);
+  box-shadow: none;
+  transform: none;
+}
+
+[data-theme="dark"] .quick-action-icon {
+  opacity: 0.92;
+}
+
+
+/* Ajuste final (mock) - garantir icon-only no dark */
+[data-theme="dark"] .quick-actions-bar.icon-only{
+  padding: 10px;
+  border-radius: 18px;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+[data-theme="dark"] .quick-actions-bar.icon-only .quick-action-btn{
+  padding: 0;
+  width: 48px;
+  height: 46px;
+  min-width: 48px;
+  border-radius: 14px;
+}

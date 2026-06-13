@@ -1,0 +1,41 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "default",
+  "description": "Permissões mínimas (Desktop - Produção) — princípio do menor privilégio [P1-03 hardened]",
+  "windows": [
+    "main"
+  ],
+  "permissions": [
+    "core:default",
+    "log:allow-log",
+    "dialog:allow-open",
+    "dialog:allow-save",
+    "dialog:allow-message",
+    "dialog:allow-confirm",
+    "shell:allow-open",
+    "fs:allow-appdata-meta-recursive",
+    "fs:allow-appdata-read-recursive",
+    "fs:allow-appdata-write-recursive",
+    "fs:allow-applocaldata-meta-recursive",
+    "fs:allow-applocaldata-read-recursive",
+    "fs:allow-applocaldata-write-recursive",
+    "fs:allow-temp-meta-recursive",
+    "fs:allow-temp-read-recursive",
+    "fs:allow-temp-write-recursive",
+    "rusqlite2:allow-load",
+    "rusqlite2:allow-select",
+    "rusqlite2:allow-execute",
+    "rusqlite2:allow-migrate",
+    "rusqlite2:allow-begin-transaction",
+    "rusqlite2:allow-commit-transaction",
+    "rusqlite2:allow-rollback-transaction",
+    "rusqlite2:allow-close",
+    "updater:default",
+    "shell:default",
+    "core:window:allow-close",
+    "core:window:allow-destroy",
+    "core:window:allow-is-fullscreen",
+    "core:window:allow-set-theme",
+    "core:window:allow-set-fullscreen"
+  ]
+}

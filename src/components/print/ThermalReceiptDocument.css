@@ -1,0 +1,216 @@
+.thermal-print-page {
+  min-height: 100vh;
+  background: #eef1f4;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 8px 8px 12px;
+}
+
+.thermal-receipt {
+  width: var(--paper-width-mm);
+  max-width: var(--paper-width-mm);
+  min-height: var(--thermal-paper-height-mm, auto);
+  color: #000;
+  background: #fff;
+  font-family: "Courier New", "Lucida Console", monospace;
+  font-size: var(--font-size-px);
+  line-height: var(--line-height);
+  box-sizing: border-box;
+}
+
+.thermal-receipt,
+.thermal-receipt * {
+  box-sizing: border-box;
+}
+
+.thermal-receipt__inner {
+  width: var(--useful-width-mm);
+  max-width: var(--useful-width-mm);
+  margin: 0 auto;
+  padding: var(--inner-margin-mm) 0 1mm;
+}
+
+.thermal-receipt__header,
+.thermal-receipt__meta,
+.thermal-receipt__totals,
+.thermal-receipt__notes,
+.thermal-receipt__footer {
+  margin-bottom: var(--section-gap-mm, 1.1mm);
+}
+
+.thermal-receipt__brand {
+  text-align: center;
+  border-bottom: 1px dashed #000;
+  padding-bottom: var(--header-gap-mm, 0.8mm);
+}
+
+.thermal-receipt__logo {
+  display: block;
+  margin: 0 auto var(--logo-gap-mm, 0.8mm);
+  max-width: var(--logo-width-mm, 16mm);
+  max-height: var(--logo-height-mm, 8mm);
+  object-fit: contain;
+}
+
+.thermal-receipt__store-name {
+  font-size: calc(var(--font-size-px) + var(--store-font-boost-px, 2px));
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.thermal-receipt__company-line,
+.thermal-receipt__meta-line,
+.thermal-receipt__note,
+.thermal-receipt__footer-message {
+  font-size: calc(var(--font-size-px) + var(--detail-font-adjust-px, -1px));
+}
+
+.thermal-receipt__title {
+  text-align: center;
+  text-transform: uppercase;
+  font-weight: 700;
+  margin-bottom: var(--title-gap-mm, 0.25mm);
+}
+
+.thermal-receipt__doc-number {
+  text-align: center;
+  margin-bottom: var(--doc-gap-mm, 0.35mm);
+}
+
+.thermal-receipt__section-label,
+.thermal-receipt__summary-label {
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.thermal-receipt__meta-line,
+.thermal-receipt__summary-row,
+.thermal-receipt__item-line {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--row-gap-mm, 2mm);
+}
+
+.thermal-receipt__meta-value,
+.thermal-receipt__summary-value {
+  text-align: right;
+}
+
+.thermal-receipt__items {
+  border-top: 1px dashed #000;
+  border-bottom: 1px dashed #000;
+  padding: var(--items-pad-mm, 0.8mm) 0;
+}
+
+.thermal-receipt__item {
+  margin-bottom: var(--item-gap-mm, 0.8mm);
+}
+
+.thermal-receipt__item:last-child {
+  margin-bottom: 0;
+}
+
+.thermal-receipt__item-name {
+  font-weight: 700;
+  word-break: break-word;
+}
+
+.thermal-receipt__item-note {
+  margin-top: var(--item-note-gap-mm, 0.1mm);
+  font-size: calc(var(--font-size-px) - 1px);
+  word-break: break-word;
+}
+
+.thermal-receipt__totals {
+  border-bottom: 1px dashed #000;
+  padding-bottom: var(--totals-pad-mm, 0.8mm);
+}
+
+.thermal-receipt__summary-row--grand {
+  margin-top: var(--grand-gap-mm, 0.2mm);
+  font-size: calc(var(--font-size-px) + var(--grand-font-boost-px, 2px));
+  font-weight: 700;
+}
+
+.thermal-receipt__footer {
+  text-align: center;
+}
+
+.thermal-receipt__notes--checklist {
+  border-bottom: 1px dashed #000;
+  padding-bottom: var(--totals-pad-mm, 0.8mm);
+}
+
+.thermal-pattern {
+  margin-top: var(--item-note-gap-mm, 0.1mm);
+}
+
+.thermal-pattern__label {
+  font-size: calc(var(--font-size-px) - 1px);
+  font-weight: 700;
+  text-transform: uppercase;
+  margin-bottom: 0.8mm;
+}
+
+.thermal-pattern__numbers {
+  margin: 0;
+  font: 700 calc(var(--font-size-px) + 1px) / 1.6 "Courier New", "Lucida Console", monospace;
+  letter-spacing: 0.6px;
+  white-space: pre;
+}
+
+.thermal-receipt__cut {
+  margin-top: var(--cut-gap-mm, 0.6mm);
+  padding-top: var(--cut-gap-mm, 0.6mm);
+  border-top: 1px dashed #000;
+  font-size: calc(var(--font-size-px) - 2px);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.thermal-print-page__status {
+  position: fixed;
+  right: 14px;
+  bottom: 14px;
+  background: rgba(10, 15, 24, 0.9);
+  color: #fff;
+  border-radius: 999px;
+  padding: 8px 12px;
+  font: 600 12px/1.2 system-ui, sans-serif;
+}
+
+@media print {
+  @page {
+    margin: 0;
+  }
+
+  html,
+  body {
+    width: var(--paper-width-mm);
+    max-width: var(--paper-width-mm);
+    min-height: var(--thermal-paper-height-mm, auto);
+    margin: 0;
+    padding: 0;
+    background: #fff !important;
+    overflow: hidden;
+  }
+
+  body {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+
+  .thermal-print-page {
+    display: block;
+    min-height: 0;
+    background: #fff;
+    padding: 0;
+  }
+
+  .thermal-print-page__status {
+    display: none !important;
+  }
+}

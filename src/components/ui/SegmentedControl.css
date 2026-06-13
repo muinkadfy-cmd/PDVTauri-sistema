@@ -1,0 +1,58 @@
+/* SegmentedControl – premium pills */
+.st-segmented{
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid var(--border-light);
+  background: rgba(255,255,255,0.02);
+  border-radius: 999px;
+  padding: 2px;
+  gap: 2px;
+}
+
+.st-segmented__btn{
+  border: 0;
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  white-space: nowrap;
+  transition: background var(--transition-fast), color var(--transition-fast), transform var(--transition-fast);
+}
+
+.st-segmented--md .st-segmented__btn{
+  min-height: var(--btn-height, 40px);
+  padding: 0 12px;
+  font-size: 13px;
+  line-height: 1;
+}
+
+.st-segmented--sm .st-segmented__btn{
+  min-height: 34px;
+  padding: 0 10px;
+  font-size: 12px;
+  line-height: 1;
+}
+
+.st-segmented__btn:hover{
+  background: rgba(255,255,255,0.04);
+  color: var(--text-primary);
+}
+
+.st-segmented__btn:active{
+  transform: translateY(0.5px);
+}
+
+.st-segmented__btn--active{
+  background: var(--primary-light);
+  color: var(--text-primary);
+  border: 1px solid rgba(var(--accent-rgb), 0.35);
+}
+
+.st-segmented__btn:disabled{
+  opacity: 0.6;
+  cursor: not-allowed;
+}

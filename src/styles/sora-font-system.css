@@ -1,0 +1,240 @@
+/* P16 — Fonte Sora como padrão do sistema inteiro
+   Observação: os arquivos .ttf devem estar em public-desktop/fonts/ no Desktop.
+   Pesos usados para UI: Regular, Medium, SemiBold, Bold e ExtraBold.
+   Thin/ExtraLight ficam fora do uso padrão para preservar leitura em PC fraco. */
+
+@font-face {
+  font-family: "Sora";
+  src: url("/fonts/Sora-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: optional;
+}
+
+@font-face {
+  font-family: "Sora";
+  src: url("/fonts/Sora-Medium.ttf") format("truetype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: optional;
+}
+
+@font-face {
+  font-family: "Sora";
+  src: url("/fonts/Sora-SemiBold.ttf") format("truetype");
+  font-weight: 600;
+  font-style: normal;
+  font-display: optional;
+}
+
+@font-face {
+  font-family: "Sora";
+  src: url("/fonts/Sora-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: optional;
+}
+
+@font-face {
+  font-family: "Sora";
+  src: url("/fonts/Sora-ExtraBold.ttf") format("truetype");
+  font-weight: 800;
+  font-style: normal;
+  font-display: optional;
+}
+
+:root {
+  --font-family-sans: "Sora", Tahoma, Verdana, "Segoe UI", Arial, sans-serif !important;
+  --classic-font: "Sora", Tahoma, Verdana, "Segoe UI", Arial, sans-serif !important;
+
+  /* Micro ajuste Sora: geométrica, precisa de peso controlado. */
+  --ui-font-body: 400;
+  --ui-font-label: 500;
+  --ui-font-strong: 600;
+  --ui-font-title: 700;
+  --ui-font-number: 700;
+  --ui-font-heavy: 800;
+
+  --ui-letter-body: -0.006em;
+  --ui-letter-title: -0.018em;
+  --ui-letter-label: 0.006em;
+  --ui-letter-button: 0.004em;
+  --ui-letter-number: -0.022em;
+}
+
+html,
+body,
+#root,
+.app,
+button,
+input,
+select,
+textarea,
+table,
+td,
+th {
+  font-family: var(--font-family-sans) !important;
+  font-synthesis: none;
+  text-rendering: geometricPrecision;
+}
+
+body {
+  font-weight: var(--ui-font-body) !important;
+  letter-spacing: var(--ui-letter-body) !important;
+}
+
+/* Topbar: Sora com peso médio, sem ficar “grosso” demais */
+.topbar,
+.topbar-page-context,
+.topbar-page-hint {
+  font-family: var(--font-family-sans) !important;
+  font-weight: 500 !important;
+}
+
+.topbar-page-chip,
+.topbar-page-badge,
+.clock-time,
+.avatar-initials {
+  font-family: var(--font-family-sans) !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.004em !important;
+}
+
+/* Sidebar: leitura rápida e menos peso visual */
+.sidebar,
+.sidebar * {
+  font-family: var(--font-family-sans) !important;
+}
+
+.sidebar-brand-kicker,
+.sidebar-group-label {
+  font-weight: 600 !important;
+  letter-spacing: 0.10em !important;
+}
+
+.sidebar-brand-text {
+  font-weight: 700 !important;
+  letter-spacing: -0.012em !important;
+}
+
+.sidebar-label {
+  font-weight: 600 !important;
+  letter-spacing: -0.006em !important;
+}
+
+/* Títulos principais */
+h1,
+h2,
+h3,
+.page-title,
+.page-head h1,
+.painel-page h1,
+.painel-page h2,
+.panel-section-heading h2,
+.modal-title,
+.dialog-title {
+  font-family: var(--font-family-sans) !important;
+  font-weight: var(--ui-font-title) !important;
+  letter-spacing: var(--ui-letter-title) !important;
+}
+
+/* Labels e textos pequenos */
+label,
+.form-label,
+.kpi-label,
+.metric-label,
+.card-label,
+.sf-label,
+.panel-section-heading span,
+.helper-text,
+.text-muted,
+.muted {
+  font-family: var(--font-family-sans) !important;
+  font-weight: var(--ui-font-label) !important;
+  letter-spacing: var(--ui-letter-label) !important;
+}
+
+/* Números e totais: Sora Bold, micro tracking negativo para encaixar melhor */
+.kpi-value,
+.metric-value,
+.card-value,
+.money-value,
+.total-value,
+.amount,
+.price,
+.clock-time {
+  font-family: var(--font-family-sans) !important;
+  font-weight: var(--ui-font-number) !important;
+  letter-spacing: var(--ui-letter-number) !important;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Botões e abas */
+button,
+.btn,
+.tab-button,
+.analysis-tab,
+.period-option,
+.period-tabs button,
+.period-filter button,
+.panel-period-tabs button {
+  font-family: var(--font-family-sans) !important;
+  font-weight: var(--ui-font-strong) !important;
+  letter-spacing: var(--ui-letter-button) !important;
+}
+
+/* Inputs: não usar peso alto para não cansar na digitação */
+input,
+select,
+textarea,
+.input,
+.form-control,
+.search-input {
+  font-weight: 400 !important;
+  letter-spacing: -0.004em !important;
+}
+
+/* Tabelas/listas: Medium no cabeçalho, Regular no corpo */
+th,
+.table-head,
+.data-table thead,
+.list-table thead {
+  font-weight: 600 !important;
+  letter-spacing: 0.004em !important;
+}
+
+td,
+.table-cell,
+.data-table tbody,
+.list-table tbody {
+  font-weight: 400 !important;
+  letter-spacing: -0.004em !important;
+}
+
+/* Rodapé clássico: compacto, limpo e alinhado */
+.classic-statusbar,
+.classic-statusbar-cell,
+.status-footer,
+.sf-group {
+  font-family: var(--font-family-sans) !important;
+  font-weight: 500 !important;
+  letter-spacing: -0.004em !important;
+}
+
+/* Evita “peso falso” em WebView antigo */
+strong,
+b,
+.font-bold {
+  font-weight: 700 !important;
+}
+
+/* PC fraco: menos custo de renderização tipográfica */
+html[data-perf="1"] body,
+html[data-low-end] body {
+  text-rendering: optimizeSpeed;
+}
+
+html[data-perf="1"] *,
+html[data-low-end] * {
+  font-synthesis: none !important;
+}

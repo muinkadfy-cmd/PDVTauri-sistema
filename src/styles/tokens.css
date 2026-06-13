@@ -1,0 +1,323 @@
+/* ============================================
+   DESIGN TOKENS - Smart Tech Rolândia
+   Sistema de Design Consistente
+   ============================================ */
+
+:root {
+  /* ===== CORES PRINCIPAIS ===== */
+  /* Cor de marca (1 acento) */
+  --accent: #22c55e;
+  --accent-rgb: 34 197 94;
+  --primary: var(--accent);
+  --primary-dark: #16a34a;
+  --primary-light: rgba(var(--accent-rgb), 0.12);
+  --primary-hover: rgba(var(--accent-rgb), 0.16);
+
+  /* Ajuste de brilho (UI) - 1.00 = padrão */
+  --ui-brightness: 1;
+
+  
+  /* Cores de Ações */
+  --acao-azul: #3b82f6;
+  --acao-laranja: #f59e0b;
+  --acao-verde: #10b981;
+  --acao-vermelho: #ef4444;
+  
+  /* Cores de Cards */
+  --card-servicos: #3b82f6;
+  --card-vendas: #10b981;
+  --card-gastos: #f59e0b;
+  --card-saldo: #1e40af;
+  
+  /* ===== CORES DE FUNDO ===== */
+  /* Light: contraste um pouco mais forte (SaaS) */
+  --bg-primary: #f7f9fc;
+  --bg-secondary: #eef2f7;
+  --background-alt: #f1f5f9; /* caixas/áreas alternativas */
+  --bg-surface: #ffffff;
+  --bg-hover: #f8fafc;
+  --bg-gradient: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
+  
+  /* ===== CORES DE TEXTO ===== */
+  --text-primary: #1e293b;
+  --text-secondary: #334155;
+  --text-muted: #64748b;
+  --text-inverse: #ffffff;
+  --text-disabled: #cbd5e1;
+  
+  /* Glass tokens (Light) */
+  --glass-1: rgba(255,255,255,0.78);
+  --glass-2: rgba(255,255,255,0.62);
+  --glass-3: rgba(255,255,255,0.46);
+  --glass-border: rgba(15,23,42,0.12);
+  --shadow-soft: 0 18px 48px rgba(2,6,23,0.14);
+
+  /* Botões (Light) */
+  --btn-border: rgba(15,23,42,0.12);
+  --btn-bg: rgba(15,23,42,0.04);
+  --btn-bg-muted: rgba(15,23,42,0.08);
+  --btn-text: rgba(15,23,42,0.92);
+
+  /* ===== BORDAS ===== */
+  --border-light: #dbe3ef;
+  --border-medium: #c7d2e2;
+  --border-dark: #94a3b8;
+  --border-radius-sm: 6px;
+  --border-radius: 12px;
+  --border-radius-md: 16px;
+  --border-radius-lg: 20px;
+  
+  /* ===== SOMBRAS ===== */
+  --shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  --shadow-inner: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06);
+  
+  /* ===== ESPAÇAMENTOS (BASE) ===== */
+  --spacing-0: 0;
+  --spacing-1: 4px;
+  --spacing-2: 8px;
+  --spacing-3: 12px;
+  --spacing-4: 16px;
+  --spacing-5: 20px;
+  --spacing-6: 24px;
+  --spacing-8: 32px;
+  --spacing-10: 40px;
+  --spacing-12: 48px;
+  
+  /* Aliases para compatibilidade */
+  --spacing-xs: var(--spacing-1);
+  --spacing-sm: var(--spacing-2);
+  --spacing-md: var(--spacing-4);
+  --spacing-lg: var(--spacing-6);
+  --spacing-xl: var(--spacing-8);
+  --spacing-2xl: var(--spacing-12);
+  
+  /* ===== TIPOGRAFIA (DESKTOP) ===== */
+  --font-size-xs: 11px;
+  --font-size-sm: 13px;
+  --font-size-base: 15px;
+  --font-size-lg: 17px;
+  --font-size-xl: 19px;
+  --font-size-2xl: 22px;
+  --font-size-3xl: 26px;
+  --font-size-4xl: 32px;
+  
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  
+  --line-height-tight: 1.25;
+  --line-height-normal: 1.5;
+  --line-height-relaxed: 1.75;
+  
+  /* ===== LAYOUT / MOTION ===== */
+  --gap-grid: 14px;
+  --card-padding: 16px;
+  --card-padding-sm: 12px;
+
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* ===== TRANSITIONS ===== */
+  --transition-fast: 120ms ease;
+  --transition-base: 180ms ease;
+  --transition-slow: 300ms ease;
+  
+  /* ===== Z-INDEX ===== */
+  --z-base: 1;
+  --z-dropdown: 1000;
+  --z-sticky: 1020;
+  --z-fixed: 1030;
+  --z-modal-backdrop: 1040;
+  --z-modal: 1050;
+  --z-toast: 1060;
+  --z-tooltip: 1070;
+  
+  /* ===== ALTURAS MÍNIMAS (TOUCH TARGETS) ===== */
+  --touch-target-sm: 36px;
+  --touch-target: 44px;
+  --touch-target-lg: 48px;
+  
+  /* ===== INPUT HEIGHTS ===== */
+  --input-height-sm: 36px;
+  --input-height: 40px;
+  --input-height-lg: 48px;
+
+  /* Aliases (compatibilidade com CSS antigo) */
+  --surface: var(--bg-surface);
+  --surface-2: var(--bg-secondary);
+  --background: var(--bg-primary);
+  --foreground: var(--text-primary);
+  --overlay: rgba(2, 6, 23, 0.55);
+}
+
+/* ===== MODO ESCURO ===== */
+[data-theme="dark"] {
+  /* Monochrome premium (produto sério) */
+  --bg-primary: #0b0f14;
+  --bg-secondary: #0f1520;
+  --background-alt: rgba(255,255,255,0.05);
+  --bg-surface: #101826;
+  --bg-hover: rgba(255,255,255,0.04);
+  --bg-gradient: linear-gradient(180deg, #0b0f14 0%, #0f1520 100%);
+
+
+
+  /* Glass / Panels (SaaS 2026) */
+  --glass-1: rgba(255, 255, 255, 0.06);
+  --glass-2: rgba(255, 255, 255, 0.045);
+  --glass-3: rgba(255, 255, 255, 0.03);
+  --glass-border: rgba(255, 255, 255, 0.10);
+
+  --shadow-soft: 0 18px 48px rgba(0, 0, 0, 0.55);
+
+  --text-primary: #e7edf6;
+  --text-secondary: rgba(231, 237, 246, 0.78);
+  --text-muted: rgba(231, 237, 246, 0.55);
+  --text-inverse: #0b0f14;
+  --text-disabled: rgba(231, 237, 246, 0.35);
+
+  --border-light: rgba(255, 255, 255, 0.08);
+  --border-medium: rgba(255, 255, 255, 0.12);
+  --border-dark: rgba(255, 255, 255, 0.18);
+
+  --primary-light: rgba(var(--accent-rgb), 0.14);
+
+
+  /* Buttons (dark): evita botões brancos no tema escuro */
+  --btn-border: rgba(255, 255, 255, 0.14);
+  --btn-bg: rgba(255, 255, 255, 0.06);
+  --btn-bg-muted: rgba(255, 255, 255, 0.09);
+  --btn-text: rgba(231, 237, 246, 0.92);
+
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.35);
+  --shadow-sm: 0 8px 24px rgba(0, 0, 0, 0.35);
+  --shadow: 0 12px 28px rgba(0, 0, 0, 0.42);
+  --shadow-md: 0 18px 44px rgba(0, 0, 0, 0.52);
+  --shadow-lg: 0 28px 60px rgba(0, 0, 0, 0.62);
+
+  /* Aliases (compatibilidade) */
+  --surface: var(--bg-surface);
+  --surface-2: var(--bg-secondary);
+  --background: var(--bg-primary);
+  --foreground: var(--text-primary);
+}
+
+/* ===== MODO COMPACTO ===== */
+/* Reduz espaçamentos e fontes - ideal para uso em balcão e telas pequenas */
+body.compact {
+  /* Espaçamentos reduzidos mas ainda confortáveis */
+  --spacing-xs: 3px;
+  --spacing-sm: 6px;
+  --spacing-md: 10px;
+  --spacing-lg: 14px;
+  --spacing-xl: 18px;
+  --spacing-2xl: 24px;
+  
+  /* Fontes menores mas legíveis */
+  --font-size-xs: 10px;
+  --font-size-sm: 11px;
+  --font-size-base: 12px;
+  --font-size-lg: 14px;
+  --font-size-xl: 16px;
+  --font-size-2xl: 18px;
+  --font-size-3xl: 20px;
+  
+  /* Bordas mais sutis */
+  --border-radius-sm: 4px;
+  --border-radius: 6px;
+  --border-radius-md: 8px;
+  --border-radius-lg: 10px;
+  
+  /* Inputs e botões compactos mas tocáveis */
+  --input-height: 36px;
+  --input-height-sm: 32px;
+  --touch-target: 40px;
+  --touch-target-sm: 36px;
+  
+  /* Shadows mais sutis */
+  --shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.08);
+  --shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.12);
+  --shadow-lg: 0 8px 12px -2px rgba(0, 0, 0, 0.15);
+  
+  /* Padding de cards reduzido */
+  --card-padding: 12px;
+  --card-padding-sm: 8px;
+  
+  /* Gap de grid reduzido */
+  --gap-grid: 8px;
+}
+
+/* ===== MODO AJUSTÁVEL ===== */
+/* Encaixado, próximo, visual rápido — ideal quando há muitos itens */
+/* Foco em densidade de informação e visualização rápida */
+body.ajustavel {
+  /* Espaçamentos mínimos para máximo aproveitamento */
+  --spacing-xs: 3px;
+  --spacing-sm: 5px;
+  --spacing-md: 8px;
+  --spacing-lg: 12px;
+  --spacing-xl: 16px;
+  --spacing-2xl: 20px;
+  
+  /* Gap de grid muito reduzido para itens próximos */
+  --gap-grid: 6px;
+  
+  /* Padding de cards mínimo */
+  --card-padding: 10px;
+  --card-padding-sm: 6px;
+  
+  /* Mantém fontes normais para legibilidade */
+  /* Bordas mais sutis */
+  --border-radius-sm: 3px;
+  --border-radius: 5px;
+  --border-radius-md: 7px;
+  --border-radius-lg: 9px;
+  
+  /* Shadows mais leves */
+  --shadow-xs: 0 1px 1px 0 rgba(0, 0, 0, 0.04);
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  --shadow: 0 2px 3px -1px rgba(0, 0, 0, 0.08);
+  --shadow-md: 0 3px 5px -1px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 6px 10px -2px rgba(0, 0, 0, 0.12);
+}
+
+/* Modo Compacto + Ajustável: Ultra denso */
+body.compact.ajustavel {
+  --spacing-xs: 2px;
+  --spacing-sm: 4px;
+  --spacing-md: 6px;
+  --spacing-lg: 10px;
+  --spacing-xl: 14px;
+  --spacing-2xl: 18px;
+  
+  --gap-grid: 4px;
+  --card-padding: 8px;
+  --card-padding-sm: 5px;
+  
+  /* Fontes ainda menores */
+  --font-size-xs: 9px;
+  --font-size-sm: 10px;
+  --font-size-base: 11px;
+  --font-size-lg: 13px;
+  --font-size-xl: 15px;
+  --font-size-2xl: 17px;
+  --font-size-3xl: 19px;
+  
+  /* Bordas ainda mais sutis */
+  --border-radius-sm: 3px;
+  --border-radius: 5px;
+  --border-radius-md: 6px;
+  --border-radius-lg: 8px;
+}
+
+/* ===== BREAKPOINTS (para uso em media queries) ===== */
+/* Mobile: <= 480px */
+/* Tablet: 481px - 900px */
+/* Desktop: > 900px */

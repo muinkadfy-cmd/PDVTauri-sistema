@@ -1,0 +1,114 @@
+.diagnostico-rotas-page {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.diagnostico-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.stat-card {
+  padding: 1rem;
+  background: #f3f4f6;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.stat-card div:first-child {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.stat-card div:last-child {
+  color: #6b7280;
+  font-size: 0.875rem;
+}
+
+.diagnostico-actions {
+  margin-bottom: 1rem;
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.routes-list {
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.routes-list table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.routes-list thead {
+  background: #f9fafb;
+  border-bottom: 2px solid #e5e7eb;
+}
+
+.routes-list th {
+  padding: 1rem;
+  text-align: left;
+  font-weight: 600;
+  color: #374151;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.routes-list tbody tr {
+  border-bottom: 1px solid #e5e7eb;
+  transition: background 0.2s;
+}
+
+.routes-list tbody tr:hover {
+  background: #f9fafb;
+}
+
+.routes-list tbody tr:last-child {
+  border-bottom: none;
+}
+
+.routes-list td {
+  padding: 1rem;
+  vertical-align: middle;
+}
+
+.routes-list code {
+  background: #f3f4f6;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  font-family: 'Courier New', monospace;
+}
+
+.diagnostico-info {
+  margin-top: 2rem;
+  padding: 1rem;
+  background: #f9fafb;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+.diagnostico-info h3 {
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+  color: #374151;
+}
+
+.diagnostico-info ul {
+  margin: 0.5rem 0;
+  padding-left: 1.5rem;
+}
+
+.diagnostico-info li {
+  margin: 0.25rem 0;
+}

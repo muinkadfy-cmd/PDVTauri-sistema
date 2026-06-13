@@ -1,0 +1,97 @@
+.printer-settings {
+  width: 100%;
+  max-width: 760px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.printer-settings__header {
+  display: flex;
+  gap: var(--spacing-md);
+  align-items: flex-end;
+  flex-wrap: wrap;
+}
+
+.printer-settings__printer {
+  flex: 2;
+  min-width: min(100%, 320px);
+}
+
+.printer-settings__loading {
+  min-height: 36px;
+  display: flex;
+  align-items: center;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--radius);
+  background: var(--glass-3);
+  border: 1px dashed var(--border-light);
+  color: var(--text-secondary);
+}
+
+.printer-settings__hint {
+  display: block;
+  margin-top: 6px;
+  font-size: var(--font-size-xs);
+  color: var(--text-secondary);
+  line-height: 1.35;
+}
+
+.printer-settings__summary {
+  flex: 1;
+  min-width: min(100%, 220px);
+  background: var(--glass-3);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius);
+  padding: var(--spacing-sm);
+}
+
+.printer-settings__summary-label {
+  display: block;
+  font-size: var(--font-size-xs);
+  color: var(--text-secondary);
+}
+
+.printer-settings__summary-value {
+  display: block;
+  margin-top: 4px;
+  font-size: var(--font-size-sm);
+  color: var(--text-primary);
+  word-break: break-word;
+}
+
+.printer-settings__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: var(--spacing-sm);
+}
+
+.printer-settings__tip {
+  margin: 0;
+  padding-top: var(--spacing-xs);
+  border-top: 1px dashed var(--border-light);
+  font-size: var(--font-size-xs);
+  color: var(--text-secondary);
+  line-height: 1.45;
+}
+
+@media (max-width: 520px) {
+  .printer-settings__summary {
+    width: 100%;
+  }
+}
+
+
+.printer-settings__actions{
+  margin-top: 8px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.printer-settings__error{
+  font-size: var(--font-size-xs);
+  color: var(--danger, #ef4444);
+  line-height: 1.35;
+}

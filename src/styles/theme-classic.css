@@ -1,0 +1,253 @@
+/* 
+ * TEMA CLÁSSICO - Inspirado em SHOficina/Delphi VCL
+ * Arquivo: src/styles/theme-classic.css
+ * 
+ * Paleta extraída do sistema SHOficina
+ * Design: Profissional, sóbrio, clássico
+ */
+
+:root {
+  /* ========================================
+     CORES PRINCIPAIS
+     ======================================== */
+  
+  /* Fundos */
+  --bg-main: #F0F0E8;              /* Bege claro - fundo geral */
+  --bg-form: #E8F5E0;              /* Verde claro - formulários */
+  --bg-sidebar: #D8D8D0;           /* Bege médio - sidebar */
+  --bg-input: #FFFFEE;             /* Amarelo claro - inputs */
+  --bg-input-focus: #FFE680;       /* Amarelo ativo - input focado */
+  --bg-input-disabled: #E8E8E0;    /* Cinza claro - desabilitado */
+  
+  /* Bordas */
+  --border-main: #8B9E7A;          /* Verde oliva - bordas principais */
+  --border-input: #C0C0A8;         /* Bege escuro - bordas inputs */
+  --border-active: #6B8E5F;        /* Verde - borda ativa/foco */
+  --border-light: #D8D8D0;         /* Bege claro - bordas suaves */
+  
+  /* Texto */
+  --text-main: #2C2C2C;            /* Cinza escuro - texto principal */
+  --text-title: #4A5D3F;           /* Verde escuro - títulos */
+  --text-muted: #6B6B6B;           /* Cinza médio - texto secundário */
+  --text-light: #909090;           /* Cinza claro - placeholders */
+  --text-inverse: #FFFFFF;         /* Branco - texto em fundos escuros */
+  
+  /* ========================================
+     BOTÕES
+     ======================================== */
+  
+  /* Botão Primário (Salvar/Gravar) */
+  --btn-primary: #6B8E5F;
+  --btn-primary-hover: #5A7B4E;
+  --btn-primary-active: #4A6B3E;
+  --btn-primary-border: #5A7B4E;
+  
+  /* Botão Danger (Cancelar/Excluir) */
+  --btn-danger: #C85C5C;
+  --btn-danger-hover: #B84C4C;
+  --btn-danger-active: #A83C3C;
+  --btn-danger-border: #B84C4C;
+  
+  /* Botão Info (Importar/Buscar) */
+  --btn-info: #5C7EB8;
+  --btn-info-hover: #4C6EA8;
+  --btn-info-active: #3C5E98;
+  --btn-info-border: #4C6EA8;
+  
+  /* Botão Secondary (Voltar/Fechar) */
+  --btn-secondary: #A0A090;
+  --btn-secondary-hover: #909080;
+  --btn-secondary-active: #808070;
+  --btn-secondary-border: #909080;
+  
+  /* ========================================
+     SIDEBAR
+     ======================================== */
+  
+  --sidebar-bg: var(--bg-sidebar);
+  --sidebar-border: var(--border-main);
+  --sidebar-hover: #C8D4BF;        /* Verde claro - hover */
+  --sidebar-active: #A8B89F;       /* Verde médio - item ativo */
+  --sidebar-text: var(--text-main);
+  --sidebar-text-active: var(--text-title);
+  
+  /* ========================================
+     TOPBAR/MENU
+     ======================================== */
+  
+  --topbar-bg-start: #F8F8F0;      /* Gradiente início */
+  --topbar-bg-end: #E8E8E0;        /* Gradiente fim */
+  --topbar-border: var(--border-main);
+  --topbar-hover: #E0E8D8;
+  --topbar-active: #D0D8C8;
+  --topbar-separator: #D0D0C8;
+  
+  /* ========================================
+     STATUS BAR
+     ======================================== */
+  
+  --statusbar-bg: #2C3E2C;         /* Verde muito escuro */
+  --statusbar-text: #90EE90;       /* Verde claro (lime) */
+  --statusbar-border: #1C2E1C;     /* Verde quase preto */
+  --statusbar-highlight: #FFD700;   /* Amarelo ouro - destaques */
+  
+  /* ========================================
+     TABELAS/GRIDS
+     ======================================== */
+  
+  --table-header-bg-start: #D8E8D0;
+  --table-header-bg-end: #C8D8C0;
+  --table-header-text: var(--text-title);
+  --table-row-even: #FFFFFF;
+  --table-row-odd: #F8F8F8;
+  --table-row-hover: #F8FFF0;      /* Verde muito claro */
+  --table-row-selected: #E8F5E0;
+  --table-border: var(--border-light);
+  --table-border-header: var(--border-main);
+  
+  /* ========================================
+     FORMULÁRIOS
+     ======================================== */
+  
+  --form-bg: var(--bg-form);
+  --form-border: var(--border-main);
+  --form-title-bg-start: #D8E8D0;
+  --form-title-bg-end: #C8D8C0;
+  --form-title-text: var(--text-title);
+  
+  /* GroupBox (agrupamento de campos) */
+  --groupbox-bg: rgba(255, 255, 255, 0.3);
+  --groupbox-border: var(--border-main);
+  --groupbox-title-bg: var(--bg-form);
+  --groupbox-title-text: var(--text-title);
+  
+  /* ========================================
+     ESTADOS E FEEDBACK
+     ======================================== */
+  
+  /* Sucesso */
+  --color-success: #5C9E5C;
+  --color-success-light: #E8F5E8;
+  --color-success-border: #4A8E4A;
+  
+  /* Erro */
+  --color-error: #C85C5C;
+  --color-error-light: #F5E8E8;
+  --color-error-border: #B84C4C;
+  
+  /* Aviso */
+  --color-warning: #D4A834;
+  --color-warning-light: #FFF8E0;
+  --color-warning-border: #C49824;
+  
+  /* Info */
+  --color-info: #5C7EB8;
+  --color-info-light: #E8F0F8;
+  --color-info-border: #4C6EA8;
+  
+  /* ========================================
+     SOMBRAS E EFEITOS
+     ======================================== */
+  
+  /* Sombras clássicas (mais visíveis) */
+  --shadow-raised: 2px 2px 4px rgba(0, 0, 0, 0.25);
+  --shadow-inset: inset 1px 1px 3px rgba(0, 0, 0, 0.2);
+  --shadow-hover: 2px 3px 6px rgba(0, 0, 0, 0.3);
+  --shadow-dropdown: 3px 3px 8px rgba(0, 0, 0, 0.25);
+  
+  /* Bordas (arredondamento mínimo, estilo clássico) */
+  --border-radius: 4px;
+  --border-radius-small: 2px;
+  --border-radius-large: 6px;
+  
+  /* Largura de bordas */
+  --border-width: 1px;
+  --border-width-thick: 2px;
+  --border-width-input: 2px;
+  
+  /* ========================================
+     TRANSIÇÕES
+     ======================================== */
+  
+  --transition-fast: 0.1s ease;
+  --transition-normal: 0.2s ease;
+  --transition-slow: 0.3s ease;
+  
+  /* ========================================
+     ESPAÇAMENTOS
+     ======================================== */
+  
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 12px;
+  --spacing-lg: 16px;
+  --spacing-xl: 20px;
+  --spacing-xxl: 24px;
+  
+  /* ========================================
+     TIPOGRAFIA
+     ======================================== */
+  
+  --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  --font-family-mono: 'Courier New', Courier, monospace;
+  
+  --font-size-xs: 11px;
+  --font-size-sm: 12px;
+  --font-size-md: 13px;
+  --font-size-base: 14px;
+  --font-size-lg: 16px;
+  --font-size-xl: 18px;
+  
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  
+  /* ========================================
+     Z-INDEX LAYERS
+     ======================================== */
+  
+  --z-dropdown: 1000;
+  --z-sticky: 1020;
+  --z-fixed: 1030;
+  --z-modal-backdrop: 1040;
+  --z-modal: 1050;
+  --z-popover: 1060;
+  --z-tooltip: 1070;
+}
+
+/* ========================================
+   DARK MODE (opcional - manter clássico)
+   ======================================== */
+
+/* Comentado por padrão - descomentar se quiser suporte */
+/*
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg-main: #2C2C2C;
+    --bg-form: #3C3C3C;
+    --text-main: #E0E0E0;
+    --text-title: #90C090;
+  }
+}
+*/
+
+/* ========================================
+   UTILITÁRIOS DE COR
+   ======================================== */
+
+.bg-primary { background-color: var(--btn-primary) !important; }
+.bg-danger { background-color: var(--btn-danger) !important; }
+.bg-info { background-color: var(--btn-info) !important; }
+.bg-success { background-color: var(--color-success) !important; }
+.bg-warning { background-color: var(--color-warning) !important; }
+
+.text-primary { color: var(--btn-primary) !important; }
+.text-danger { color: var(--btn-danger) !important; }
+.text-info { color: var(--btn-info) !important; }
+.text-success { color: var(--color-success) !important; }
+.text-warning { color: var(--color-warning) !important; }
+.text-muted { color: var(--text-muted) !important; }
+
+.border-primary { border-color: var(--border-active) !important; }
+.border-danger { border-color: var(--btn-danger-border) !important; }

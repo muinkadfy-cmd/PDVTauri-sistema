@@ -1,0 +1,123 @@
+/* Layout System Premium - PWA Android Compatible */
+.app {
+  height: 100vh;
+  height: 100dvh;
+  min-height: -webkit-fill-available; /* Android PWA */
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-gradient);
+  filter: brightness(var(--ui-brightness, 1));
+
+  overflow: hidden; /* evita barra dupla */
+  /* Safe area para Android (notch, etc) */
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: env(safe-area-inset-bottom);
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+}
+
+.app-container {
+  display: flex;
+  flex: 1;
+  position: relative;
+  overflow: hidden; /* só o main rola */
+}
+
+.main-content {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  /* isola repaint (reduz flicker em navegação) */
+  contain: layout paint;
+  padding-bottom: var(--spacing-xl);
+  transition: margin-left var(--transition-base);
+  padding-top: 0;
+  
+  /* Bottom nav + FAB + safe-area */
+  padding-bottom: calc(80px + var(--spacing-xl) + env(safe-area-inset-bottom));
+}
+
+/* Container centralizado para conteúdo web */
+@media (min-width: 901px) {
+  .main-content {
+    padding-left: var(--spacing-6);
+    padding-right: var(--spacing-6);
+  }
+
+  /* Container interno para limitar largura */
+  .page-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    width: 100%;
+  }
+}
+
+.main-content.with-sidebar {
+  margin-left: 0; /* sidebar já ocupa espaço (flex). */
+  transition: margin-left var(--transition-base);
+}
+
+.drawer-overlay {
+  position: fixed;
+  /* Seguir altura real do Topbar (iPhone notch/Android PWA). */
+  top: var(--topbar-height, 70px);
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: calc(var(--z-modal-backdrop) - 1);
+  animation: fadeIn var(--transition-base);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media (max-width: 1099px) {
+  .main-content.with-sidebar {
+    margin-left: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .main-content {
+    /* Bottom nav (56px) + Floating action bar (80px) + safe-area */
+    padding-bottom: calc(56px + 80px + env(safe-area-inset-bottom));
+    padding-left: var(--spacing-3);
+    padding-right: var(--spacing-3);
+    overflow-x: hidden;
+  }
+
+  .page-container {
+    padding-left: var(--spacing-3);
+    padding-right: var(--spacing-3);
+    overflow-x: hidden;
+  }
+
+  .app {
+    padding-top: 0; /* Topbar já tem safe-area */
+    padding-bottom: 0; /* BottomNav já tem safe-area */
+    overflow-x: hidden;
+  }
+}
+
+@media (min-width: 481px) and (max-width: 900px) {
+  .main-content {
+    /* Bottom nav (56px) + Floating action bar (80px) + safe-area */
+    padding-bottom: calc(56px + 80px + env(safe-area-inset-bottom));
+  }
+}
+
+
+@media print {
+  .app { filter: none !important; }
+}
+
+.page-container{
+  position: relative;
+}

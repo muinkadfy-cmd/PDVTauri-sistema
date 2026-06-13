@@ -1,0 +1,132 @@
+.welcome-after-login-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 120;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+  background: rgba(2, 9, 14, 0.58);
+}
+
+.welcome-after-login-box {
+  position: relative;
+  width: min(460px, calc(100vw - 28px));
+  border: 1px solid #2e6f52;
+  background:
+    linear-gradient(180deg, rgba(15, 42, 55, 0.98) 0%, rgba(6, 18, 28, 0.99) 100%);
+  color: #f3f8fb;
+  box-shadow:
+    inset 1px 1px 0 rgba(255, 255, 255, 0.10),
+    inset -1px -1px 0 rgba(0, 0, 0, 0.72),
+    0 24px 68px rgba(0, 0, 0, 0.48);
+  padding: 24px 24px 22px;
+  text-align: center;
+}
+
+.welcome-after-login-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 34px;
+  height: 34px;
+  border: 1px solid #41627b;
+  background: #081520;
+  color: #f3f8fb;
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.welcome-after-login-close:hover {
+  border-color: #22c55e;
+  background: #102234;
+}
+
+.welcome-after-login-badge {
+  width: fit-content;
+  margin: 0 auto 12px;
+  padding: 5px 12px;
+  border: 1px solid rgba(34, 197, 94, 0.48);
+  background: rgba(18, 124, 72, 0.22);
+  color: #90f0bc;
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.welcome-after-login-icon {
+  width: 58px;
+  height: 58px;
+  margin: 0 auto 12px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(34, 197, 94, 0.42);
+  background: radial-gradient(circle, rgba(34, 197, 94, 0.22) 0%, rgba(4, 16, 24, 0.86) 68%);
+  color: #ffd166;
+  font-size: 30px;
+  font-weight: 900;
+}
+
+.welcome-after-login-box h2 {
+  margin: 0 0 10px;
+  color: #ffffff;
+  font-size: 25px;
+  line-height: 1.08;
+  font-weight: 900;
+}
+
+.welcome-after-login-box p {
+  margin: 0 auto 14px;
+  max-width: 390px;
+  color: #cbd8e4;
+  font-size: 14px;
+  line-height: 1.48;
+}
+
+.welcome-after-login-blessing {
+  display: block;
+  margin: 0 0 18px;
+  color: #86efac;
+  font-size: 16px;
+  line-height: 1.2;
+  font-weight: 900;
+}
+
+.welcome-after-login-action {
+  min-width: 190px;
+  min-height: 42px;
+  border: 1px solid #22c55e;
+  background: linear-gradient(180deg, #22c55e 0%, #15803d 100%);
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.welcome-after-login-action:hover {
+  filter: brightness(1.05);
+}
+
+@media (max-width: 680px) {
+  .welcome-after-login-box {
+    padding: 22px 18px 18px;
+  }
+
+  .welcome-after-login-box h2 {
+    font-size: 22px;
+  }
+
+  .welcome-after-login-box p {
+    font-size: 13px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .welcome-after-login-overlay,
+  .welcome-after-login-box {
+    transition: none;
+    animation: none;
+  }
+}

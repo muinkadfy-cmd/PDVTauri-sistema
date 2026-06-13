@@ -1,0 +1,341 @@
+/* Tela de Compra/Ativação - Monochrome + 1 acento */
+
+.buy-root{
+  min-height: 100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding: 18px;
+  background:
+    radial-gradient(900px 380px at 50% -10%, rgba(var(--accent-rgb), 0.08) 0%, rgba(0,0,0,0) 60%),
+    var(--bg-primary);
+}
+
+.buy-card{
+  width: min(920px, 96vw);
+  border-radius: 18px;
+  border: 1px solid rgba(255,255,255,0.10);
+  background: rgba(255,255,255,0.03);
+  box-shadow:
+    0 30px 70px rgba(0,0,0,0.55),
+    inset 0 1px 0 rgba(255,255,255,0.05);
+  padding: 18px;
+}
+
+.buy-top{
+  display:flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.buy-badge{
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .02em;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.10);
+  background: rgba(255,255,255,0.04);
+  color: rgba(255,255,255,0.86);
+}
+
+.buy-title{
+  min-width: 260px;
+  flex: 1;
+}
+
+.buy-h1{
+  font-size: 20px;
+  font-weight: 900;
+  color: var(--text-primary);
+  line-height: 1.2;
+}
+
+.buy-sub{
+  margin-top: 4px;
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.buy-status{
+  display:flex;
+  align-items:center;
+}
+
+.buy-pill{
+  display:inline-flex;
+  align-items:center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.10);
+  background: rgba(255,255,255,0.03);
+  color: rgba(255,255,255,0.90);
+  font-weight: 700;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.buy-pill .dot{
+  width: 8px;
+  height: 8px;
+  border-radius: 99px;
+  background: var(--accent);
+  box-shadow: 0 0 0 3px rgba(var(--accent-rgb), 0.20);
+}
+
+.buy-pill-expired .dot,
+.buy-pill-blocked .dot{
+  background: #ef4444;
+  box-shadow: 0 0 0 3px rgba(239,68,68,0.20);
+}
+
+.buy-pill-invalid .dot,
+.buy-pill-not_found .dot{
+  background: #f59e0b;
+  box-shadow: 0 0 0 3px rgba(245,158,11,0.20);
+}
+
+.buy-grid{
+  display:grid;
+  grid-template-columns: 1.35fr 0.65fr;
+  gap: 14px;
+  margin-top: 10px;
+}
+
+@media (max-width: 860px){
+  .buy-grid{
+    grid-template-columns: 1fr;
+  }
+}
+
+.buy-section{
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,0.10);
+  background: rgba(255,255,255,0.03);
+  padding: 14px;
+}
+
+.buy-label{
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 10px;
+}
+
+.buy-idbox{
+  display:flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(0,0,0,0.28);
+  padding: 12px;
+}
+
+.buy-id{
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: 13px;
+  color: rgba(255,255,255,0.92);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+.buy-actions{
+  display:flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.buy-hint{
+  margin-top: 10px;
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.buy-offer{
+  position: relative;
+  overflow: hidden;
+}
+
+.buy-offer::before{
+  content:"";
+  position:absolute;
+  inset:-60px -60px auto auto;
+  width: 220px;
+  height: 220px;
+  border-radius: 999px;
+  background: radial-gradient(circle at 30% 30%, rgba(var(--accent-rgb), 0.14), rgba(0,0,0,0));
+  filter: blur(2px);
+  pointer-events:none;
+}
+
+.buy-price{
+  display:flex;
+  align-items: baseline;
+  gap: 10px;
+  margin: 6px 0 6px;
+}
+
+.buy-price .old{
+  color: rgba(255,255,255,0.55);
+  text-decoration: line-through;
+  font-weight: 800;
+}
+
+.buy-price .new{
+  color: var(--text-primary);
+  font-weight: 1000;
+  font-size: 22px;
+  letter-spacing: -0.02em;
+}
+
+.buy-offer-text{
+  color: var(--text-secondary);
+  font-size: 13px;
+  margin-bottom: 12px;
+}
+
+.buy-cta{
+  width: 100%;
+}
+
+.buy-alt{
+  width: 100%;
+  margin-top: 10px;
+}
+
+.buy-foot{
+  margin-top: 14px;
+  display:flex;
+  align-items:center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  color: var(--text-secondary);
+}
+
+.buy-foot-note{
+  font-size: 13px;
+}
+
+
+/* Oferta (responsivo e sem poluir) */
+.offer-badge{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding:6px 10px;
+  border-radius:999px;
+  font-weight:900;
+  letter-spacing:.2px;
+  font-size:13px;
+  width:fit-content;
+  border:1px solid rgba(245, 158, 11, .28);
+  background: rgba(245, 158, 11, .10);
+  color: rgba(251, 191, 36, .95);
+  box-shadow: 0 10px 24px rgba(0,0,0,.22);
+  margin: 2px 0 10px;
+}
+
+.buy-offer-text{
+  margin: 6px 0 0;
+  font-size: 14px;
+  line-height: 1.35;
+}
+
+.buy-offer-compare{
+  margin: 6px 0 0;
+  font-size: 13px;
+  line-height: 1.35;
+  opacity: .95;
+}
+
+@media (max-width: 520px){
+  .offer-badge{
+    font-size:12px;
+    padding:5px 9px;
+  }
+}
+
+/* Token box */
+.buy-divider{
+  height:1px;
+  background: rgba(255,255,255,.08);
+  margin: 14px 0;
+}
+
+.buy-subtitle{
+  font-size:14px;
+  font-weight:700;
+  color: rgba(255,255,255,.92);
+}
+
+.buy-token{
+  width:100%;
+  min-height: 110px;
+  margin-top: 10px;
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,.12);
+  background: rgba(0,0,0,.18);
+  color: rgba(255,255,255,.92);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: 12px;
+  line-height: 1.35;
+  resize: vertical;
+}
+
+.buy-token:focus{
+  outline:none;
+  border-color: rgba(59,130,246,.55);
+  box-shadow: 0 0 0 3px rgba(59,130,246,.15);
+}
+
+.buy-msg{
+  margin-top: 10px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  font-size: 13px;
+}
+
+.buy-msg-error{
+  border: 1px solid rgba(239,68,68,.35);
+  background: rgba(239,68,68,.12);
+  color: rgba(255,255,255,.92);
+}
+
+.buy-msg-ok{
+  border: 1px solid rgba(34,197,94,.35);
+  background: rgba(34,197,94,.12);
+  color: rgba(255,255,255,.92);
+}
+
+.buy-msg-ok-strong{
+  box-shadow:
+    0 12px 28px rgba(0,0,0,.28),
+    inset 0 1px 0 rgba(255,255,255,.06);
+}
+
+.buy-msg-title{
+  font-weight: 900;
+  color: rgba(255,255,255,.95);
+}
+
+.buy-msg-sub{
+  margin-top: 6px;
+  color: rgba(255,255,255,.86);
+  line-height: 1.35;
+}
+
+.buy-msg-actions{
+  margin-top: 10px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}

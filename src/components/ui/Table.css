@@ -1,0 +1,139 @@
+/* Table Component Premium */
+.table-container {
+  background: var(--bg-surface);
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-light);
+  transition: box-shadow var(--transition-base);
+}
+
+.table-container:hover {
+  box-shadow: var(--shadow);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--bg-surface);
+}
+
+.table thead {
+  background: var(--bg-secondary);
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.table th {
+  padding: var(--spacing-3) var(--spacing-4);
+  text-align: left;
+  font-weight: var(--font-weight-semibold);
+  font-size: var(--font-size-sm);
+  color: var(--text-primary);
+  border-bottom: 2px solid var(--border-light);
+  white-space: nowrap;
+}
+
+.table td {
+  padding: var(--spacing-3) var(--spacing-4);
+  border-bottom: 1px solid var(--border-light);
+  font-size: var(--font-size-sm);
+  color: var(--text-primary);
+}
+
+.table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* Zebra striping */
+.table-striped tbody tr:nth-child(even) {
+  background: var(--bg-secondary);
+}
+
+/* Hover effect */
+.table-hover tbody tr {
+  transition: background-color var(--transition-fast);
+}
+
+.table-hover tbody tr:hover {
+  background: var(--bg-hover);
+  cursor: pointer;
+}
+
+.table-row-clickable {
+  cursor: pointer;
+  transition: background var(--transition-fast);
+}
+
+.table-row-clickable:hover {
+  background: var(--primary-light) !important;
+}
+
+.table-empty-state {
+  text-align: center;
+  padding: var(--spacing-2xl);
+  color: var(--text-secondary);
+  background: var(--bg-surface);
+  border-radius: var(--border-radius);
+  border: 1px solid var(--border-light);
+}
+
+.table-empty-state p {
+  margin: 0;
+  font-size: var(--font-size-base);
+}
+
+/* Desktop - Tabela completa */
+@media (min-width: 901px) {
+  .table {
+    font-size: var(--font-size-sm);
+  }
+
+  .table th,
+  .table td {
+    padding: var(--spacing-3) var(--spacing-4);
+  }
+}
+
+/* Mobile - Esconder tabela, mostrar cards */
+@media (max-width: 900px) {
+  .table-container {
+    display: none;
+  }
+}
+
+/* Modo Compacto */
+body.compact .table th,
+body.compact .table td {
+  padding: var(--spacing-2) var(--spacing-3);
+  font-size: var(--font-size-xs);
+}
+
+body.compact .table-empty-state {
+  padding: var(--spacing-lg);
+}
+
+/* Modo Ajustável */
+body.ajustavel .table th,
+body.ajustavel .table td {
+  padding: var(--spacing-2) var(--spacing-3);
+}
+
+body.ajustavel .table-empty-state {
+  padding: var(--spacing-md);
+}
+
+/* Densidade compacta por tabela (sem depender de body.compact) */
+.table.table-dense th,
+.table.table-dense td {
+  padding: var(--spacing-2) var(--spacing-3);
+}
+
+.table.table-dense th {
+  font-size: var(--font-size-xs);
+}
+
+.table.table-dense td {
+  font-size: var(--font-size-xs);
+}

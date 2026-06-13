@@ -1,0 +1,226 @@
+/* Ícone 3D Flat Premium */
+.icon-3d {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  /* SVG usa currentColor */
+  color: #fff;
+  font-size: 1.5rem;
+  transition: transform var(--transition-fast);
+}
+
+.icon-3d::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 50%;
+  background: inherit;
+  filter: blur(5px);
+  opacity: 0.18;
+  z-index: -1;
+  transform: scale(1.05);
+}
+
+.icon-3d-content {
+  position: relative;
+  z-index: 1;
+  line-height: 0;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.18));
+}
+
+.icon-3d-content svg {
+  display: block;
+}
+
+/* Tamanhos */
+\.icon-3d-sm {
+  width: 34px;
+  height: 34px;
+  font-size: 1.25rem;
+}
+
+\.icon-3d-md {
+  width: 52px;
+  height: 52px;
+  font-size: 1.75rem;
+}
+
+.icon-3d-lg {
+  width: 80px;
+  height: 80px;
+  font-size: 2.5rem;
+}
+
+/* Cores com gradiente 3D */
+.icon-3d-blue {
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 50%, #1d4ed8 100%);
+  box-shadow: 
+    0 3px 10px rgba(59, 130, 246, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18);
+}
+
+.icon-3d-green {
+  background: linear-gradient(135deg, #10b981 0%, #059669 50%, #047857 100%);
+  box-shadow: 
+    0 3px 10px rgba(16, 185, 129, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18);
+}
+
+.icon-3d-orange {
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 50%, #b45309 100%);
+  box-shadow: 
+    0 3px 10px rgba(245, 158, 11, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18);
+}
+
+.icon-3d-yellow {
+  background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%);
+  box-shadow: 
+    0 3px 10px rgba(251, 191, 36, 0.26),
+    inset 0 1px 0 rgba(255, 255, 255, 0.16);
+}
+
+.icon-3d-purple {
+  background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 50%, #6d28d9 100%);
+  box-shadow: 
+    0 3px 10px rgba(139, 92, 246, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.16);
+}
+
+.icon-3d-red {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 50%, #b91c1c 100%);
+  box-shadow: 
+    0 3px 10px rgba(239, 68, 68, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.16);
+}
+
+.icon-3d-blue-dark {
+  background: linear-gradient(135deg, #1e40af 0%, #1e3a8a 50%, #1e293b 100%);
+  box-shadow: 
+    0 3px 10px rgba(30, 64, 175, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.14);
+}
+
+.icon-3d:hover {
+  transform: translateY(-1px) scale(1.02);
+}
+
+.icon-3d:active {
+  transform: translateY(0) scale(0.99);
+}
+
+/* Modo compacto: reduz o peso visual e o tamanho (menos poluição) */
+body.compact .icon-3d-content {
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.14));
+}
+
+body.compact .icon-3d-sm {
+  width: 36px;
+  height: 36px;
+  font-size: 1.15rem;
+}
+
+body.compact .icon-3d-md {
+  width: 52px;
+  height: 52px;
+  font-size: 1.6rem;
+}
+
+body.compact .icon-3d-blue,
+body.compact .icon-3d-green,
+body.compact .icon-3d-orange,
+body.compact .icon-3d-yellow,
+body.compact .icon-3d-purple,
+body.compact .icon-3d-red,
+body.compact .icon-3d-blue-dark {
+  box-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.16);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .icon-3d {
+    transition: none;
+  }
+  .icon-3d:hover,
+  .icon-3d:active {
+    transform: none;
+  }
+}
+
+
+/* ============================================
+   Monochrome v2 (dark) overrides - 1 acento por categoria
+   Remove "bolas coloridas sólidas" → ícones premium/enterprise
+   ============================================ */
+[data-theme="dark"] .icon-3d {
+  color: rgba(231, 237, 246, 0.90);
+}
+
+[data-theme="dark"] .icon-3d::before {
+  display: none;
+}
+
+/* Base neutra para todos */
+[data-theme="dark"] .icon-3d-blue,
+[data-theme="dark"] .icon-3d-green,
+[data-theme="dark"] .icon-3d-orange,
+[data-theme="dark"] .icon-3d-yellow,
+[data-theme="dark"] .icon-3d-purple,
+[data-theme="dark"] .icon-3d-red,
+[data-theme="dark"] .icon-3d-blue-dark {
+  background: rgba(255, 255, 255, 0.05);
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.06);
+}
+
+/* Toque de cor por categoria (borda + ícone colorido) */
+[data-theme="dark"] .icon-3d-green {
+  background: rgba(34, 197, 94, 0.09);
+  box-shadow: 0 0 0 1px rgba(34, 197, 94, 0.20);
+  color: #4ade80;
+}
+
+[data-theme="dark"] .icon-3d-blue {
+  background: rgba(59, 130, 246, 0.09);
+  box-shadow: 0 0 0 1px rgba(59, 130, 246, 0.20);
+  color: #60a5fa;
+}
+
+[data-theme="dark"] .icon-3d-orange {
+  background: rgba(245, 158, 11, 0.09);
+  box-shadow: 0 0 0 1px rgba(245, 158, 11, 0.20);
+  color: #fbbf24;
+}
+
+[data-theme="dark"] .icon-3d-yellow {
+  background: rgba(251, 191, 36, 0.09);
+  box-shadow: 0 0 0 1px rgba(251, 191, 36, 0.20);
+  color: #fcd34d;
+}
+
+[data-theme="dark"] .icon-3d-purple {
+  background: rgba(139, 92, 246, 0.09);
+  box-shadow: 0 0 0 1px rgba(139, 92, 246, 0.20);
+  color: #a78bfa;
+}
+
+[data-theme="dark"] .icon-3d-red {
+  background: rgba(239, 68, 68, 0.09);
+  box-shadow: 0 0 0 1px rgba(239, 68, 68, 0.20);
+  color: #f87171;
+}
+
+[data-theme="dark"] .icon-3d-blue-dark {
+  background: rgba(30, 64, 175, 0.10);
+  box-shadow: 0 0 0 1px rgba(96, 165, 250, 0.20);
+  color: #93c5fd;
+}
+
+[data-theme="dark"] .icon-3d-content {
+  filter: none;
+}

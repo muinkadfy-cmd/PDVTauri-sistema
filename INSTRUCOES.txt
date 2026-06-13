@@ -1,0 +1,58 @@
+╔══════════════════════════════════════════════════════════════════╗
+║         CORREÇÃO DEFINITIVA — Smart Tech PDV Build Fix           ║
+╚══════════════════════════════════════════════════════════════════╝
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  OPÇÃO A — AUTOMÁTICA (RECOMENDADA)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  1. Extraia este ZIP em qualquer pasta temporária
+  2. Abra o PowerShell como ADMINISTRADOR
+  3. Navegue até C:\PDVTauri:
+       cd C:\PDVTauri
+  4. Execute:
+       C:\caminho\para\o\zip\extraido\APLICAR_CORRECAO.bat
+
+  O script copia os arquivos, deleta o Cargo.lock antigo e compila.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  OPÇÃO B — MANUAL
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  1. Copie src-tauri/Cargo.toml    →  C:\PDVTauri\src-tauri\Cargo.toml
+  2. Copie src/components/ui/StatCard.tsx → C:\PDVTauri\src\components\ui\StatCard.tsx
+  3. DELETE o arquivo:  C:\PDVTauri\src-tauri\Cargo.lock
+  4. No terminal, dentro de C:\PDVTauri:
+
+       cargo clean
+       cargo tauri build
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  POR QUE O "cargo clean" ANTERIOR NÃO RESOLVEU?
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  "cargo clean" apaga os artefatos compilados (pasta target\), 
+  mas NÃO apaga o Cargo.lock.
+
+  O Cargo.lock é o arquivo que "congela" exatamente quais versões e
+  features de cada crate serão usadas. O lock atual foi gerado quando
+  rusqlite ainda não tinha a feature "loadable_extension" ativa —
+  portanto mesmo com o Cargo.toml corrigido, o Cargo continuava
+  seguindo o lock antigo e compilando rusqlite SEM a feature.
+
+  Deletar o Cargo.lock força o Cargo a resolver tudo do zero,
+  lendo o Cargo.toml atualizado e ativando "loadable_extension".
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  ERROS CORRIGIDOS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  ERRO 1 [Rust E0599] — load_extension_enable/load_extension/load_extension_disable
+    CAUSA:  rusqlite compilado sem feature "loadable_extension"
+    FIX:    Cargo.toml agora declara rusqlite diretamente com essa feature.
+            Cargo.lock deletado para forçar nova resolução de features.
+
+  ERRO 2 [ESBuild] — Multiple exports with the same name "default"  
+    CAUSA:  StatCard.tsx tinha dois export default (linhas 29 e 31)
+    FIX:    Unificado em: export default memo(StatCard);
+

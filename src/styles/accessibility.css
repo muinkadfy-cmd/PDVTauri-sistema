@@ -1,0 +1,316 @@
+/* ============================================
+   ACESSIBILIDADE - WCAG 2.1 AA
+   Smart Tech - Padrões de Acessibilidade
+   ============================================ */
+
+/* ===== CONTRASTE DE CORES (WCAG AA) ===== */
+
+/* Texto normal: mínimo 4.5:1 */
+/* Texto grande (18pt+ ou 14pt+ bold): mínimo 3:1 */
+
+/* ===== FOCO VISÍVEL (WCAG 2.4.7) ===== */
+
+/* Todos os elementos interativos devem ter foco visível */
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+  border-radius: var(--border-radius-sm);
+}
+
+/* Remover outline padrão do navegador */
+*:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* ===== ÁREA DE TOQUE (WCAG 2.5.5) ===== */
+
+/* Mínimo 44x44px para elementos interativos */
+button,
+a,
+input[type="button"],
+input[type="submit"],
+input[type="checkbox"],
+input[type="radio"],
+.clickable {
+  min-height: var(--touch-target);
+  min-width: var(--touch-target);
+}
+
+/* Botões pequenos podem ter 36px (aceitável) */
+.btn-sm,
+.btn-icon {
+  min-height: var(--touch-target-sm);
+  min-width: var(--touch-target-sm);
+}
+
+/* ===== INDICADORES DE ESTADO ===== */
+
+/* Não depender apenas de cor para transmitir informação */
+.status-badge.ativo::before {
+  content: '✓ ';
+}
+
+.status-badge.inativo::before {
+  content: '✗ ';
+}
+
+/* ===== NAVEGAÇÃO POR TECLADO ===== */
+
+/* Skip to content link (oculto até receber foco) */
+.skip-to-content {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: var(--primary);
+  color: white;
+  padding: var(--spacing-sm) var(--spacing-md);
+  text-decoration: none;
+  z-index: var(--z-tooltip);
+  border-radius: 0 0 var(--border-radius) 0;
+}
+
+.skip-to-content:focus {
+  top: 0;
+}
+
+/* ===== MENSAGENS DE ERRO CLARAS ===== */
+
+.error-message {
+  color: var(--acao-vermelho);
+  font-size: var(--font-size-sm);
+  margin-top: var(--spacing-xs);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+}
+
+.error-message::before {
+  content: '⚠️ ';
+  font-size: var(--font-size-base);
+}
+
+.success-message {
+  color: var(--acao-verde);
+  font-size: var(--font-size-sm);
+  margin-top: var(--spacing-xs);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+}
+
+.success-message::before {
+  content: '✅ ';
+  font-size: var(--font-size-base);
+}
+
+/* ===== REDUÇÃO DE MOVIMENTO (WCAG 2.3.3) ===== */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ===== ALTERNATIVAS DE TEXTO ===== */
+
+/* Imagens devem ter alt text (verificar no HTML) */
+img:not([alt]) {
+  border: 2px dashed var(--acao-vermelho);
+}
+
+/* ===== ARIA LABELS ===== */
+
+/* Botões sem texto visível devem ter aria-label */
+button:not([aria-label]):not(:has(span, img, svg)) {
+  /* Aviso: adicionar aria-label */
+}
+
+/* ===== CONTRASTE EM ESTADOS ===== */
+
+/* Hover e focus devem manter contraste */
+button:hover,
+a:hover {
+  /* Contraste mantido pelos tokens */
+}
+
+button:disabled,
+input:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  /* Contraste reduzido mas ainda legível */
+}
+
+/* ===== TAMANHO DE FONTE ===== */
+
+/* Texto não deve ser menor que 12px */
+body {
+  font-size: var(--font-size-base); /* 15px no desktop, 13px no mobile */
+}
+
+/* Texto pequeno deve ter contraste maior */
+.text-small {
+  color: var(--text-primary); /* Não usar text-secondary em texto pequeno */
+  font-size: var(--font-size-sm);
+}
+
+/* ===== RESPONSIVIDADE E ACESSIBILIDADE ===== */
+
+/* Mobile: garantir área de toque adequada */
+@media (max-width: 480px) {
+  button,
+  a,
+  input[type="button"],
+  input[type="submit"] {
+    min-height: var(--touch-target);
+    min-width: var(--touch-target);
+    padding: var(--spacing-sm) var(--spacing-md);
+  }
+  
+  /* Espaçamento entre elementos clicáveis */
+  .btn-group button + button {
+    margin-left: var(--spacing-sm);
+  }
+}
+
+/* ===== ALTA CONTRASTE (Windows) ===== */
+
+@media (prefers-contrast: high) {
+  :root {
+    --border-light: #000000;
+    --border-medium: #000000;
+    --text-primary: #000000;
+    --text-secondary: #000000;
+    --bg-surface: #ffffff;
+  }
+  
+  [data-theme="dark"] {
+    --border-light: #ffffff;
+    --border-medium: #ffffff;
+    --text-primary: #ffffff;
+    --text-secondary: #ffffff;
+    --bg-surface: #000000;
+  }
+  
+  button,
+  a {
+    border: 2px solid currentColor;
+  }
+}
+
+/* ===== SCREEN READERS ===== */
+
+/* Ocultar visualmente mas manter para screen readers */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* ===== VALIDAÇÃO DE FORMULÁRIOS ===== */
+
+/* Campos obrigatórios */
+.form-field.required label::after {
+  content: ' *';
+  color: var(--acao-vermelho);
+  font-weight: var(--font-weight-bold);
+}
+
+/* Campos com erro */
+.form-field.error .form-input,
+.form-field.error .form-select,
+.form-field.error .form-textarea {
+  border-color: var(--acao-vermelho);
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+}
+
+.form-field.error .form-input:focus,
+.form-field.error .form-select:focus,
+.form-field.error .form-textarea:focus {
+  border-color: var(--acao-vermelho);
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.2);
+}
+
+/* Campos com sucesso */
+.form-field.success .form-input,
+.form-field.success .form-select,
+.form-field.success .form-textarea {
+  border-color: var(--acao-verde);
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+}
+
+/* ===== INDICADORES DE CARREGAMENTO ===== */
+
+/* Loading states devem ser acessíveis */
+.loading {
+  position: relative;
+  color: transparent;
+}
+
+.loading::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 16px;
+  height: 16px;
+  margin: -8px 0 0 -8px;
+  border: 2px solid var(--border-light);
+  border-top-color: var(--primary);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+.loading[aria-busy="true"] {
+  /* Screen reader anuncia "carregando" */
+}
+
+/* ===== NAVEGAÇÃO POR TABS ===== */
+
+/* Indicar ordem de tab */
+.tab-order-1 { order: 1; }
+.tab-order-2 { order: 2; }
+.tab-order-3 { order: 3; }
+
+/* ===== MODAIS ACESSÍVEIS ===== */
+
+.modal {
+  /* Foco deve voltar ao elemento que abriu o modal ao fechar */
+}
+
+.modal:focus {
+  outline: none;
+}
+
+.modal-content:focus {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+/* ===== TEXTO ALTERNATIVO PARA ÍCONES ===== */
+
+.icon-button {
+  /* Deve ter aria-label ou texto alternativo */
+}
+
+.icon-button[aria-label] {
+  /* OK */
+}
+
+.icon-button:not([aria-label]):not(:has-text) {
+  /* Aviso: adicionar aria-label */
+}

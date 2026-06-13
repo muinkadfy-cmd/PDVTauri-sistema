@@ -1,0 +1,341 @@
+/* 🔔 PÁGINA DE NOTIFICAÇÕES */
+
+.notificacoes-page {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+/* Header */
+.notificacoes-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.notificacoes-header h1 {
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: var(--text-primary, #1a1a1a);
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.badge-contador {
+  background: #ef4444;
+  color: white;
+  padding: 0.25rem 0.625rem;
+  border-radius: 12px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  min-width: 24px;
+  text-align: center;
+}
+
+.btn-marcar-todas {
+  background: var(--primary-color, #2563eb);
+  color: white;
+  border: none;
+  padding: 0.625rem 1.25rem;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-marcar-todas:hover {
+  background: var(--primary-dark, #1d4ed8);
+  transform: translateY(-1px);
+}
+
+/* Filtros */
+.notificacoes-filtros {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  overflow-x: auto;
+  padding: 0.5rem 0;
+  -webkit-overflow-scrolling: touch;
+}
+
+.filtro-btn {
+  background: var(--card-background, #f9f9f9);
+  border: 2px solid var(--border-color, #e0e0e0);
+  color: var(--text-secondary, #666);
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+  font-size: 0.875rem;
+}
+
+.filtro-btn:hover {
+  background: white;
+  border-color: var(--primary-color, #2563eb);
+}
+
+.filtro-btn.active {
+  background: var(--primary-color, #2563eb);
+  color: white;
+  border-color: var(--primary-color, #2563eb);
+}
+
+/* Lista */
+.notificacoes-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.notificacao-card {
+  display: flex;
+  gap: 1rem;
+  padding: 1rem;
+  background: white;
+  border: 2px solid var(--border-color, #e0e0e0);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.notificacao-card:hover {
+  border-color: var(--primary-color, #2563eb);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.notificacao-card.nao-lida {
+  background: #eff6ff;
+  border-color: var(--primary-color, #2563eb);
+  border-width: 2px;
+}
+
+.notificacao-card.nao-lida::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: var(--primary-color, #2563eb);
+  border-radius: 12px 0 0 12px;
+}
+
+.notificacao-icone {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  flex-shrink: 0;
+  color: white;
+}
+
+.notificacao-conteudo {
+  flex: 1;
+  min-width: 0;
+}
+
+.notificacao-header-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.notificacao-header-card h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary, #1a1a1a);
+  margin: 0;
+}
+
+.notificacao-tempo {
+  font-size: 0.75rem;
+  color: var(--text-secondary, #999);
+  white-space: nowrap;
+}
+
+.notificacao-mensagem {
+  font-size: 0.875rem;
+  color: var(--text-secondary, #666);
+  margin: 0 0 0.75rem;
+  line-height: 1.5;
+  white-space: pre-line;
+}
+
+.notificacao-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.notificacao-badge {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: white;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.btn-marcar-lida {
+  background: transparent;
+  border: 1px solid var(--border-color, #e0e0e0);
+  color: var(--text-secondary, #666);
+  padding: 0.375rem 0.75rem;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-marcar-lida:hover {
+  background: var(--primary-color, #2563eb);
+  color: white;
+  border-color: var(--primary-color, #2563eb);
+}
+
+/* Vazio */
+.notificacoes-vazio {
+  text-align: center;
+  padding: 4rem 2rem;
+  color: var(--text-secondary, #999);
+}
+
+.vazio-icon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+  opacity: 0.5;
+}
+
+.notificacoes-vazio p {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin: 0 0 0.5rem;
+  color: var(--text-primary, #666);
+}
+
+.notificacoes-vazio small {
+  font-size: 0.875rem;
+  color: var(--text-secondary, #999);
+}
+
+/* Loading */
+.loading {
+  text-align: center;
+  padding: 3rem;
+  color: var(--text-secondary, #999);
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+  .notificacoes-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .notificacoes-header h1 {
+    font-size: 1.5rem;
+  }
+
+  .btn-marcar-todas {
+    width: 100%;
+  }
+
+  .notificacao-card {
+    padding: 0.875rem;
+    gap: 0.75rem;
+  }
+
+  .notificacao-icone {
+    width: 40px;
+    height: 40px;
+    font-size: 1.25rem;
+  }
+
+  .notificacao-header-card {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .notificacao-footer {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .btn-marcar-lida {
+    width: 100%;
+  }
+}
+
+/* Dark Mode */
+/* Dark mode (data-theme): garante contraste no tema interno */
+[data-theme="dark"] .notificacoes-header h1 {
+    color: #fff;
+  }
+
+  [data-theme="dark"] .notificacao-card {
+    background: #2a2a2a;
+    border-color: #3a3a3a;
+  }
+
+  [data-theme="dark"] .notificacao-card.nao-lida {
+    background: #1e3a5f;
+  }
+
+  [data-theme="dark"] .notificacao-header-card h3 {
+    color: #fff;
+  }
+
+  [data-theme="dark"] .filtro-btn {
+    background: #2a2a2a;
+    border-color: #3a3a3a;
+    color: #999;
+  }
+
+  [data-theme="dark"] .filtro-btn:hover {
+    background: #3a3a3a;
+  }
+
+@media (prefers-color-scheme: dark) {
+  .notificacoes-header h1 {
+    color: #fff;
+  }
+
+  .notificacao-card {
+    background: #2a2a2a;
+    border-color: #3a3a3a;
+  }
+
+  .notificacao-card.nao-lida {
+    background: #1e3a5f;
+  }
+
+  .notificacao-header-card h3 {
+    color: #fff;
+  }
+
+  .filtro-btn {
+    background: #2a2a2a;
+    border-color: #3a3a3a;
+    color: #999;
+  }
+
+  .filtro-btn:hover {
+    background: #3a3a3a;
+  }
+}

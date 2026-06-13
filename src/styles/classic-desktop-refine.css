@@ -1,0 +1,297 @@
+/* P13 — Refinamento Clássico Fiel 1:1
+   Ajusta o P12 para ficar mais próximo da referência: topo menor,
+   filtros quadrados, cards mais secos e rodapé inferior clássico. */
+
+:root {
+  --topbar-height: 58px;
+  --classic-statusbar-height: 34px;
+}
+
+.app {
+  background: #050b12 !important;
+}
+
+/* Topo mais compacto e mais parecido com software desktop antigo */
+.topbar {
+  min-height: 58px !important;
+  height: 58px !important;
+  padding: 5px 12px !important;
+  border-bottom: 1px solid #33485e !important;
+}
+
+.topbar-brand,
+.topbar-home-button {
+  width: 44px !important;
+  height: 44px !important;
+}
+
+.logo-mark,
+.logo-fallback {
+  width: 36px !important;
+  height: 36px !important;
+}
+
+.topbar-page-chip,
+.topbar-page-badge {
+  min-height: 30px !important;
+  height: 30px !important;
+  padding: 5px 18px !important;
+  font-size: 0.78rem !important;
+}
+
+.topbar-page-hint {
+  font-size: 0.72rem !important;
+  line-height: 1.1 !important;
+}
+
+.topbar-clock,
+.topbar-clock--compact {
+  min-width: 72px !important;
+  height: 36px !important;
+}
+
+.avatar-button {
+  width: 38px !important;
+  height: 38px !important;
+}
+
+/* Sidebar mais "encaixada", sem aparência de link moderno */
+.sidebar {
+  height: calc(100vh - var(--topbar-height, 58px) - var(--classic-statusbar-height, 34px)) !important;
+  top: var(--topbar-height, 58px) !important;
+}
+
+.sidebar-nav-link,
+.sidebar-nav-link:visited,
+.sidebar-nav-link:hover,
+.sidebar-nav-link:focus,
+.sidebar-nav-link:active {
+  text-decoration: none !important;
+}
+
+.sidebar-nav-link {
+  min-height: 34px !important;
+  padding: 5px 9px !important;
+}
+
+.sidebar-icon {
+  width: 26px !important;
+  height: 26px !important;
+}
+
+.sidebar-label {
+  font-size: 0.82rem !important;
+}
+
+.sidebar-group-label {
+  padding-top: 7px !important;
+}
+
+/* Conteúdo mais alto e menos espaçado */
+.app-container {
+  min-height: 0 !important;
+  flex: 1 1 auto !important;
+}
+
+.main-content {
+  padding: 10px 10px 8px !important;
+  padding-bottom: 8px !important;
+}
+
+@media (min-width: 901px) {
+  .main-content {
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+  }
+}
+
+/* Painel: menos SaaS, mais retangular */
+.painel-page {
+  padding: 10px 12px !important;
+}
+
+.painel-header,
+.page-head {
+  margin-bottom: 10px !important;
+}
+
+.painel-page h1,
+.page-head h1 {
+  font-size: 1.20rem !important;
+  margin: 0 !important;
+}
+
+/* Filtros de período: força botões quadrados, sem pill */
+.period-tabs,
+.period-filter,
+.panel-period-tabs,
+.period-selector,
+.period-toggle,
+.tabs,
+.tab-list {
+  border-radius: 0 !important;
+  padding: 0 !important;
+  background: transparent !important;
+  border: 0 !important;
+  gap: 3px !important;
+}
+
+.period-tabs button,
+.period-filter button,
+.panel-period-tabs button,
+.period-option,
+.tab-button,
+.analysis-tab,
+.period-selector button,
+.period-toggle button,
+.tabs button,
+.tab-list button {
+  border-radius: 0 !important;
+  min-height: 30px !important;
+  height: 30px !important;
+  padding: 4px 13px !important;
+  font-size: 0.76rem !important;
+  line-height: 1 !important;
+  background: linear-gradient(180deg, #15283a 0%, #07131e 100%) !important;
+  border: 1px solid #526274 !important;
+}
+
+.period-tabs button.active,
+.period-filter button.active,
+.panel-period-tabs button.active,
+.period-option.active,
+.tab-button.active,
+.analysis-tab.active,
+.period-selector button.active,
+.period-toggle button.active,
+.tabs button.active,
+.tab-list button.active {
+  background: linear-gradient(180deg, #174534 0%, #07351d 100%) !important;
+  border-color: #18c76b !important;
+}
+
+/* Top metric cards mais secos */
+.metric-card,
+.summary-card,
+.kpi-card,
+.panel-card,
+.resumo-card-new,
+.stat-card {
+  border-radius: 0 !important;
+  padding: 10px 12px !important;
+  min-height: 74px !important;
+  background: linear-gradient(180deg, #0f2435 0%, #071520 100%) !important;
+  border: 1px solid #526274 !important;
+}
+
+.kpi-grid,
+.metrics-grid,
+.summary-grid,
+.resumo-cards-financeiro,
+.resumo-cards-fluxo,
+.resumo-cards-setores {
+  gap: 8px !important;
+}
+
+.kpi-label,
+.metric-label,
+.card-label {
+  font-size: 0.74rem !important;
+}
+
+.kpi-value,
+.metric-value,
+.card-value {
+  font-size: 1.15rem !important;
+  line-height: 1.1 !important;
+}
+
+.kpi-helper,
+.metric-helper,
+.card-helper {
+  font-size: 0.75rem !important;
+  line-height: 1.25 !important;
+}
+
+.panel-section {
+  margin-top: 10px !important;
+}
+
+.panel-section-heading {
+  min-height: 28px !important;
+  align-items: center !important;
+  margin-bottom: 6px !important;
+}
+
+.panel-section-heading h2 {
+  font-size: 1.05rem !important;
+}
+
+/* Detalhe "Como é calculado" quadrado e baixo */
+.calc-details {
+  border-radius: 0 !important;
+  margin: 8px 0 10px !important;
+}
+
+.calc-details summary {
+  min-height: 30px !important;
+  padding: 6px 10px !important;
+}
+
+/* Área de análise inferior: mais antiga e seca */
+.finance-analysis-card,
+.entrada-setor-card,
+.analysis-card {
+  border-radius: 0 !important;
+  min-height: 116px !important;
+  background: linear-gradient(180deg, #0e2334 0%, #07141f 100%) !important;
+}
+
+/* Rodapé inferior clássico com divisórias */
+.classic-statusbar {
+  flex: 0 0 var(--classic-statusbar-height, 34px);
+  height: var(--classic-statusbar-height, 34px);
+  display: grid;
+  grid-template-columns: minmax(170px, 1fr) minmax(170px, 1.1fr) minmax(170px, 1.1fr) minmax(220px, 1.2fr);
+  align-items: stretch;
+  background: linear-gradient(180deg, #102436 0%, #07131d 100%);
+  color: #f2f6fb;
+  border-top: 1px solid #526274;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.13);
+  font-family: Tahoma, Verdana, "Segoe UI", Arial, sans-serif;
+  font-size: 0.82rem;
+  font-weight: 800;
+  overflow: hidden;
+}
+
+.classic-statusbar-cell {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 10px;
+  border-right: 1px solid #526274;
+  box-shadow: inset 1px 1px 0 rgba(255,255,255,0.07), inset -1px -1px 0 rgba(0,0,0,0.75);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.classic-statusbar-cell:last-child {
+  border-right: 0;
+}
+
+.classic-statusbar-cell--store {
+  justify-content: center;
+}
+
+/* Mobile/tablet: esconder statusbar para não roubar espaço */
+@media (max-width: 900px) {
+  .classic-statusbar {
+    display: none !important;
+  }
+
+  .sidebar {
+    height: calc(100vh - var(--topbar-height, 58px)) !important;
+  }
+}

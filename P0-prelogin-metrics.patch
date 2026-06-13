@@ -1,0 +1,162 @@
+diff -ruN /mnt/data/PDVTauri/index.html /mnt/data/PDVTauri_extracted_1771809911/index.html
+--- /mnt/data/PDVTauri/index.html	2026-02-22 11:17:02.000000000 +0000
++++ /mnt/data/PDVTauri_extracted_1771809911/index.html	2026-02-23 01:33:42.597961767 +0000
+@@ -53,7 +53,31 @@
+     <title>Smart Tech</title>
+   </head>
+   <body>
+-    <div id="root"></div>
++    <!-- ✅ P0 (Pré-login): splash ultra-leve para eliminar "tela branca" até o React montar.
++         React substitui esse conteúdo automaticamente no primeiro render. -->
++    <div id="root">
++      <div id="preload-splash" role="status" aria-label="Carregando" style="
++        display:flex;align-items:center;justify-content:center;
++        min-height:100vh;
++        color:rgba(255,255,255,.82);
++        background:radial-gradient(1200px 600px at 50% 0%, rgba(76,175,80,.12), rgba(0,0,0,0)),
++                   linear-gradient(180deg, #0b0f10, #070a0b);
++        font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;">
++        <div style="display:flex;align-items:center;gap:12px;">
++          <div aria-hidden="true" style="
++            width:22px;height:22px;border-radius:50%;
++            border:3px solid rgba(255,255,255,.18);
++            border-top-color: rgba(76,175,80,.95);
++            animation:preloadSpin .8s linear infinite;"></div>
++          <div style="font-size:14px;letter-spacing:.2px;">Abrindo Smart Tech…</div>
++        </div>
++      </div>
++    </div>
++    <style>
++      @keyframes preloadSpin { from { transform: rotate(0deg);} to { transform: rotate(360deg);} }
++      /* reduz jank em PCs fracos */
++      @media (prefers-reduced-motion: reduce) { #preload-splash div[aria-hidden="true"] { animation:none; } }
++    </style>
+     <script type="module" src="/src/main.tsx"></script>
+   </body>
+ </html>
+diff -ruN /mnt/data/PDVTauri/src/app/routes.tsx /mnt/data/PDVTauri_extracted_1771809911/src/app/routes.tsx
+--- /mnt/data/PDVTauri/src/app/routes.tsx	2026-02-22 11:17:02.000000000 +0000
++++ /mnt/data/PDVTauri_extracted_1771809911/src/app/routes.tsx	2026-02-23 01:33:28.996299917 +0000
+@@ -1,11 +1,16 @@
+ import { createBrowserRouter, Navigate } from 'react-router-dom';
+ import { lazy, Suspense } from 'react';
+-import Layout from './Layout';
+ import { SqliteLoadingGuard } from '@/components/SqliteLoadingGuard';
+ import RouteError from '@/components/ui/RouteError';
+-import DisabledFeaturePage from '@/pages/DisabledFeaturePage';
+ import { isUpdateEnabled } from '@/lib/mode';
+ 
++// ✅ P0 (Pré-login): não carregar o Shell privado (Layout + Sidebar/Topbar/etc.) antes do Login.
++// Isso reduz bundle inicial e melhora app_start → login_visível em PCs fracos.
++const Layout = lazy(() => import('./Layout'));
++
++// ✅ P0 (Pré-login): páginas raras (feature desativada) não entram no bundle inicial.
++const DisabledFeaturePage = lazy(() => import('@/pages/DisabledFeaturePage'));
++
+ // Componente de loading otimizado
+ function PageLoader() {
+   return (
+@@ -153,7 +158,11 @@
+   },
+   {
+     path: '/',
+-    element: <Layout />,
++    element: (
++      <Suspense fallback={<PageLoader />}>
++        <Layout />
++      </Suspense>
++    ),
+     errorElement: <RouteError />,
+     children: [
+       {
+@@ -171,8 +180,8 @@
+       },
+       {
+         path: 'vendas',
+-        element: <VendasPage />, // Vendas: não bloquear com SqliteLoadingGuard (evita loading eterno)
+-
++        // ✅ P0: precisa de SqliteLoadingGuard para evitar lista vazia + loading eterno (SqliteLocalStore preload é async)
++        element: <SqliteLoadingGuard><VendasPage /></SqliteLoadingGuard>,
+       },
+       {
+         path: 'produtos',
+@@ -232,7 +241,8 @@
+       },
+       {
+         path: 'fornecedores',
+-        element: <FornecedoresPage />,
++        // ✅ P0: precisa de SqliteLoadingGuard para evitar lista vazia + loading eterno (SqliteLocalStore preload é async)
++        element: <SqliteLoadingGuard><FornecedoresPage /></SqliteLoadingGuard>,
+       },
+       {
+         path: 'codigos',
+diff -ruN /mnt/data/PDVTauri/src/main.tsx /mnt/data/PDVTauri_extracted_1771809911/src/main.tsx
+--- /mnt/data/PDVTauri/src/main.tsx	2026-02-22 11:17:02.000000000 +0000
++++ /mnt/data/PDVTauri_extracted_1771809911/src/main.tsx	2026-02-23 01:33:59.099432040 +0000
+@@ -226,6 +226,14 @@
+     </StrictMode>
+   );
+ 
++  // ✅ P0 (Pré-login): remover splash HTML (evita overlay/stacking e libera memória)
++  try {
++    const splash = document.getElementById('preload-splash');
++    if (splash && splash.parentElement) splash.parentElement.removeChild(splash);
++  } catch {
++    // ignore
++  }
++
+   // ✅ Marca 1ª renderização do React
+   try {
+     perfMarkOnce('react_rendered');
+@@ -240,6 +248,14 @@
+   };
+ 
+   runAfterPaint(() => {
++    // ✅ Métrica: 1º frame após React montar
++    try {
++      perfMarkOnce('first_frame');
++      perfMeasure('app_start→first_frame', 'app_start', 'first_frame');
++    } catch {
++      // ignore
++    }
++
+     const idle = (cb: () => void) =>
+       (window as any).requestIdleCallback
+         ? (window as any).requestIdleCallback(cb, { timeout: 1200 })
+diff -ruN /mnt/data/PDVTauri/src/pages/LoginPage.tsx /mnt/data/PDVTauri_extracted_1771809911/src/pages/LoginPage.tsx
+--- /mnt/data/PDVTauri/src/pages/LoginPage.tsx	2026-02-22 11:17:02.000000000 +0000
++++ /mnt/data/PDVTauri_extracted_1771809911/src/pages/LoginPage.tsx	2026-02-23 01:34:07.399755931 +0000
+@@ -5,6 +5,7 @@
+ import { isLicenseMandatory, isLicenseEnabled } from '@/lib/mode';
+ import { getLicenseStatusAsync } from '@/lib/license';
+ import { getStoreId } from '@/lib/store-id';
++import { perfMarkOnce, perfMeasure } from '@/lib/perf';
+ 
+ import './LoginPage.css';
+ 
+@@ -93,6 +94,25 @@
+     } catch {
+       // ignore
+     }
++  }, []);
++
++  // ✅ Métricas (PC fraco): App start → Login visível/interativo
++  useEffect(() => {
++    try {
++      // "visível" após 1 frame da montagem
++      requestAnimationFrame(() => {
++        perfMarkOnce('login_visible');
++        perfMeasure('app_start→login_visible', 'app_start', 'login_visible');
++
++        // "interativo" após 2 frames (layout/estilos aplicados)
++        requestAnimationFrame(() => {
++          perfMarkOnce('login_interactive');
++          perfMeasure('app_start→login_interactive', 'app_start', 'login_interactive');
++        });
++      });
++    } catch {
++      // ignore
++    }
+   }, []);
+ 
+   async function handleLogin(e: React.FormEvent) {

@@ -1,0 +1,77 @@
+/* P18 — Fundo desktop menos preto
+   Mantem o tema escuro, mas tira o "buraco preto" das areas vazias. */
+
+@media (min-width: 901px) {
+  :root {
+    --desktop-bg-0: #0a1015;
+    --desktop-bg-1: #0d1618;
+    --desktop-bg-2: #101a1e;
+    --desktop-bg-3: #081016;
+    --desktop-panel: #0d1c26;
+    --desktop-panel-soft: #102330;
+  }
+
+  html[data-perf="1"],
+  html[data-perf="1"] body,
+  html[data-perf="1"] #root,
+  html[data-perf="1"] .app {
+    background:
+      linear-gradient(180deg, var(--desktop-bg-2) 0%, var(--desktop-bg-0) 42%, var(--desktop-bg-3) 100%) !important;
+  }
+
+  html[data-perf="1"] .app-container,
+  html[data-perf="1"] .app-shell,
+  html[data-perf="1"] .layout-shell,
+  html[data-perf="1"] .main-shell,
+  html[data-perf="1"] .app-layout {
+    background:
+      linear-gradient(115deg, rgba(10, 130, 83, 0.075) 0%, transparent 30%),
+      linear-gradient(250deg, rgba(57, 86, 112, 0.09) 0%, transparent 34%),
+      linear-gradient(180deg, #0d151b 0%, #091017 58%, #070c11 100%) !important;
+  }
+
+  html[data-perf="1"] .main-content {
+    background:
+      linear-gradient(90deg, rgba(33, 197, 118, 0.055) 0%, transparent 18%, transparent 82%, rgba(67, 111, 150, 0.045) 100%),
+      repeating-linear-gradient(90deg, rgba(255,255,255,0.018) 0 1px, transparent 1px 96px),
+      repeating-linear-gradient(180deg, rgba(255,255,255,0.014) 0 1px, transparent 1px 72px),
+      linear-gradient(180deg, #0c151b 0%, #091118 46%, #080d13 100%) !important;
+  }
+
+  html[data-perf="1"] .topbar {
+    background: linear-gradient(180deg, #111c24 0%, #0a1118 100%) !important;
+  }
+
+  html[data-perf="1"] .sidebar {
+    background:
+      linear-gradient(180deg, #0f1b24 0%, #0b151d 46%, #081118 100%) !important;
+  }
+
+  html[data-perf="1"] :where(
+    .card,
+    .kpi-card,
+    .metric-card,
+    .panel-card,
+    .dashboard-card,
+    .summary-card,
+    .resumo-card-new,
+    .stat-card,
+    .venda-card,
+    .cobranca-card,
+    .recibo-card,
+    .devolucao-card,
+    .finance-analysis-card,
+    .entrada-setor-card,
+    .analysis-card,
+    .empty-state
+  ) {
+    background-color: var(--desktop-panel) !important;
+  }
+
+  html[data-perf="1"] .page-usage-hint,
+  html[data-perf="1"] .st-filterbar,
+  html[data-perf="1"] .st-page-toolbar,
+  html[data-perf="1"] .devolucao-toolbar {
+    background-color: var(--desktop-panel-soft) !important;
+  }
+}

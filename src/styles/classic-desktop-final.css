@@ -1,0 +1,496 @@
+/* P12 — Tema Clássico Desktop Final
+   Visual inspirado em sistemas desktop antigos: quadrado, leve, sem glass/blur e com poucas animações. */
+
+:root {
+  --classic-bg: #06101a;
+  --classic-panel: #0b1a27;
+  --classic-panel-2: #0f2233;
+  --classic-panel-3: #081520;
+  --classic-border: #526274;
+  --classic-border-soft: #2f4358;
+  --classic-border-bright: #7d8fa4;
+  --classic-text: #f2f6fb;
+  --classic-muted: #c7d0dc;
+  --classic-dim: #93a4b6;
+  --classic-green: #00b050;
+  --classic-green-2: #1ed760;
+  --classic-yellow: #ffd24a;
+  --classic-blue: #2f8cff;
+  --classic-purple: #b061ff;
+  --classic-red: #ff5d5d;
+  --classic-radius: 0px;
+  --classic-font: Tahoma, Verdana, "Segoe UI", Arial, sans-serif;
+}
+
+/* Base global: menos brilho moderno, mais desktop clássico */
+html,
+body,
+#root {
+  background: var(--classic-bg) !important;
+  font-family: var(--classic-font) !important;
+}
+
+body {
+  color: var(--classic-text) !important;
+}
+
+/* Desliga animações/transforms de navegação e cards */
+* {
+  scroll-behavior: auto !important;
+}
+
+html[data-perf="1"] *,
+html[class] * {
+  animation: none !important;
+}
+
+a,
+button,
+input,
+select,
+textarea,
+.card,
+.kpi-card,
+.metric-card,
+.panel-card,
+.sidebar-nav-link,
+.topbar,
+.sidebar {
+  transition: none !important;
+}
+
+/* Shell clássico */
+.app-shell,
+.layout-shell,
+.main-shell,
+.app-layout {
+  background:
+    radial-gradient(circle at 20% 0%, rgba(29, 78, 116, 0.10), transparent 28%),
+    linear-gradient(180deg, #07111c 0%, #050b12 100%) !important;
+}
+
+.main-content,
+.content-area,
+.page-shell,
+.page-container {
+  background: transparent !important;
+}
+
+/* Topbar clássica */
+.topbar {
+  min-height: 68px !important;
+  height: 68px !important;
+  padding: 7px 14px !important;
+  background: linear-gradient(180deg, #0c2031 0%, #07131e 100%) !important;
+  border-top: 1px solid var(--classic-border-bright) !important;
+  border-bottom: 2px solid #16283a !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.16), inset 0 -1px 0 rgba(0,0,0,0.85) !important;
+  color: var(--classic-text) !important;
+  font-family: var(--classic-font) !important;
+}
+
+.topbar-left,
+.topbar-right {
+  gap: 8px !important;
+}
+
+.topbar-brand,
+.topbar-home-button {
+  width: 52px !important;
+  height: 52px !important;
+  border-radius: 0 !important;
+  border: 1px solid var(--classic-border) !important;
+  background: #08121d !important;
+  box-shadow: inset 1px 1px 0 rgba(255,255,255,0.10), inset -1px -1px 0 rgba(0,0,0,0.85) !important;
+}
+
+.logo-mark,
+.logo-fallback,
+.logo-image {
+  border-radius: 0 !important;
+}
+
+.logo-mark,
+.logo-fallback {
+  width: 44px !important;
+  height: 44px !important;
+}
+
+.topbar-page-context {
+  display: grid !important;
+  gap: 4px !important;
+}
+
+.topbar-page-row {
+  gap: 8px !important;
+}
+
+.topbar-page-chip,
+.topbar-page-badge {
+  border-radius: 0 !important;
+  padding: 8px 20px !important;
+  min-height: 36px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.02em !important;
+  font-weight: 900 !important;
+  font-size: 0.82rem !important;
+  border: 1px solid var(--classic-border) !important;
+  background: linear-gradient(180deg, #0f2c24 0%, #06351d 100%) !important;
+  color: #f9fffb !important;
+  box-shadow: inset 1px 1px 0 rgba(255,255,255,0.18), inset -1px -1px 0 rgba(0,0,0,0.86) !important;
+}
+
+.topbar-page-badge {
+  background: linear-gradient(180deg, #17263a 0%, #0a1420 100%) !important;
+}
+
+.topbar-page-hint {
+  color: var(--classic-text) !important;
+  font-size: 0.78rem !important;
+  font-weight: 700 !important;
+}
+
+.topbar-clock,
+.topbar-clock--compact {
+  min-width: 78px !important;
+  height: 42px !important;
+  padding: 0 14px !important;
+  border-radius: 0 !important;
+  border: 1px solid var(--classic-border) !important;
+  background: linear-gradient(180deg, #101b28 0%, #070d14 100%) !important;
+  box-shadow: inset 1px 1px 0 rgba(255,255,255,0.14), inset -1px -1px 0 rgba(0,0,0,0.9) !important;
+}
+
+.clock-time {
+  font-family: var(--classic-font) !important;
+  color: var(--classic-text) !important;
+  font-weight: 900 !important;
+  font-size: 1rem !important;
+}
+
+.avatar-button {
+  width: 44px !important;
+  height: 44px !important;
+  border-radius: 0 !important;
+  background: linear-gradient(180deg, #20d66a 0%, #07863d 100%) !important;
+  border: 1px solid #46f08b !important;
+  color: #001b0b !important;
+  box-shadow: inset 1px 1px 0 rgba(255,255,255,0.40), inset -1px -1px 0 rgba(0,0,0,0.48) !important;
+}
+
+/* Sidebar clássica */
+.sidebar {
+  --sidebar-w: 282px !important;
+  background: linear-gradient(180deg, #0c1824 0%, #07111a 100%) !important;
+  border-right: 2px solid #27384b !important;
+  box-shadow: inset -1px 0 0 rgba(255,255,255,0.08) !important;
+  font-family: var(--classic-font) !important;
+}
+
+.sidebar-header {
+  padding: 12px 14px !important;
+  border-bottom: 1px solid var(--classic-border-soft) !important;
+  background: #0c1824 !important;
+}
+
+.sidebar-brand-mark {
+  width: 42px !important;
+  height: 42px !important;
+  border-radius: 50% !important;
+  border: 1px solid #08d769 !important;
+  background: #0a1f19 !important;
+  box-shadow: none !important;
+}
+
+.sidebar-brand-kicker {
+  font-size: 0.66rem !important;
+  color: #b8c2ce !important;
+  letter-spacing: 0.16em !important;
+}
+
+.sidebar-brand-text {
+  font-size: 0.98rem !important;
+  color: var(--classic-text) !important;
+}
+
+.sidebar-nav {
+  padding: 8px 10px 12px !important;
+  gap: 8px !important;
+}
+
+.sidebar-group-label {
+  padding: 8px 6px 5px !important;
+  color: #b9c3ce !important;
+  font-size: 0.64rem !important;
+  letter-spacing: 0.16em !important;
+  font-weight: 900 !important;
+}
+
+.sidebar-nav-link {
+  min-height: 38px !important;
+  border-radius: 0 !important;
+  padding: 6px 10px !important;
+  border: 1px solid transparent !important;
+  background: transparent !important;
+  color: #e6edf6 !important;
+  box-shadow: none !important;
+}
+
+.sidebar-nav-link:hover {
+  border-color: var(--classic-border-soft) !important;
+  background: #0d2233 !important;
+}
+
+.sidebar-nav-link.active {
+  border-color: #0db35b !important;
+  background: #102b25 !important;
+  box-shadow: inset 1px 1px 0 rgba(255,255,255,0.08), inset -1px -1px 0 rgba(0,0,0,0.65) !important;
+}
+
+.sidebar-icon {
+  width: 28px !important;
+  height: 28px !important;
+  border-radius: 0 !important;
+  border: 1px solid var(--classic-border-soft) !important;
+  background: #0b1621 !important;
+  box-shadow: none !important;
+}
+
+.sidebar-label {
+  font-size: 0.86rem !important;
+  font-weight: 800 !important;
+}
+
+.sidebar-footer {
+  border-top: 1px solid var(--classic-border-soft) !important;
+  background: #0b1621 !important;
+  color: var(--classic-text) !important;
+  min-height: 58px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-weight: 800 !important;
+}
+
+/* Páginas e cards clássicos */
+.painel-page,
+.page-container,
+.page-content {
+  max-width: none !important;
+  padding: 14px !important;
+  font-family: var(--classic-font) !important;
+}
+
+.painel-header,
+.page-head,
+.panel-section-heading {
+  margin-bottom: 8px !important;
+}
+
+.painel-header h1,
+.page-head h1,
+.panel-section-heading h2,
+.painel-page h1,
+.painel-page h2 {
+  font-family: var(--classic-font) !important;
+  color: var(--classic-text) !important;
+  text-shadow: 1px 1px 0 #000 !important;
+  letter-spacing: 0 !important;
+}
+
+.painel-page h1,
+.page-head h1 {
+  font-size: 1.35rem !important;
+  font-weight: 900 !important;
+}
+
+.period-tabs,
+.period-filter,
+.panel-period-tabs {
+  gap: 3px !important;
+}
+
+.period-tabs button,
+.period-filter button,
+.panel-period-tabs button,
+.period-option,
+.tab-button,
+.analysis-tab,
+.btn,
+button.btn {
+  border-radius: 0 !important;
+  border: 1px solid var(--classic-border) !important;
+  background: linear-gradient(180deg, #142638 0%, #07111a 100%) !important;
+  color: var(--classic-text) !important;
+  box-shadow: inset 1px 1px 0 rgba(255,255,255,0.14), inset -1px -1px 0 rgba(0,0,0,0.8) !important;
+  font-family: var(--classic-font) !important;
+  font-weight: 800 !important;
+}
+
+.period-tabs button.active,
+.period-filter button.active,
+.panel-period-tabs button.active,
+.period-option.active,
+.tab-button.active,
+.analysis-tab.active,
+.btn-primary {
+  background: linear-gradient(180deg, #13412e 0%, #063118 100%) !important;
+  border-color: #18c76b !important;
+}
+
+.metric-card,
+.summary-card,
+.kpi-card,
+.panel-card,
+.resumo-card-new,
+.stat-card,
+.calc-details,
+.finance-analysis-card,
+.entrada-setor-card,
+.empty-state,
+.card {
+  border-radius: 0 !important;
+  background: linear-gradient(180deg, var(--classic-panel-2) 0%, var(--classic-panel) 100%) !important;
+  border: 1px solid var(--classic-border) !important;
+  box-shadow: inset 1px 1px 0 rgba(255,255,255,0.10), inset -1px -1px 0 rgba(0,0,0,0.85) !important;
+  color: var(--classic-text) !important;
+}
+
+.kpi-card,
+.metric-card,
+.panel-card {
+  min-height: 92px !important;
+}
+
+.kpi-card:hover,
+.metric-card:hover,
+.panel-card:hover,
+.sidebar-nav-link:hover,
+.btn:hover {
+  transform: none !important;
+  filter: none !important;
+}
+
+.kpi-grid,
+.metrics-grid,
+.summary-grid {
+  gap: 10px !important;
+}
+
+.kpi-label,
+.metric-label,
+.card-label,
+.panel-section-heading span {
+  color: var(--classic-muted) !important;
+  font-weight: 800 !important;
+  text-transform: none !important;
+}
+
+.kpi-value,
+.metric-value,
+.card-value {
+  color: var(--classic-text) !important;
+  font-weight: 900 !important;
+  text-shadow: 1px 1px 0 #000 !important;
+}
+
+.kpi-helper,
+.metric-helper,
+.card-helper {
+  color: var(--classic-yellow) !important;
+  font-weight: 700 !important;
+}
+
+.kpi-icon,
+.icon-3d {
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  filter: none !important;
+}
+
+.calc-details summary {
+  background: transparent !important;
+  color: var(--classic-text) !important;
+  font-weight: 900 !important;
+}
+
+/* Forms, tabelas e modais clássicos */
+input,
+select,
+textarea,
+.input,
+.form-control,
+.search-input {
+  border-radius: 0 !important;
+  border: 1px solid var(--classic-border) !important;
+  background: #08131e !important;
+  color: var(--classic-text) !important;
+  box-shadow: inset 1px 1px 0 rgba(0,0,0,0.65), inset -1px -1px 0 rgba(255,255,255,0.06) !important;
+}
+
+table,
+.data-table,
+.list-table {
+  border-collapse: collapse !important;
+  border: 1px solid var(--classic-border) !important;
+}
+
+th,
+td {
+  border-color: var(--classic-border-soft) !important;
+}
+
+.modal,
+.dialog,
+.drawer-panel {
+  border-radius: 0 !important;
+  border: 1px solid var(--classic-border-bright) !important;
+  background: var(--classic-panel) !important;
+  box-shadow: none !important;
+}
+
+/* Rodapé/status bar antigo */
+.status-footer {
+  min-height: 34px !important;
+  border-top: 2px solid #27384b !important;
+  background: linear-gradient(180deg, #0f2233 0%, #07111a 100%) !important;
+  color: var(--classic-text) !important;
+  font-family: var(--classic-font) !important;
+}
+
+.sf-shell {
+  gap: 0 !important;
+}
+
+.sf-group {
+  border-radius: 0 !important;
+  border: 1px solid var(--classic-border-soft) !important;
+  background: #0b1824 !important;
+  box-shadow: none !important;
+}
+
+.sf-pill {
+  border-radius: 0 !important;
+}
+
+/* Mobile: não forçar tudo tão rígido */
+@media (max-width: 900px) {
+  .topbar {
+    min-height: 56px !important;
+    height: auto !important;
+  }
+
+  .sidebar {
+    --sidebar-w: 280px !important;
+  }
+
+  .painel-page,
+  .page-container,
+  .page-content {
+    padding: 10px !important;
+  }
+}

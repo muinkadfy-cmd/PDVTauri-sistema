@@ -1,0 +1,91 @@
+.readonly-banner {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  color: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.readonly-banner-content {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  padding: var(--spacing-sm) var(--spacing-md);
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.readonly-icon {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+
+.readonly-text {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+}
+
+.readonly-text strong {
+  font-size: 0.9375rem;
+  font-weight: 600;
+}
+
+.readonly-text span {
+  font-size: 0.875rem;
+  opacity: 0.95;
+}
+
+.readonly-button {
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-md, 6px);
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.readonly-button:hover {
+  background: rgba(255, 255, 255, 0.3);
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+.readonly-button:active {
+  transform: scale(0.98);
+}
+
+@media (max-width: 768px) {
+  .readonly-banner-content {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-xs);
+  }
+
+  .readonly-button {
+    width: 100%;
+    text-align: center;
+  }
+
+  .readonly-text {
+    width: 100%;
+  }
+}

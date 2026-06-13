@@ -1,0 +1,611 @@
+/* Simular Taxas Page - Design Premium */
+.simular-taxas-page {
+  padding: var(--spacing-xl);
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* Desktop - Padding maior */
+@media (min-width: 901px) {
+  .simular-taxas-page {
+    padding: var(--spacing-2xl) var(--spacing-6);
+  }
+}
+
+.page-header {
+  margin-bottom: var(--spacing-xl);
+}
+
+.page-header h1 {
+  font-size: var(--font-size-3xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--text-primary);
+  margin-bottom: var(--spacing-sm);
+}
+
+.page-subtitle {
+  font-size: var(--font-size-base);
+  color: var(--text-secondary);
+}
+
+.simulacao-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-lg);
+  margin-bottom: var(--spacing-xl);
+}
+
+.simulacao-form,
+.resultado-simulacao,
+.comparativo-bandeiras,
+.tabela-taxas {
+  background: var(--bg-surface);
+  border-radius: var(--radius);
+  padding: var(--spacing-lg);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-light);
+}
+
+.simulacao-form h2,
+.resultado-simulacao h2,
+.comparativo-bandeiras h2,
+.tabela-taxas h2 {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+  margin-bottom: var(--spacing-md);
+  padding-bottom: var(--spacing-sm);
+  border-bottom: 2px solid var(--border-light);
+}
+
+.form-group {
+  margin-bottom: var(--spacing-md);
+}
+
+.form-group label {
+  display: block;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--text-primary);
+  margin-bottom: var(--spacing-xs);
+}
+
+.input-with-icon {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-icon {
+  position: absolute;
+  left: var(--spacing-md);
+  color: var(--text-secondary);
+  font-weight: var(--font-weight-semibold);
+  z-index: 1;
+}
+
+.input-with-icon .form-input {
+  padding-left: calc(var(--spacing-md) * 2.5);
+}
+
+.radio-group {
+  display: flex;
+  gap: var(--spacing-md);
+  flex-wrap: wrap;
+}
+
+.radio-label {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  cursor: pointer;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--radius-sm);
+  transition: background var(--transition-fast);
+}
+
+.radio-label:hover {
+  background: var(--bg-secondary);
+}
+
+.radio-label input[type="radio"] {
+  margin: 0;
+  cursor: pointer;
+}
+
+.radio-label span {
+  font-size: var(--font-size-sm);
+  color: var(--text-primary);
+}
+
+/* Resultado da Simulação */
+.resultado-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-lg);
+  padding-bottom: var(--spacing-md);
+  border-bottom: 1px solid var(--border-light);
+}
+
+.bandeira-info {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.bandeira-icon {
+  font-size: var(--font-size-2xl);
+}
+
+.bandeira-nome {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+}
+
+.tipo-info {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+}
+
+.parcelas-badge {
+  background: var(--primary);
+  color: white;
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
+}
+
+.resultado-valores {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
+}
+
+.valor-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--spacing-sm) 0;
+}
+
+.valor-item.total {
+  padding-top: var(--spacing-md);
+  border-top: 2px solid var(--border-light);
+  margin-top: var(--spacing-sm);
+}
+
+.valor-label {
+  font-size: var(--font-size-base);
+  color: var(--text-secondary);
+  font-weight: var(--font-weight-medium);
+}
+
+.valor-amount {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+  font-variant-numeric: tabular-nums;
+}
+
+.valor-amount.taxa {
+  color: #ef4444;
+}
+
+.valor-amount.total {
+  font-size: var(--font-size-2xl);
+  color: var(--primary);
+  font-weight: var(--font-weight-bold);
+}
+
+.resultado-resumo {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--spacing-md);
+  padding: var(--spacing-md);
+  background: var(--bg-secondary);
+  border-radius: var(--radius);
+}
+
+.resumo-item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+  text-align: center;
+}
+
+.resumo-label {
+  font-size: var(--font-size-xs);
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.resumo-value {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+}
+
+/* Comparativo de Bandeiras */
+.comparativo-subtitle {
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+  margin-bottom: var(--spacing-md);
+}
+
+.comparativo-table {
+  overflow-x: auto;
+}
+
+.bandeira-cell {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+}
+
+.bandeira-icon-small {
+  font-size: var(--font-size-lg);
+}
+
+.taxa-cell {
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+  font-variant-numeric: tabular-nums;
+}
+
+.valor-cell {
+  font-variant-numeric: tabular-nums;
+}
+
+.valor-cell.liquido {
+  font-weight: var(--font-weight-semibold);
+  color: var(--primary);
+}
+
+.table tbody tr.selected {
+  background: var(--primary-light);
+}
+
+.table tbody tr.selected td {
+  color: var(--primary);
+  font-weight: var(--font-weight-semibold);
+}
+
+/* Tabela de Taxas */
+.tabs-bandeiras {
+  display: flex;
+  gap: var(--spacing-xs);
+  margin-bottom: var(--spacing-md);
+  flex-wrap: wrap;
+  border-bottom: 2px solid var(--border-light);
+  padding-bottom: var(--spacing-sm);
+}
+
+.tab-bandeira {
+  background: transparent;
+  border: none;
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  min-height: 44px;
+}
+
+.tab-bandeira:hover {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+}
+
+.tab-bandeira.active {
+  background: var(--primary-light);
+  color: var(--primary);
+  font-weight: var(--font-weight-semibold);
+}
+
+[data-theme="dark"] .tab-bandeira.active {
+  background: rgba(var(--accent-rgb), 0.2);
+}
+
+.tabela-taxas-content {
+  overflow-x: auto;
+}
+
+.tabela-taxas-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-md);
+  gap: var(--spacing-md);
+  flex-wrap: wrap;
+}
+
+/* Modal de Edição de Taxas */
+.editar-taxas-form {
+  padding: var(--spacing-md);
+}
+
+.editar-taxas-header {
+  margin-bottom: var(--spacing-lg);
+  padding-bottom: var(--spacing-md);
+  border-bottom: 2px solid var(--border-light);
+}
+
+.bandeira-info-header {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+}
+
+.bandeira-icon-large {
+  font-size: 3rem;
+}
+
+.bandeira-icon-medium {
+  font-size: 1.5rem;
+}
+
+.editar-taxas-header h3 {
+  margin: 0;
+  font-size: var(--font-size-xl);
+  color: var(--text-primary);
+}
+
+.text-muted {
+  color: var(--text-secondary);
+  font-size: var(--font-size-sm);
+  margin: var(--spacing-xs) 0 0 0;
+}
+
+.taxas-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+}
+
+.taxas-credito-section {
+  margin-top: var(--spacing-md);
+}
+
+.taxas-parcelas-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: var(--spacing-sm);
+  margin-top: var(--spacing-sm);
+}
+
+.taxa-parcela-item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.taxa-parcela-label {
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.taxa-parcela-item .form-input {
+  min-height: 44px;
+  font-size: var(--font-size-sm);
+  text-align: center;
+}
+
+.form-actions-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  margin-top: var(--spacing-md);
+}
+
+/* Editar Todas as Taxas */
+.editar-todas {
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+.editar-taxas-info {
+  margin-bottom: var(--spacing-lg);
+  padding: var(--spacing-md);
+  background: var(--bg-secondary);
+  border-radius: var(--radius);
+  border-left: 4px solid var(--primary);
+}
+
+.taxas-todas-container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+  margin-bottom: var(--spacing-lg);
+}
+
+.taxas-bandeira-card {
+  background: var(--bg-secondary);
+  border-radius: var(--radius);
+  padding: var(--spacing-md);
+  border: 1px solid var(--border-light);
+}
+
+.taxas-bandeira-header {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-md);
+  padding-bottom: var(--spacing-sm);
+  border-bottom: 1px solid var(--border-light);
+}
+
+.taxas-bandeira-header h4 {
+  margin: 0;
+  font-size: var(--font-size-lg);
+  color: var(--text-primary);
+}
+
+.taxas-bandeira-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.taxas-credito-compact {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.taxas-credito-label {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+  margin-bottom: var(--spacing-xs);
+}
+
+.taxas-parcelas-compact {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: var(--spacing-xs);
+}
+
+.taxa-parcela-compact {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.taxa-parcela-compact label {
+  font-size: var(--font-size-xs);
+  color: var(--text-secondary);
+  font-weight: var(--font-weight-medium);
+}
+
+.taxa-parcela-compact .form-input {
+  min-height: 36px;
+  font-size: var(--font-size-xs);
+  padding: var(--spacing-xs);
+  text-align: center;
+}
+
+/* Responsividade */
+@media (max-width: 1099px) {
+  .simulacao-container {
+    grid-template-columns: 1fr;
+  }
+
+  .resultado-resumo {
+    grid-template-columns: 1fr;
+  }
+
+  .tabs-bandeiras {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+  }
+
+  .tabela-taxas-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .taxas-parcelas-grid {
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  }
+
+  .taxas-parcelas-compact {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 699px) {
+  .simular-taxas-page {
+    padding: var(--spacing-md);
+  }
+
+  .page-header h1 {
+    font-size: var(--font-size-2xl);
+  }
+
+  .simulacao-form,
+  .resultado-simulacao,
+  .comparativo-bandeiras,
+  .tabela-taxas {
+    padding: var(--spacing-md);
+  }
+
+  .resultado-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-sm);
+  }
+
+  .radio-group {
+    flex-direction: column;
+  }
+
+  .comparativo-table {
+    font-size: var(--font-size-xs);
+  }
+
+  .tabs-bandeiras {
+    gap: var(--spacing-xs);
+  }
+
+  .tab-bandeira {
+    padding: var(--spacing-xs) var(--spacing-sm);
+    font-size: var(--font-size-xs);
+    min-height: 40px;
+  }
+
+  .taxas-parcelas-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .taxas-parcelas-compact {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .bandeira-icon-large {
+    font-size: 2rem;
+  }
+
+  .editar-taxas-form {
+    padding: var(--spacing-sm);
+  }
+}
+
+[data-theme="dark"] .simulacao-form,
+[data-theme="dark"] .resultado-simulacao,
+[data-theme="dark"] .comparativo-bandeiras,
+[data-theme="dark"] .tabela-taxas,
+[data-theme="dark"] .taxas-bandeira-card,
+[data-theme="dark"] .editar-taxas-info {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.055), rgba(255, 255, 255, 0.03));
+  border-color: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 20px 42px -34px rgba(0, 0, 0, 0.78);
+}
+
+[data-theme="dark"] .resultado-resumo {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+[data-theme="dark"] .radio-label:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+[data-theme="dark"] .parcelas-badge {
+  background: rgba(var(--accent-rgb), 0.18);
+  color: #86efac;
+}

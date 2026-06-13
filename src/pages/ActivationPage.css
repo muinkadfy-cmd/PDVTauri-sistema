@@ -1,0 +1,116 @@
+.activation-root {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+}
+
+.activation-card {
+  width: min(860px, 96vw);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  background: rgba(255, 255, 255, 0.03);
+  padding: 18px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+}
+
+.activation-header {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.activation-icon {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(255,255,255,0.04);
+}
+
+.activation-sub {
+  font-weight: 700;
+  margin-top: 4px;
+}
+
+.activation-warning {
+  border: 1px solid rgba(245, 158, 11, 0.35);
+  background: rgba(245, 158, 11, 0.08);
+  padding: 12px;
+  border-radius: 12px;
+  margin: 10px 0 14px;
+}
+
+.activation-section {
+  margin-top: 12px;
+}
+
+.activation-label {
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 6px;
+}
+
+.activation-row {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.activation-row input {
+  flex: 1;
+  min-width: 260px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.14);
+  background: rgba(255,255,255,0.04);
+  color: var(--text-primary);
+}
+
+.activation-section textarea {
+  width: 100%;
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.14);
+  background: rgba(255,255,255,0.04);
+  color: var(--text-primary);
+  resize: vertical;
+}
+
+.activation-help {
+  margin-top: 8px;
+  color: var(--text-secondary);
+  font-size: 13px;
+  line-height: 1.35;
+}
+
+.activation-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 14px;
+}
+
+.activation-error {
+  margin-top: 10px;
+  color: var(--error, #ef4444);
+  font-weight: 700;
+}
+
+.activation-footer {
+  margin-top: 14px;
+  color: var(--text-secondary);
+  font-size: 13px;
+}
+
+@media (max-width: 520px) {
+  .activation-card { padding: 14px; }
+  .activation-icon { width: 40px; height: 40px; }
+}

@@ -1,0 +1,308 @@
+/* ============================================
+   CORREÇÕES MODO DARK - MOBILE
+   Corrige elementos brancos que não se adaptam ao modo dark
+   ============================================ */
+
+/* Páginas de Diagnóstico */
+[data-theme="dark"] .routes-list,
+[data-theme="dark"] .diagnostico-rotas-table {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-light);
+}
+
+[data-theme="dark"] .stat-card {
+  background: var(--bg-secondary);
+}
+
+[data-theme="dark"] .stat-card div:last-child {
+  color: var(--text-secondary);
+}
+
+[data-theme="dark"] .routes-list thead {
+  background: var(--bg-secondary);
+  border-bottom: 2px solid var(--border-light);
+}
+
+[data-theme="dark"] .routes-list th {
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .routes-list td {
+  color: var(--text-primary);
+  border-bottom: 1px solid var(--border-light);
+}
+
+/* Página de Login */
+[data-theme="dark"] .login-container,
+[data-theme="dark"] .login-card {
+  background: var(--bg-surface);
+}
+
+[data-theme="dark"] .form-input,
+[data-theme="dark"] .form-select {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-light);
+}
+
+[data-theme="dark"] .form-input::placeholder {
+  color: var(--text-muted);
+}
+
+/* Toggle de Tema (compacto) */
+[data-theme="dark"] .compact-toggle-switch {
+  background: var(--bg-secondary);
+}
+
+/* Modais */
+[data-theme="dark"] .modal-nova-movimentacao {
+  background: var(--bg-surface);
+}
+
+/* Cards */
+[data-theme="dark"] .card-yellow {
+  background: rgba(251, 191, 36, 0.1);
+}
+
+[data-theme="dark"] .card-green {
+  background: rgba(var(--accent-rgb), 0.1);
+}
+
+/* Toast/Notificações */
+[data-theme="dark"] .toast-container .toast-warning {
+  background: rgba(251, 191, 36, 0.2);
+  color: #fbbf24;
+  border: 1px solid rgba(251, 191, 36, 0.3);
+}
+
+/* Página de Setup */
+[data-theme="dark"] .setup-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-light);
+}
+
+/* Tabelas genéricas */
+[data-theme="dark"] table {
+  background: var(--bg-surface);
+}
+
+[data-theme="dark"] thead {
+  background: var(--bg-secondary);
+}
+
+[data-theme="dark"] th {
+  color: var(--text-primary);
+  border-bottom: 2px solid var(--border-light);
+}
+
+[data-theme="dark"] td {
+  color: var(--text-primary);
+  border-bottom: 1px solid var(--border-light);
+}
+
+/* ============================================
+   MELHORIAS DE CONTRASTE NO MOBILE
+   ============================================ */
+
+/* Badges com melhor contraste */
+@media (max-width: 480px) {
+  .badge-success,
+  .badge-info,
+  .badge-warning,
+  .badge-error {
+    font-weight: var(--font-weight-semibold);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* Botões com sombra para melhor visibilidade */
+  .btn-primary,
+  .btn-secondary {
+    box-shadow: var(--shadow-sm);
+  }
+  
+  [data-theme="dark"] .btn-primary {
+    box-shadow: 0 2px 8px rgba(var(--accent-rgb), 0.3);
+  }
+  
+  [data-theme="dark"] .btn-secondary {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    border: 1px solid var(--border-light);
+  }
+}
+
+/* ============================================
+   INPUTS E FORMULÁRIOS NO MODO DARK
+   ============================================ */
+
+[data-theme="dark"] input[type="text"],
+[data-theme="dark"] input[type="email"],
+[data-theme="dark"] input[type="password"],
+[data-theme="dark"] input[type="number"],
+[data-theme="dark"] input[type="tel"],
+[data-theme="dark"] input[type="search"],
+[data-theme="dark"] textarea,
+[data-theme="dark"] select {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-light);
+}
+
+[data-theme="dark"] input:focus,
+[data-theme="dark"] textarea:focus,
+[data-theme="dark"] select:focus {
+  border-color: var(--primary);
+  background: var(--bg-secondary);
+}
+
+[data-theme="dark"] input::placeholder,
+[data-theme="dark"] textarea::placeholder {
+  color: var(--text-muted);
+}
+
+/* ============================================
+   CORREÇÃO DE LABELS E TEXTOS
+   ============================================ */
+
+[data-theme="dark"] .form-label,
+[data-theme="dark"] label {
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .form-hint,
+[data-theme="dark"] .help-text {
+  color: var(--text-secondary);
+}
+
+/* ============================================
+   DROPDOWN E SELECTS
+   ============================================ */
+
+[data-theme="dark"] select {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-light);
+}
+
+[data-theme="dark"] select option {
+  background: var(--bg-surface);
+  color: var(--text-primary);
+}
+
+/* ============================================
+   MELHORIAS ESPECÍFICAS MOBILE DARK
+   ============================================ */
+
+@media (max-width: 480px) {
+  /* Garantir legibilidade de cards */
+  [data-theme="dark"] .list-card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-light);
+  }
+  
+  [data-theme="dark"] .list-card-title {
+    color: var(--text-primary);
+  }
+  
+  [data-theme="dark"] .list-card-row {
+    color: var(--text-secondary);
+  }
+  
+  [data-theme="dark"] .list-card-value {
+    color: var(--text-primary);
+  }
+  
+  /* Melhorar contraste do texto sobre fundos escuros */
+  [data-theme="dark"] {
+    --text-primary: #f8fafc;
+    --text-secondary: #cbd5e1;
+    --text-muted: #94a3b8;
+  }
+  
+  /* Bordas mais visíveis no mobile dark */
+  [data-theme="dark"] {
+    --border-light: rgba(255, 255, 255, 0.15);
+    --border-medium: rgba(255, 255, 255, 0.2);
+  }
+}
+
+/* ============================================
+   CORREÇÃO DE ÍCONES E EMOJIS
+   ============================================ */
+
+[data-theme="dark"] .icon,
+[data-theme="dark"] .emoji {
+  filter: none; /* Não aplicar filtro em ícones */
+  opacity: 1;
+}
+
+/* Garantir que emojis sejam visíveis */
+[data-theme="dark"] .btn-icon {
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.5));
+}
+
+/* ============================================
+   AUTOCOMPLETE E SUGESTÕES
+   ============================================ */
+
+[data-theme="dark"] .autocomplete-dropdown,
+[data-theme="dark"] .suggestions-list {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-light);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+[data-theme="dark"] .suggestion-item:hover {
+  background: var(--bg-secondary);
+}
+
+/* ============================================
+   SCROLLBARS NO MODO DARK
+   ============================================ */
+
+[data-theme="dark"] ::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.22);
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+
+/* ══════════════════════════════════════════
+   NÍVEL S+ — Bottom nav mobile
+   ══════════════════════════════════════════ */
+[data-theme="dark"] .bottom-nav {
+  background: rgba(11,15,20,0.97) !important;
+  border-top: 1px solid rgba(255,255,255,0.07) !important;
+  backdrop-filter: blur(12px) !important;
+}
+[data-theme="dark"] .bottom-nav-item {
+  color: rgba(231,237,246,0.45) !important;
+}
+[data-theme="dark"] .bottom-nav-item.active {
+  color: var(--accent) !important;
+}
+[data-theme="dark"] .bottom-nav-item:hover {
+  color: rgba(231,237,246,0.80) !important;
+}
+
+/* Drawer mobile */
+[data-theme="dark"] .drawer-overlay {
+  background: rgba(0,0,0,0.70) !important;
+  backdrop-filter: blur(4px) !important;
+}
+[data-theme="dark"] .drawer {
+  background: #0e1218 !important;
+  border-right: 1px solid rgba(255,255,255,0.08) !important;
+}

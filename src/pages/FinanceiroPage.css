@@ -1,0 +1,328 @@
+.financeiro-page {
+  padding: var(--spacing-xl);
+  max-width: 1400px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* Desktop - Padding maior */
+@media (min-width: 901px) {
+  .financeiro-page {
+    padding: var(--spacing-2xl) var(--spacing-6);
+  }
+}
+
+.page-header {
+  margin-bottom: var(--spacing-md);
+}
+
+.page-header h1 {
+  color: var(--text-primary);
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
+  margin: 0;
+}
+
+.resumo-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-md);
+}
+
+.resumo-card {
+  background: var(--bg-surface);
+  border-radius: var(--radius);
+  padding: var(--spacing-md);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-light);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.resumo-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow);
+}
+
+.resumo-icon {
+  font-size: 1.75rem;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius);
+  background: var(--bg-secondary);
+}
+
+.resumo-content h3 {
+  margin: 0 0 var(--spacing-xs) 0;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--text-secondary);
+}
+
+.resumo-valor {
+  margin: 0;
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--text-primary);
+}
+
+.resumo-valor.positivo {
+  color: var(--primary);
+}
+
+.resumo-valor.negativo {
+  color: #ef4444;
+}
+
+.resumo-quantidade {
+  margin: var(--spacing-xs) 0 0 0;
+  font-size: var(--font-size-xs);
+  color: var(--text-muted);
+}
+
+.filtros-bar {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-md);
+}
+
+.search-bar {
+  width: 100%;
+}
+
+.search-input {
+  width: 100%;
+  max-width: 400px;
+  padding: var(--spacing-sm) var(--spacing-md);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius);
+  font-size: var(--font-size-base);
+  transition: border-color var(--transition-fast);
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: var(--primary);
+}
+
+.filtros-tipo {
+  display: flex;
+  gap: var(--spacing-sm);
+  flex-wrap: wrap;
+}
+
+.filtro-btn {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-light);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--radius);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  min-height: 36px;
+}
+
+.filtro-btn:hover {
+  background: var(--border-light);
+}
+
+.filtro-btn.active {
+  background: var(--primary);
+  color: var(--text-inverse);
+  border-color: var(--primary);
+}
+
+.movimentacoes-list{display:flex;flex-direction:column;gap:14px;}
+
+.movimentacao-card {
+  background: var(--bg-surface);
+  border-radius: var(--radius);
+  padding: var(--spacing-md);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-light);
+  border-left: 3px solid var(--primary);
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.movimentacao-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow);
+}
+
+.movimentacao-card.servico {
+  border-left-color: #3b82f6;
+}
+
+.movimentacao-card.venda {
+  border-left-color: #10b981;
+}
+
+.movimentacao-card.gasto {
+  border-left-color: #ef4444;
+}
+
+.movimentacao-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-sm);
+}
+
+.movimentacao-tipo {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.tipo-icon {
+  font-size: 1.25rem;
+}
+
+.tipo-label {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+}
+
+.btn-icon {
+  background: none;
+  border: none;
+  font-size: 1.25rem;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: var(--radius-sm);
+  transition: background var(--transition-fast);
+  min-width: 32px;
+  min-height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-icon:hover {
+  background: var(--bg-secondary);
+}
+
+.movimentacao-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.movimentacao-valor {
+  margin: 0;
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+  color: var(--text-primary);
+}
+
+.movimentacao-responsavel {
+  margin: 0;
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+}
+
+.movimentacao-descricao {
+  margin: 0;
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
+.movimentacao-data {
+  margin: var(--spacing-xs) 0 0 0;
+  font-size: var(--font-size-xs);
+  color: var(--text-muted);
+}
+
+.empty-state {
+  text-align: center;
+  padding: var(--spacing-2xl);
+  color: var(--text-secondary);
+  background: var(--bg-surface);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-light);
+}
+
+/* Responsividade */
+@media (max-width: 699px) {
+  .financeiro-page {
+    padding: var(--spacing-md);
+  }
+
+  .resumo-cards {
+    grid-template-columns: 1fr;
+  }
+
+  .filtros-tipo {
+    flex-direction: column;
+  }
+
+  .filtro-btn {
+    width: 100%;
+  }
+
+  .search-input {
+    max-width: 100%;
+  }
+
+  .movimentacao-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-sm);
+  }
+
+  .movimentacao-header .btn-icon {
+    align-self: flex-end;
+  }
+}
+
+
+/* ===== Polimento UI (Storytelling + Mobile) ===== */
+.page-subtitle{
+  margin: 0.35rem 0 0.5rem;
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  line-height: 1.35;
+}
+.page-hints{
+  display:flex;
+  flex-wrap:wrap;
+  gap:0.5rem;
+  margin-top:0.35rem;
+}
+.hint-pill{
+  display:inline-flex;
+  align-items:center;
+  gap:0.35rem;
+  padding:0.25rem 0.55rem;
+  border-radius:999px;
+  border: 1px solid var(--border-light);
+  background: var(--bg-surface);
+  color: var(--text-secondary);
+  font-size:0.8rem;
+  white-space:nowrap;
+}
+
+@media (max-width: 720px){
+  .page-subtitle{ font-size:0.9rem; }
+  .resumo-cards{
+    grid-template-columns: 1fr !important;
+  }
+  .movimentacao-card{
+    padding: 0.9rem !important;
+  }
+  .movimentacao-responsavel{
+    font-size: 0.85rem;
+  }
+}
+

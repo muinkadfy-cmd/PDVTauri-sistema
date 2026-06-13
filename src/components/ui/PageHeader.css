@@ -1,0 +1,116 @@
+/* Page header – clean SaaS style */
+.st-page-header{
+  display:flex;
+  flex-direction:column;
+  gap: var(--spacing-3);
+  margin-bottom: var(--spacing-4);
+}
+.st-page-header__top{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap: var(--spacing-4);
+}
+.st-page-header__titles{ min-width:0; }
+.st-page-header__kicker{
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+  color: var(--primary);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.st-page-header__title{
+  margin:0;
+  font-size: var(--font-size-3xl);
+  line-height: var(--line-height-tight);
+  letter-spacing:-0.02em;
+}
+.st-page-header__subtitle{
+  margin-top: var(--spacing-1);
+  color: var(--text-secondary);
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-normal);
+  max-width: 900px;
+}
+.st-page-header__right{
+  display:flex;
+  align-items:center;
+  gap: var(--spacing-3);
+  flex-wrap:wrap;
+  justify-content:flex-end;
+}
+.st-page-header__actions{
+  display:flex;
+  gap: var(--spacing-2);
+  flex-wrap:wrap;
+}
+.st-page-header__bottom{
+  display:flex;
+  gap: var(--spacing-2);
+  flex-wrap:wrap;
+  align-items:center;
+}
+@media (max-width: 768px){
+  .st-page-header__top{ flex-direction:column; align-items:stretch; }
+  .st-page-header__right{ justify-content:flex-start; }
+  .st-page-header__title{ font-size: 22px; }
+}
+
+/* ============================================
+   F4 MICRO — tipografia secundária mais nobre
+   ============================================ */
+.st-page-header__title{
+  font-weight: 780;
+}
+
+.st-page-header__subtitle{
+  margin-top: 6px;
+  font-size: 0.96rem;
+  line-height: 1.65;
+  color: rgba(15, 23, 42, 0.64);
+}
+
+[data-theme="dark"] .st-page-header__subtitle{
+  color: rgba(231,237,246,0.58);
+}
+
+[data-theme="dark"] .st-page-header__kicker{
+  color: rgba(74, 222, 128, 0.92);
+}
+
+/* Micro acabamento global */
+.st-page-header{
+  position: relative;
+  padding-bottom: 2px;
+}
+
+.st-page-header__top{
+  padding: 0.15rem 0 0.1rem;
+}
+
+.st-page-header__title{
+  text-wrap: balance;
+  text-shadow: 0 1px 0 rgba(255,255,255,0.03);
+}
+
+.st-page-header__subtitle{
+  max-width: 880px;
+}
+
+.st-page-header__actions > *{
+  box-shadow: 0 10px 22px -18px rgba(15, 23, 42, 0.42);
+}
+
+[data-theme="dark"] .st-page-header__actions > *{
+  box-shadow: 0 12px 26px -18px rgba(2, 6, 23, 0.56);
+}
+
+@media (max-width: 768px){
+  .st-page-header{
+    margin-bottom: 0.9rem;
+  }
+}

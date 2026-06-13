@@ -1,0 +1,49 @@
+/**
+ * Estilos para rodapé de impressão da empresa
+ */
+
+.print-footer-company {
+  margin-top: 2rem;
+  padding-top: 1rem;
+  border-top: 1px solid #ccc;
+  text-align: center;
+}
+
+.print-footer-message {
+  font-size: 0.875rem;
+  margin: 0 0 0.5rem 0;
+  color: #333;
+}
+
+.print-footer-text {
+  font-size: 0.875rem;
+  margin: 0.5rem 0;
+  color: #555;
+  font-style: italic;
+}
+
+/* Impressão A4 */
+@media print {
+  .print-footer-company {
+    page-break-inside: avoid;
+    margin-top: 1rem;
+  }
+
+  .print-footer-message,
+  .print-footer-text {
+    font-size: 10pt;
+  }
+}
+
+/* Impressão 80mm (termica) */
+@media print and (max-width: 80mm) {
+  .print-footer-company {
+    margin-top: 0.75rem;
+    padding-top: 0.5rem;
+  }
+
+  .print-footer-message,
+  .print-footer-text {
+    font-size: 9pt;
+  }
+}

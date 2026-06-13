@@ -1,0 +1,62 @@
+# 📜 DIREITOS DE REGISTRO – SISTEMA PDV
+
+## 🔒 Direitos Autorais
+
+**© 2026 Smart Tech Rolândia – Sistema PDV**  
+Todos os direitos reservados.
+
+Este software é protegido pelas leis de direitos autorais e de propriedade intelectual, conforme a **Lei nº 9.610/98 (Lei de Direitos Autorais)** e demais normas aplicáveis no Brasil.
+
+---
+
+## 🖥️ Titularidade do Sistema
+
+O **Smart Tech Rolândia – Sistema PDV** é um sistema de gestão comercial e financeira destinado ao controle de:
+
+- ✅ Vendas
+- ✅ Estoque
+- ✅ Ordens de serviço
+- ✅ Financeiro e fluxo de caixa
+- ✅ Relatórios gerenciais
+
+Todo o conteúdo do sistema, incluindo **código-fonte, layout, design, banco de dados, regras de negócio, marca e identidade visual**, é de propriedade exclusiva da **Smart Tech Rolândia**, sediada em **Rolândia – PR**.
+
+---
+
+## 🚫 Restrições de Uso
+
+É expressamente proibido, sem autorização formal da Smart Tech Rolândia:
+
+❌ Copiar, reproduzir ou distribuir o sistema  
+❌ Revender, sublicenciar ou compartilhar acesso  
+❌ Alterar, desmontar, descompilar ou fazer engenharia reversa  
+❌ Utilizar o sistema para fins ilegais ou fora do escopo contratado
+
+⚠️ O uso indevido poderá resultar em **sanções civis e criminais**.
+
+---
+
+## ✅ Licença de Uso
+
+- O cliente possui apenas o **direito de uso** do sistema, de forma **limitada, não exclusiva e intransferível**, conforme o plano contratado.
+- A **propriedade intelectual** do software **não é transferida** ao usuário.
+
+---
+
+## 🔄 Atualizações e Suporte
+
+A Smart Tech Rolândia poderá realizar:
+
+- ✅ Atualizações técnicas
+- ✅ Correções de segurança
+- ✅ Melhorias funcionais e visuais
+
+Sem necessidade de aviso prévio, visando **estabilidade e segurança** do sistema.
+
+---
+
+## 📍 Identificação Comercial
+
+**Smart Tech Rolândia – Sistema PDV**  
+📌 Rolândia – Paraná – Brasil  
+📅 Ano: 2026

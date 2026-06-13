@@ -1,0 +1,72 @@
+/* Collapsible info banner to avoid visual pollution */
+.st-infobanner{
+  border:1px solid var(--border-light);
+  background: rgba(255,255,255,0.65);
+  border-radius: var(--border-radius);
+  padding: var(--spacing-3);
+  box-shadow: var(--shadow-xs);
+}
+.st-infobanner__header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap: var(--spacing-3);
+}
+.st-infobanner__title{
+  display:flex;
+  align-items:center;
+  gap: var(--spacing-2);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+  font-size: var(--font-size-sm);
+}
+.st-infobanner__dot{
+  width:10px;
+  height:10px;
+  border-radius:999px;
+  background: var(--acao-azul);
+  box-shadow: 0 0 0 3px rgba(59,130,246,0.15);
+}
+.st-infobanner__toggle{
+  border:1px solid var(--border-light);
+  background: var(--bg-surface);
+  color: var(--text-secondary);
+  border-radius: 999px;
+  padding: 6px 10px;
+  cursor:pointer;
+  font-size: var(--font-size-xs);
+  height: var(--touch-target-sm);
+}
+.st-infobanner__toggle:hover{ background: var(--bg-hover); }
+.st-infobanner__body{
+  margin-top: var(--spacing-2);
+  color: var(--text-secondary);
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-normal);
+}
+.st-infobanner--warning .st-infobanner__dot{ background: var(--acao-laranja); box-shadow:0 0 0 3px rgba(245,158,11,0.16); }
+.st-infobanner--success .st-infobanner__dot{ background: var(--acao-verde); box-shadow:0 0 0 3px rgba(16,185,129,0.14); }
+.st-infobanner--danger .st-infobanner__dot{ background: var(--acao-vermelho); box-shadow:0 0 0 3px rgba(239,68,68,0.14); }
+
+@media (max-width:768px){
+  .st-infobanner{ padding: var(--spacing-2); }
+}
+
+
+/* Dark-mode polish: evita "mancha branca" */
+[data-theme="dark"] .st-infobanner{
+  background: rgba(17, 28, 48, 0.72);
+  border-color: rgba(255,255,255,0.10);
+  box-shadow: var(--shadow-xs);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+}
+
+[data-theme="dark"] .st-infobanner__toggle{
+  background: rgba(255,255,255,0.06);
+  border-color: rgba(255,255,255,0.12);
+  color: var(--text-secondary);
+}
+[data-theme="dark"] .st-infobanner__toggle:hover{
+  background: rgba(255,255,255,0.08);
+}

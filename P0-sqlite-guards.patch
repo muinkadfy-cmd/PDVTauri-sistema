@@ -1,0 +1,23 @@
+--- a/src/app/routes.tsx
++++ b/src/app/routes.tsx
+@@ -171,8 +171,8 @@
+       },
+       {
+         path: 'vendas',
+-        element: <VendasPage />, // Vendas: não bloquear com SqliteLoadingGuard (evita loading eterno)
+-
++        // ✅ P0: precisa de SqliteLoadingGuard para evitar lista vazia + loading eterno (SqliteLocalStore preload é async)
++        element: <SqliteLoadingGuard><VendasPage /></SqliteLoadingGuard>,
+       },
+       {
+         path: 'produtos',
+@@ -232,7 +232,8 @@
+       },
+       {
+         path: 'fornecedores',
+-        element: <FornecedoresPage />,
++        // ✅ P0: precisa de SqliteLoadingGuard para evitar lista vazia + loading eterno (SqliteLocalStore preload é async)
++        element: <SqliteLoadingGuard><FornecedoresPage /></SqliteLoadingGuard>,
+       },
+       {
+         path: 'codigos',

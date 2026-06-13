@@ -1,0 +1,300 @@
+.produtos-diagnostico-page {
+  padding: var(--spacing-lg);
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.page-header {
+  margin-bottom: var(--spacing-lg);
+  text-align: center;
+}
+
+.page-header h1 {
+  font-size: clamp(24px, 4vw, 32px);
+  font-weight: var(--font-weight-bold);
+  color: var(--text-primary);
+  margin: 0 0 var(--spacing-sm) 0;
+}
+
+.page-subtitle {
+  font-size: var(--font-size-base);
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+.diagnostico-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-sm);
+  justify-content: center;
+  margin-bottom: var(--spacing-lg);
+}
+
+.diagnostico-actions button {
+  min-width: 160px;
+  padding: var(--spacing-sm) var(--spacing-md);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  border-radius: var(--radius);
+  border: none;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.diagnostico-actions button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: white;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: var(--primary-dark);
+}
+
+.btn-secondary {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-light);
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background: var(--bg-surface);
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.btn-danger {
+  background: #ef4444;
+  color: white;
+}
+
+.btn-danger:hover:not(:disabled) {
+  background: #dc2626;
+}
+
+.diagnostico-sections {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+}
+
+.diagnostico-section {
+  background: var(--bg-surface);
+  border-radius: var(--radius);
+  padding: var(--spacing-lg);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-light);
+}
+
+.diagnostico-section.warning {
+  border-left: 4px solid #f59e0b;
+  background: #fffbeb;
+}
+
+.diagnostico-section.error {
+  border-left: 4px solid #ef4444;
+  background: #fef2f2;
+}
+
+.diagnostico-section h2 {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+  margin: 0 0 var(--spacing-md) 0;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: var(--spacing-md);
+}
+
+.stat-card {
+  background: var(--bg-secondary);
+  padding: var(--spacing-md);
+  border-radius: var(--radius);
+  text-align: center;
+}
+
+.stat-card h3 {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-secondary);
+  margin: 0 0 var(--spacing-xs) 0;
+}
+
+.stat-value {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.stat-value.error {
+  color: #ef4444;
+}
+
+.diagnostico-section ul {
+  list-style: none;
+  padding: 0;
+  margin: var(--spacing-md) 0;
+}
+
+.diagnostico-section li {
+  padding: var(--spacing-sm);
+  margin: var(--spacing-xs) 0;
+  background: var(--bg-secondary);
+  border-radius: var(--radius-sm);
+}
+
+.diagnostico-section li ul {
+  margin-top: var(--spacing-xs);
+  padding-left: var(--spacing-md);
+}
+
+.diagnostico-section li .error {
+  color: #ef4444;
+  font-weight: var(--font-weight-semibold);
+}
+
+.diagnostico-section details {
+  margin-top: var(--spacing-md);
+}
+
+.diagnostico-section summary {
+  cursor: pointer;
+  padding: var(--spacing-sm);
+  background: var(--bg-secondary);
+  border-radius: var(--radius-sm);
+  font-weight: var(--font-weight-semibold);
+  margin-bottom: var(--spacing-sm);
+}
+
+.diagnostico-section pre {
+  background: var(--bg-primary);
+  padding: var(--spacing-md);
+  border-radius: var(--radius-sm);
+  overflow-x: auto;
+  font-size: var(--font-size-xs);
+  font-family: 'Courier New', monospace;
+  color: var(--text-primary);
+  border: 1px solid var(--border-light);
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.warning-text {
+  padding: var(--spacing-md);
+  background: #fef3c7;
+  border-radius: var(--radius-sm);
+  border-left: 4px solid #f59e0b;
+  margin-bottom: var(--spacing-md);
+  color: #78350f;
+}
+
+.warning-text code {
+  background: #fef3c7;
+  padding: 2px 6px;
+  border-radius: var(--radius-sm);
+  font-family: 'Courier New', monospace;
+  font-size: var(--font-size-xs);
+  color: #92400e;
+  font-weight: var(--font-weight-semibold);
+}
+
+.action-buttons {
+  margin-top: var(--spacing-md);
+  display: flex;
+  gap: var(--spacing-sm);
+  flex-wrap: wrap;
+}
+
+.invalid-products-list {
+  margin-top: var(--spacing-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.invalid-product-item {
+  background: var(--bg-secondary);
+  padding: var(--spacing-md);
+  border-radius: var(--radius);
+  border-left: 4px solid #ef4444;
+}
+
+.product-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-sm);
+}
+
+.product-id {
+  font-size: var(--font-size-xs);
+  color: var(--text-secondary);
+  font-family: 'Courier New', monospace;
+}
+
+.error-list {
+  list-style: none;
+  padding: 0;
+  margin: var(--spacing-sm) 0;
+}
+
+.error-list li {
+  padding: var(--spacing-xs) var(--spacing-sm);
+  margin: var(--spacing-xs) 0;
+  background: #fee2e2;
+  border-radius: var(--radius-sm);
+  color: #991b1b;
+  font-size: var(--font-size-sm);
+}
+
+.product-raw-data {
+  margin-top: var(--spacing-sm);
+}
+
+.product-raw-data summary {
+  cursor: pointer;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  background: var(--bg-primary);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-xs);
+  color: var(--text-secondary);
+}
+
+.product-raw-data pre {
+  margin-top: var(--spacing-xs);
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.more-items {
+  text-align: center;
+  padding: var(--spacing-sm);
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
+@media (max-width: 768px) {
+  .produtos-diagnostico-page {
+    padding: var(--spacing-md);
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .diagnostico-actions {
+    flex-direction: column;
+  }
+
+  .diagnostico-actions button {
+    width: 100%;
+  }
+}

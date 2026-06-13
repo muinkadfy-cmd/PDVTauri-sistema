@@ -1,0 +1,65 @@
+# Smart Tech PDV — Git hygiene
+# Node / build
+node_modules/
+dist/
+dist-*/
+build/
+coverage/
+.vite/
+.cache/
+
+# Tauri / Rust build
+src-tauri/target/
+target/
+
+# Release artifacts
+release/
+updates/
+*.msi
+*.exe
+*.sig
+latest.json
+*.map
+
+# Logs / QA artifacts
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+playwright-report/
+test-results/
+qa-artifacts/
+tmp/
+temp/
+.tmp/
+*.tmp
+
+# Environment / secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+*.crt
+*.cer
+*.lic
+*.token
+
+# Local database / customer data
+*.db
+*.sqlite
+*.sqlite3
+db/
+backup/
+backups/
+*.backup
+*.bak
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/settings.json
+.idea/
