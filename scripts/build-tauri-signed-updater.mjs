@@ -41,8 +41,23 @@ function collectReleaseEnv() {
 }
 
 const releaseEnv = collectReleaseEnv();
+const updaterEnvNames = new Set([
+  'VITE_DESKTOP_UPDATE_ENDPOINTS',
+  'VITE_DESKTOP_UPDATE_PUBKEY',
+  'TAURI_SIGNING_PRIVATE_KEY',
+  'TAURI_PRIVATE_KEY',
+  'TAURI_SIGNING_PRIVATE_KEY_PATH',
+  'TAURI_SIGNING_PRIVATE_KEY_PASSWORD',
+  'TAURI_PRIVATE_KEY_PASSWORD',
+]);
 
 function getEnv(name) {
+  if (updaterEnvNames.has(name) && Object.prototype.hasOwnProperty.call(releaseEnv, name)) {
+    return String(releaseEnv[name] || '').trim();
+  }
+  if (updaterEnvNames.has(name) && Object.keys(releaseEnv).some((key) => updaterEnvNames.has(key))) {
+    return '';
+  }
   return String(process.env[name] || releaseEnv[name] || '').trim();
 }
 

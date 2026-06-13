@@ -1,6 +1,6 @@
 [package]
 name = "smart-tech-pdv"
-version = "2.0.51"
+version = "2.0.52"
 description = "Smart Tech PDV (Desktop)"
 authors = ["Smart Tech"]
 edition = "2021"

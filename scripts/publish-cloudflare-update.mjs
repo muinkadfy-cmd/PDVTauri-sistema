@@ -34,6 +34,15 @@ function collectEnv() {
 }
 
 const fileEnv = collectEnv();
+const updaterEnvNames = new Set([
+  'VITE_DESKTOP_UPDATE_ENDPOINTS',
+  'VITE_DESKTOP_UPDATE_PUBKEY',
+  'TAURI_SIGNING_PRIVATE_KEY',
+  'TAURI_PRIVATE_KEY',
+  'TAURI_SIGNING_PRIVATE_KEY_PATH',
+  'TAURI_SIGNING_PRIVATE_KEY_PASSWORD',
+  'TAURI_PRIVATE_KEY_PASSWORD',
+]);
 
 function arg(name) { return process.argv.includes(name); }
 function getArg(name, fallback = '') {
@@ -41,14 +50,22 @@ function getArg(name, fallback = '') {
   return i >= 0 && process.argv[i + 1] ? process.argv[i + 1] : fallback;
 }
 function getEnv(name, fallback = '') {
+  if (updaterEnvNames.has(name) && Object.prototype.hasOwnProperty.call(fileEnv, name)) {
+    return String(fileEnv[name] || fallback).trim();
+  }
+  if (updaterEnvNames.has(name) && Object.keys(fileEnv).some((key) => updaterEnvNames.has(key))) {
+    return String(fallback).trim();
+  }
   return String(process.env[name] || fileEnv[name] || fallback).trim();
 }
 function run(cmd, args, allowFail = false) {
   console.log(`\n> ${cmd} ${args.join(' ')}`);
+  const childEnv = { ...process.env };
+  for (const name of updaterEnvNames) delete childEnv[name];
   const res = spawnSync(cmd, args, {
     stdio: 'inherit',
     shell: process.platform === 'win32',
-    env: { ...fileEnv, ...process.env },
+    env: { ...childEnv, ...fileEnv },
   });
   if (!allowFail && res.status !== 0) process.exit(res.status || 1);
   return res.status || 0;

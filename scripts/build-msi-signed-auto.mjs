@@ -49,7 +49,23 @@ function collectEnv() {
 }
 
 const fileEnv = collectEnv();
+const updaterEnvNames = new Set([
+  'VITE_DESKTOP_UPDATE_ENDPOINTS',
+  'VITE_DESKTOP_UPDATE_PUBKEY',
+  'TAURI_SIGNING_PRIVATE_KEY',
+  'TAURI_PRIVATE_KEY',
+  'TAURI_SIGNING_PRIVATE_KEY_PATH',
+  'TAURI_SIGNING_PRIVATE_KEY_PASSWORD',
+  'TAURI_PRIVATE_KEY_PASSWORD',
+]);
+
 function getEnv(name) {
+  if (updaterEnvNames.has(name) && Object.prototype.hasOwnProperty.call(fileEnv, name)) {
+    return String(fileEnv[name] || '').trim();
+  }
+  if (updaterEnvNames.has(name) && Object.keys(fileEnv).some((key) => updaterEnvNames.has(key))) {
+    return '';
+  }
   return String(process.env[name] || fileEnv[name] || '').trim();
 }
 
