@@ -231,7 +231,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
+  background: transparent;
   z-index: var(--z-modal-backdrop);
   display: flex;
   align-items: center;
@@ -489,4 +489,3 @@
   text-transform: uppercase !important;
   letter-spacing: 0.10em !important;
 }
-

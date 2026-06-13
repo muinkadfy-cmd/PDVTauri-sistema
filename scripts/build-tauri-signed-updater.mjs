@@ -154,7 +154,7 @@ const generated = {
       endpoints,
       pubkey,
       windows: {
-        installMode: 'passive',
+        installMode: 'quiet',
       },
     },
   },

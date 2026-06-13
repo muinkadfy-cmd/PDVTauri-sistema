@@ -36,7 +36,7 @@ const Modal = memo(function Modal({ isOpen, onClose, title, children, footer, si
     <div className="modal-overlay" onClick={onClose} role="dialog" aria-modal="true">
       <div className={`modal-content modal-${size}`} onClick={(e) => e.stopPropagation()}>
         <div className="modal-header">
-          <h2>{title}</h2>
+          <h2 className="modal-title">{title}</h2>
           <button type="button" className="modal-close" onClick={onClose} aria-label="Fechar">
             ×
           </button>

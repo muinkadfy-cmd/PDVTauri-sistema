@@ -14,6 +14,7 @@ const STATE_EVENT = 'smarttech:persistence-state-changed';
 const CLOSE_REQUEST_EVENT = 'smarttech:close-backup-request';
 const CLOSE_PROGRESS_EVENT = 'smarttech:close-backup-progress';
 const CLOSE_VISUAL_MIN_MS = 3000;
+const DESKTOP_UPDATE_PENDING_KEY = 'smart-tech:desktop-update-pending';
 
 export type CloseBackupChoice = 'backup' | 'skip' | 'cancel';
 export type CloseBackupProgressStage = 'idle' | 'waiting' | 'saving' | 'checkpoint' | 'updating' | 'closing' | 'error';
@@ -70,6 +71,40 @@ function notifyCloseProgress(stage: CloseBackupProgressStage, message: string, p
 
 function sleep(ms: number): Promise<void> {
   return new Promise((resolve) => window.setTimeout(resolve, ms));
+}
+
+function hasMandatoryDesktopUpdatePending(): boolean {
+  try {
+    const raw = localStorage.getItem(DESKTOP_UPDATE_PENDING_KEY);
+    if (!raw) return false;
+    const parsed = JSON.parse(raw);
+    return Boolean(parsed?.pending);
+  } catch {
+    return false;
+  }
+}
+
+async function notifyUpdateCloseBlocked(): Promise<void> {
+  const message = 'Existe uma atualização obrigatória pendente. Instale a nova versão antes de fechar o Smart Tech PDV.';
+  try {
+    const dialog = await import('@tauri-apps/plugin-dialog');
+    const showMessage = (dialog as any).message as ((message: string, options?: any) => Promise<void>) | undefined;
+    if (typeof showMessage === 'function') {
+      await showMessage(message, {
+        title: 'Atualização obrigatória',
+        kind: 'warning',
+      });
+      return;
+    }
+  } catch {
+    // fallback abaixo
+  }
+
+  try {
+    window.alert(message);
+  } catch {
+    // ignore
+  }
 }
 
 async function waitForCloseVisualMinimum(startedAt: number): Promise<void> {
@@ -267,6 +302,11 @@ export async function registerDesktopPersistenceCloseGuard(): Promise<void> {
       if (allowImmediateClose) return;
 
       event.preventDefault();
+
+      if (hasMandatoryDesktopUpdatePending()) {
+        await notifyUpdateCloseBlocked();
+        return;
+      }
 
       if (closeDrainInProgress || closeRequestInFlight) return;
 

@@ -53,8 +53,10 @@ pub fn run() {
         .plugin(tauri_plugin_fs::init())
         // Abrir links externos (ex: WhatsApp) no navegador padrão
         .plugin(tauri_plugin_shell::init())
-        // Auto-update nativo: NÃO inicializar globalmente sem config fixa.
-        // Os comandos em updater.rs montam o updater em runtime com endpoint/pubkey.
+        // Auto-update nativo: o plugin precisa estar registrado para
+        // app.updater_builder() ter estado interno. Endpoint/pubkey continuam
+        // vindo da config temporária gerada pelos scripts de release.
+        .plugin(tauri_plugin_updater::Builder::new().build())
         // Iniciar já maximizado
         .setup(|app| {
             #[cfg(not(mobile))]

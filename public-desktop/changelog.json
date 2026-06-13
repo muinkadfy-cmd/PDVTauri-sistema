@@ -1,9 +1,23 @@
 {
-  "version": "2.0.54.20260613151514",
-  "build": "2026-06-13T15:15:14.898Z",
-  "commit": "e0aea44",
+  "version": "2.0.56.20260613214505",
+  "build": "2026-06-13T21:45:05.820Z",
+  "commit": "7846889",
   "limit": 80,
   "sections": {
+    "Outros": [
+      {
+        "hash": "7846889",
+        "date": "2026-06-13T12:31:44-03:00",
+        "type": "other",
+        "text": "sistema novo atualizado"
+      },
+      {
+        "hash": "cf4533a",
+        "date": "2026-06-12T23:05:12-03:00",
+        "type": "release",
+        "text": "preparar Smart Tech PDV Tauri desktop"
+      }
+    ],
     "Manutenção": [
       {
         "hash": "e0aea44",
@@ -79,15 +93,7 @@
         "type": "fix",
         "text": "corrigir type-check apos remover supabase desktop"
       }
-    ],
-    "Outros": [
-      {
-        "hash": "cf4533a",
-        "date": "2026-06-12T23:05:12-03:00",
-        "type": "release",
-        "text": "preparar Smart Tech PDV Tauri desktop"
-      }
     ]
   },
-  "generated_at": "2026-06-13T15:15:14.898Z"
+  "generated_at": "2026-06-13T21:45:05.820Z"
 }

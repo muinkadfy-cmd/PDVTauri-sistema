@@ -35,7 +35,7 @@ has('scripts/generate-tauri-latest-json.mjs', 'latest.json');
 has('scripts/publish-cloudflare-update.mjs', 'wrangler');
 has('scripts/publish-cloudflare-update.mjs', 'release:cloudflare:update');
 has('src/lib/desktop/native-updater.ts', 'DESKTOP_UPDATE_PENDING_KEY');
-has('src/components/updates/DesktopUpdateStartupDialog.tsx', 'Nova versão pronta para instalar');
+has('src/components/updates/DesktopUpdateStartupDialog.tsx', 'Atualização obrigatória');
 has('src/lib/persistence-gate.ts', 'Fechando Smart Tech PDV com segurança.');
 has('src/contexts/UpdateContext.tsx', 'desktopUpdatePending');
 has('src/pages/AtualizacoesPage.tsx', 'Cloudflare Pages');

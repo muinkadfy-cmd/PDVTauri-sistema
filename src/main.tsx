@@ -10,6 +10,10 @@ import { initLowEndMode } from '@/lib/low-end-mode';
 import { initDiagnosticsMode } from '@/lib/diagnostics';
 import { getDiagnosticsEnabled } from '@/lib/diagnostics';
 import { AuthProvider } from './contexts/AuthContext';
+import { UpdateProvider } from './contexts/UpdateContext';
+import DesktopUpdateStartupDialog from './components/updates/DesktopUpdateStartupDialog';
+import CloseBackupDialog from './components/layout/CloseBackupDialog';
+import ToastContainer from './components/ui/ToastContainer';
 import { registerSW } from 'virtual:pwa-register';
 import './styles/index.css';
 import { preloadAppLocalData } from '@/lib/preload-app';
@@ -270,12 +274,17 @@ if (rootEl) {
     <StrictMode>
       <ErrorBoundary>
         <AuthProvider>
-          <RouterProvider
-            router={router}
-            future={{
-              v7_startTransition: true
-            }}
-          />
+          <UpdateProvider>
+            <RouterProvider
+              router={router}
+              future={{
+                v7_startTransition: true
+              }}
+            />
+            <DesktopUpdateStartupDialog />
+            <CloseBackupDialog />
+            <ToastContainer />
+          </UpdateProvider>
         </AuthProvider>
       </ErrorBoundary>
     </StrictMode>

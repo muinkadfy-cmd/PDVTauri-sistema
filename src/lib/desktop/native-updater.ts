@@ -112,8 +112,8 @@ export function getDesktopUpdaterConfig(): DesktopUpdaterConfig | null {
   const endpoints = parseList(import.meta.env.VITE_DESKTOP_UPDATE_ENDPOINTS);
   const pubkey = String(import.meta.env.VITE_DESKTOP_UPDATE_PUBKEY || '').trim();
   const target = String(import.meta.env.VITE_DESKTOP_UPDATE_TARGET || '').trim() || undefined;
-  const timeoutRaw = Number(import.meta.env.VITE_DESKTOP_UPDATE_TIMEOUT_MS || 45000);
-  const timeoutMs = Number.isFinite(timeoutRaw) && timeoutRaw > 0 ? timeoutRaw : 45000;
+  const timeoutRaw = Number(import.meta.env.VITE_DESKTOP_UPDATE_TIMEOUT_MS || 180000);
+  const timeoutMs = Number.isFinite(timeoutRaw) && timeoutRaw > 0 ? timeoutRaw : 180000;
 
   if (!endpoints.length || !pubkey) return null;
 

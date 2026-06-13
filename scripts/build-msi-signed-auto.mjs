@@ -280,7 +280,7 @@ if (withUpdater) {
       endpoints: parseEndpoints(getEnv('VITE_DESKTOP_UPDATE_ENDPOINTS')),
       pubkey: updaterPubkey,
       windows: {
-        installMode: 'passive',
+        installMode: 'quiet',
       },
     },
   };

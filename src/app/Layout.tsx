@@ -3,7 +3,6 @@ import { Outlet, useLocation } from 'react-router-dom';
 import Topbar from '@/components/layout/Topbar';
 import Sidebar from '@/components/layout/Sidebar';
 import ClassicStatusBar from '@/components/layout/ClassicStatusBar';
-import CloseBackupDialog from '@/components/layout/CloseBackupDialog';
 import WelcomeAfterLoginBox from '@/components/layout/WelcomeAfterLoginBox';
 import MonthlyLicenseGate from '@/components/license/MonthlyLicenseGate';
 import BottomNav from '@/components/layout/BottomNav';
@@ -11,10 +10,7 @@ import DrawerMenu from '@/components/layout/DrawerMenu';
 import AuthGuard from '@/components/AuthGuard';
 import { CompanyProvider } from '@/contexts/CompanyContext';
 import { useAuth } from '@/contexts/AuthContext';
-import { UpdateProvider } from '@/contexts/UpdateContext';
 import UpdateBanner from '@/components/updates/UpdateBanner';
-import DesktopUpdateStartupDialog from '@/components/updates/DesktopUpdateStartupDialog';
-import ToastContainer from '@/components/ui/ToastContainer';
 import { APP_EVENTS } from '@/lib/app-events';
 import { perfMarkOnce, perfMeasure } from '@/lib/perf';
 import { preloadForPathname } from '@/lib/route-preload';
@@ -266,11 +262,9 @@ function Layout() {
   return (
     <AuthGuard>
         <CompanyProvider>
-          <UpdateProvider>
           <div className="app">
           <Topbar onMenuToggle={toggleDrawer} />
           <UpdateBanner />
-          <DesktopUpdateStartupDialog />
           <WelcomeAfterLoginBox session={session} />
           {/* SyncStatusBar oculto - status já visível no Topbar */}
           <div className="app-container">
@@ -291,10 +285,7 @@ function Layout() {
             {isMobile && <BottomNav onOpenMenu={openDrawer} />}
           </div>
           <ClassicStatusBar />
-          <CloseBackupDialog />
-          <ToastContainer />
         </div>
-          </UpdateProvider>
         </CompanyProvider>
     </AuthGuard>
   );

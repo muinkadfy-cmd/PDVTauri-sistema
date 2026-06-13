@@ -344,37 +344,27 @@ export function UpdateProvider({ children }: { children: React.ReactNode }) {
 
     if (desktopInstallInProgress) return;
     setDesktopInstallInProgress(true);
+    setDesktopUpdateError(null);
     log('apply', 'Instalação de atualização nativa do desktop iniciada com proteção de dados.');
-    showToast('Preparando backup/checkpoint e instalando atualização assinada. Aguarde.', 'info', 8000);
+    showToast('Preparando backup/checkpoint e instalando atualização assinada. Não feche o app.', 'info', 10000);
 
     try {
       await prepareDesktopNativeUpdateInstallation({
         backupBeforeInstall: true,
         checkpointBeforeInstall: true,
       });
-      await withTimeout(installDesktopNativeUpdate(), 35000, 'Timeout ao iniciar instalador nativo do Tauri');
+      await installDesktopNativeUpdate();
       setDesktopUpdatePending(null);
       setDesktopUpdatePendingState(false);
     } catch (error: any) {
-      log('error', `Falha no auto-update desktop: ${error?.message || String(error)}`);
-      const fallbackUrl = desktopNativeUpdate?.downloadUrl || null;
-      if (fallbackUrl) {
-        try {
-          const { openExternalUrlByPlatform } = await import('@/lib/capabilities/external-url-adapter');
-          await openExternalUrlByPlatform(fallbackUrl);
-          log('apply', `Fallback aberto para instalador MSI online: ${fallbackUrl}`);
-          showToast('O updater nativo demorou. Abri o MSI online para instalar manualmente.', 'warning', 9000);
-        } catch (fallbackError: any) {
-          log('error', `Falha ao abrir MSI online: ${fallbackError?.message || String(fallbackError)}`);
-          showToast(fallbackError?.message || error?.message || 'Falha ao instalar atualização do desktop.', 'error', 9000);
-        }
-      } else {
-        showToast(error?.message || 'Falha ao instalar atualização do desktop.', 'error', 8000);
-      }
+      const message = error?.message || String(error) || 'Falha ao instalar atualização do desktop.';
+      setDesktopUpdateError(message);
+      log('error', `Falha no auto-update desktop: ${message}`);
+      showToast(`${message} Tente novamente pela janela de atualização.`, 'error', 10000);
     } finally {
       setDesktopInstallInProgress(false);
     }
-  }, [desktop, desktopAutoUpdateConfigured, desktopInstallInProgress, desktopNativeUpdate?.downloadUrl, log, updateAvailable]);
+  }, [desktop, desktopAutoUpdateConfigured, desktopInstallInProgress, log, updateAvailable]);
 
   const reloadApp = useCallback(async () => {
     if (desktop) {

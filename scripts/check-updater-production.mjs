@@ -33,7 +33,8 @@ for (const token of [
   'desktopNativeUpdate',
   'desktopInstallInProgress',
   'installDesktopUpdateNow',
-  'installDesktopNativeUpdateWithSafety',
+  'prepareDesktopNativeUpdateInstallation',
+  'installDesktopNativeUpdate',
 ]) {
   if (!ctx.includes(token)) {
     console.error(`[updater-production-check] UpdateContext sem token: ${token}`);
@@ -44,9 +45,10 @@ for (const token of [
 const dialog = read('src/components/updates/DesktopUpdateStartupDialog.tsx');
 for (const token of [
   'Atualização assinada disponível',
+  'Atualização obrigatória',
   'Atualizar agora',
   'installDesktopUpdateNow',
-  'backup/checkpoint',
+  'checkpoint no SQLite',
 ]) {
   if (!dialog.includes(token)) {
     console.error(`[updater-production-check] Dialog sem token: ${token}`);
@@ -54,14 +56,18 @@ for (const token of [
   }
 }
 
-const layout = read('src/app/Layout.tsx');
-if (!layout.includes('<DesktopUpdateStartupDialog />')) {
-  console.error('[updater-production-check] Layout sem DesktopUpdateStartupDialog.');
+const main = read('src/main.tsx');
+if (!main.includes('<DesktopUpdateStartupDialog />')) {
+  console.error('[updater-production-check] main.tsx sem DesktopUpdateStartupDialog global.');
+  ok = false;
+}
+if (!main.includes('<CloseBackupDialog />')) {
+  console.error('[updater-production-check] main.tsx sem CloseBackupDialog global.');
   ok = false;
 }
 
 const page = read('src/pages/AtualizacoesPage.tsx');
-for (const token of ['updates-production-grid', 'Backup + checkpoint', 'Baixar e instalar com backup']) {
+for (const token of ['updates-production-grid', 'Faça backup antes de atualizar', 'Instalar com backup']) {
   if (!page.includes(token)) {
     console.error(`[updater-production-check] AtualizacoesPage sem token: ${token}`);
     ok = false;

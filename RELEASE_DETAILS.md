@@ -1,12 +1,12 @@
-# Smart Tech PDV 2.0.53
+# Smart Tech PDV 2.0.55
 
-- **Versão:** 2.0.53
-- **Tag:** v2.0.53
-- **Data:** 2026-06-13T15:00:42.105Z
-- **Commit:** e0aea44
+- **Versão:** 2.0.55
+- **Tag:** v2.0.55
+- **Data:** 2026-06-13T15:35:09.146Z
+- **Commit:** 7846889
 - **Repositório:** https://github.com/muinkadfy-cmd/PDVTauri-sistema.git
-- **MSI:** Smart Tech PDV_2.0.52_x64_en-US.msi
-- **SHA256:** `2dab5f7cc5ccd10122ee9f2eff5600169e23ed98ef5cac1721338b74881f51b6`
+- **MSI:** Smart Tech PDV_2.0.55_x64_en-US.msi
+- **SHA256:** `e00914f9bea7d09a8ce4991c580c2cae077b885f32503e544ece5030ee282157`
 
 ## Detalhes da versão
 - Release automático gerado pelo fluxo admin do Smart Tech PDV.

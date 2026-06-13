@@ -1,0 +1,184 @@
+/* P43: camada final para modais compactos e instantaneos */
+
+.modal-overlay,
+[data-theme="dark"] .modal-overlay,
+html[data-perf="1"] .modal-overlay,
+.modal-backdrop,
+[data-theme="dark"] .modal-backdrop,
+.form-overlay,
+.bc-overlay,
+.store-selector-overlay {
+  background: transparent !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  animation: none !important;
+  transition: none !important;
+}
+
+.modal-content,
+.modal-card,
+html[data-perf="1"] .modal-content,
+html[data-perf="1"] .modal-card {
+  width: min(600px, calc(100vw - 48px)) !important;
+  max-width: calc(100vw - 48px) !important;
+  max-height: min(82vh, 660px) !important;
+  padding: 0 !important;
+  border-radius: 8px !important;
+  overflow: hidden !important;
+  animation: none !important;
+  transition: none !important;
+  transform: none !important;
+}
+
+.modal-content.modal-sm {
+  width: min(460px, calc(100vw - 48px)) !important;
+}
+
+.modal-content.modal-md {
+  width: min(600px, calc(100vw - 48px)) !important;
+}
+
+.modal-content.modal-lg {
+  width: min(860px, calc(100vw - 48px)) !important;
+}
+
+.modal-content::before,
+.modal-card::before {
+  display: none !important;
+}
+
+.modal-header {
+  min-height: 52px !important;
+  padding: 12px 16px !important;
+  margin: 0 !important;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.22) !important;
+}
+
+.modal-title {
+  margin: 0 !important;
+  font-size: 18px !important;
+  line-height: 1.2 !important;
+  letter-spacing: 0 !important;
+}
+
+.modal-close {
+  width: 32px !important;
+  height: 32px !important;
+  min-width: 32px !important;
+  padding: 0 !important;
+  border-radius: 4px !important;
+  transition: none !important;
+}
+
+.modal-body {
+  padding: 14px 16px !important;
+  overflow: auto !important;
+}
+
+.modal-footer {
+  padding: 12px 16px !important;
+  gap: 12px !important;
+  border-top: 1px solid rgba(148, 163, 184, 0.18) !important;
+}
+
+.modal-footer .btn,
+.modal-footer button,
+.modal-body button {
+  min-height: 38px !important;
+  transition: none !important;
+}
+
+.modal-body .standard-form,
+.modal-body form {
+  display: grid !important;
+  gap: 12px !important;
+}
+
+.modal-body .form-grid {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 12px 14px !important;
+  width: 100% !important;
+}
+
+.modal-body .form-group,
+.modal-body .form-field {
+  min-width: 0 !important;
+}
+
+.modal-body input,
+.modal-body select,
+.modal-body textarea,
+.modal-body .form-input,
+.modal-body .form-select,
+.modal-body .form-textarea {
+  min-height: 38px !important;
+  width: 100% !important;
+  transition: none !important;
+}
+
+.modal-body textarea,
+.modal-body .form-textarea {
+  min-height: 72px !important;
+}
+
+.bc-modal {
+  animation: none !important;
+  transition: none !important;
+}
+
+.store-selector-modal,
+.bc-modal {
+  animation: none !important;
+  transition: none !important;
+  transform: none !important;
+}
+
+@media (max-width: 640px) {
+  .modal-overlay,
+  [data-theme="dark"] .modal-overlay,
+  .form-overlay,
+  .bc-overlay,
+  .store-selector-overlay {
+    align-items: center !important;
+    padding: 10px !important;
+  }
+
+  .modal-content,
+  .modal-card,
+  .modal-content.modal-sm,
+  .modal-content.modal-md,
+  .modal-content.modal-lg {
+    width: 100% !important;
+    max-width: 100% !important;
+    max-height: calc(100vh - 20px) !important;
+  }
+
+  .modal-header {
+    min-height: 48px !important;
+    padding: 10px 12px !important;
+  }
+
+  .modal-title {
+    font-size: 17px !important;
+  }
+
+  .modal-body {
+    padding: 12px !important;
+  }
+
+  .modal-footer {
+    padding: 10px 12px !important;
+    flex-direction: column-reverse !important;
+  }
+
+  .modal-footer .btn,
+  .modal-footer button {
+    width: 100% !important;
+    justify-content: center !important;
+  }
+
+  .modal-body .form-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
