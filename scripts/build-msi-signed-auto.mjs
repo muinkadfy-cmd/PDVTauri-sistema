@@ -57,6 +57,24 @@ function getSigningPassword() {
   return getEnv('TAURI_SIGNING_PRIVATE_KEY_PASSWORD') || getEnv('TAURI_PRIVATE_KEY_PASSWORD');
 }
 
+function getCompanionPublicKey() {
+  const keyPath = getEnv('TAURI_SIGNING_PRIVATE_KEY_PATH');
+  if (!keyPath) return '';
+  const publicKeyPath = `${keyPath}.pub`;
+  if (!fs.existsSync(publicKeyPath)) return '';
+  return readText(publicKeyPath).trim();
+}
+
+function getUpdaterPubkey() {
+  const configured = getEnv('VITE_DESKTOP_UPDATE_PUBKEY');
+  const companion = getCompanionPublicKey();
+  if (!companion) return configured;
+  if (configured && configured !== companion) {
+    console.warn('⚠️ VITE_DESKTOP_UPDATE_PUBKEY diferente do arquivo .key.pub; usando .updater-secrets como fonte única.');
+  }
+  return companion;
+}
+
 function getSigningEnv() {
   const inlineKey = getEnv('TAURI_SIGNING_PRIVATE_KEY') || getEnv('TAURI_PRIVATE_KEY');
   const keyPath = getEnv('TAURI_SIGNING_PRIVATE_KEY_PATH');
@@ -109,6 +127,7 @@ function run(cmd, args, env = {}) {
     'TAURI_SIGNING_PRIVATE_KEY_PATH',
     'TAURI_SIGNING_PRIVATE_KEY_PASSWORD',
     'TAURI_PRIVATE_KEY_PASSWORD',
+    'VITE_DESKTOP_UPDATE_PUBKEY',
   ]) {
     delete childEnv[name];
   }
@@ -193,9 +212,10 @@ if (signCommand && !signCommand.includes('%1')) {
 }
 
 if (withUpdater) {
+  const updaterPubkey = getUpdaterPubkey();
   const missing = [];
   if (!getEnv('VITE_DESKTOP_UPDATE_ENDPOINTS')) missing.push('VITE_DESKTOP_UPDATE_ENDPOINTS');
-  if (!getEnv('VITE_DESKTOP_UPDATE_PUBKEY')) missing.push('VITE_DESKTOP_UPDATE_PUBKEY');
+  if (!updaterPubkey) missing.push('VITE_DESKTOP_UPDATE_PUBKEY');
   if (!getEnv('TAURI_SIGNING_PRIVATE_KEY') && !getEnv('TAURI_SIGNING_PRIVATE_KEY_PATH') && !getEnv('TAURI_PRIVATE_KEY')) {
     missing.push('TAURI_SIGNING_PRIVATE_KEY ou TAURI_SIGNING_PRIVATE_KEY_PATH');
   }
@@ -224,11 +244,12 @@ config.bundle = {
 };
 
 if (withUpdater) {
+  const updaterPubkey = getUpdaterPubkey();
   config.plugins = {
     ...(config.plugins || {}),
     updater: {
       endpoints: parseEndpoints(getEnv('VITE_DESKTOP_UPDATE_ENDPOINTS')),
-      pubkey: getEnv('VITE_DESKTOP_UPDATE_PUBKEY'),
+      pubkey: updaterPubkey,
       windows: {
         installMode: 'passive',
       },
@@ -251,6 +272,7 @@ console.log('   Updater artifacts:', withUpdater ? 'sim' : 'não');
 
 run('tauri', ['build', '--config', generatedPath], {
   ...getSigningEnv(),
+  ...(withUpdater ? { VITE_DESKTOP_UPDATE_PUBKEY: getUpdaterPubkey() } : {}),
 });
 
 const newest = findNewestMsi();

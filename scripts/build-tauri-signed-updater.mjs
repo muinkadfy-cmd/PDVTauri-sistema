@@ -50,6 +50,24 @@ function getSigningPassword() {
   return getEnv('TAURI_SIGNING_PRIVATE_KEY_PASSWORD') || getEnv('TAURI_PRIVATE_KEY_PASSWORD');
 }
 
+function getCompanionPublicKey() {
+  const keyPath = getEnv('TAURI_SIGNING_PRIVATE_KEY_PATH');
+  if (!keyPath) return '';
+  const publicKeyPath = `${keyPath}.pub`;
+  if (!fs.existsSync(publicKeyPath)) return '';
+  return readText(publicKeyPath).trim();
+}
+
+function getUpdaterPubkey() {
+  const configured = getEnv('VITE_DESKTOP_UPDATE_PUBKEY');
+  const companion = getCompanionPublicKey();
+  if (!companion) return configured;
+  if (configured && configured !== companion) {
+    console.warn('⚠️ VITE_DESKTOP_UPDATE_PUBKEY diferente do arquivo .key.pub; usando .updater-secrets como fonte única.');
+  }
+  return companion;
+}
+
 function getSigningEnv() {
   const inlineKey = getEnv('TAURI_SIGNING_PRIVATE_KEY') || getEnv('TAURI_PRIVATE_KEY');
   const keyPath = getEnv('TAURI_SIGNING_PRIVATE_KEY_PATH');
@@ -97,7 +115,7 @@ function parseEndpoints(value) {
 }
 
 const endpoints = parseEndpoints(getEnv('VITE_DESKTOP_UPDATE_ENDPOINTS'));
-const pubkey = getEnv('VITE_DESKTOP_UPDATE_PUBKEY');
+const pubkey = getUpdaterPubkey();
 const privateKey = getEnv('TAURI_SIGNING_PRIVATE_KEY') || getEnv('TAURI_PRIVATE_KEY');
 
 if (!endpoints.length) fail('VITE_DESKTOP_UPDATE_ENDPOINTS não configurado.');
@@ -145,6 +163,7 @@ for (const name of [
   'TAURI_SIGNING_PRIVATE_KEY_PATH',
   'TAURI_SIGNING_PRIVATE_KEY_PASSWORD',
   'TAURI_PRIVATE_KEY_PASSWORD',
+  'VITE_DESKTOP_UPDATE_PUBKEY',
 ]) {
   delete childEnv[name];
 }
@@ -155,6 +174,7 @@ const result = spawnSync('tauri', ['build', '--config', outPath], {
   env: {
     ...childEnv,
     ...getSigningEnv(),
+    VITE_DESKTOP_UPDATE_PUBKEY: pubkey,
   },
 });
 
