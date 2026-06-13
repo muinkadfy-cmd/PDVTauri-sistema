@@ -162,10 +162,12 @@ function parseEndpoints(value) {
 function findNewestMsi() {
   const base = path.join(process.cwd(), 'src-tauri', 'target', 'release', 'bundle', 'msi');
   if (!fs.existsSync(base)) return null;
+  const version = getVersion();
   const files = fs.readdirSync(base).filter((file) => file.toLowerCase().endsWith('.msi'));
   let best = null;
   let bestTime = 0;
   for (const file of files) {
+    if (!file.includes(version)) continue;
     const abs = path.join(base, file);
     const stat = fs.statSync(abs);
     if (stat.mtimeMs > bestTime) {
@@ -174,6 +176,17 @@ function findNewestMsi() {
     }
   }
   return best;
+}
+
+function cleanMsiBundleDir() {
+  const base = path.join(process.cwd(), 'src-tauri', 'target', 'release', 'bundle', 'msi');
+  if (!fs.existsSync(base)) return;
+  for (const file of fs.readdirSync(base)) {
+    const lower = file.toLowerCase();
+    if (lower.endsWith('.msi') || lower.endsWith('.sig')) {
+      fs.rmSync(path.join(base, file), { force: true });
+    }
+  }
 }
 
 function sha256File(filePath) {
@@ -285,6 +298,8 @@ console.log('\n✅ Config de build gerada:', path.relative(process.cwd(), genera
 console.log('   MSI code signing:', signCommand ? 'signCommand' : certificateThumbprint ? 'certificateThumbprint' : 'desativado para teste');
 console.log('   Timestamp:', timestampUrl);
 console.log('   Updater artifacts:', withUpdater ? 'sim' : 'não');
+
+cleanMsiBundleDir();
 
 run('tauri', ['build', '--config', generatedPath], {
   ...getSigningEnv(),

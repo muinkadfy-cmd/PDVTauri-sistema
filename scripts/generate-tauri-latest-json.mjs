@@ -43,16 +43,18 @@ function getPackageVersion() {
   }
 }
 
-function findNewestByExt(exts) {
+function findNewestByExt(exts, version = '') {
   const roots = [
     path.join('src-tauri', 'target', 'release', 'bundle', 'msi'),
     path.join('release', getPackageVersion()),
   ];
   const files = [];
+  const versionNeedle = safeName(version || getPackageVersion());
   for (const root of roots) {
     if (!fs.existsSync(root)) continue;
     for (const file of fs.readdirSync(root)) {
       const lower = file.toLowerCase();
+      if (versionNeedle && !file.includes(versionNeedle)) continue;
       if (exts.some((ext) => lower.endsWith(ext))) {
         const abs = path.join(root, file);
         files.push({ abs, mtime: fs.statSync(abs).mtimeMs });
@@ -94,8 +96,8 @@ const downloadsDir = path.join(outDir, 'downloads');
 
 fs.mkdirSync(downloadsDir, { recursive: true });
 
-const msi = findNewestByExt(['.msi']);
-const sig = findNewestByExt(['.sig']);
+const msi = findNewestByExt(['.msi'], version);
+const sig = findNewestByExt(['.sig'], version);
 
 let platforms = {};
 let msiPublicName = '';
@@ -104,6 +106,7 @@ if (!msi || !sig) {
   if (!args.allowTestFeed) {
     fail('MSI ou .sig não encontrados para gerar feed real.', [
       'Rode primeiro: npm run release:msi:signed-updater:auto -- --allow-unsigned',
+      `A versão do MSI e do .sig precisa bater com package.json (${version}).`,
       'A assinatura do updater precisa gerar arquivo .sig.',
     ]);
   }

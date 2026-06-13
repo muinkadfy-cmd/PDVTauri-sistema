@@ -8,7 +8,7 @@ import { BUILD_BASE_VERSION, BUILD_COMMIT, BUILD_DATE, BUILD_ID, BUILD_VERSION }
 import { appendUpdateLog, getUpdateLogs, type UpdateLogEntry } from '@/lib/updateLog';
 import { isBrowserOnlineSafe } from '@/lib/capabilities/runtime-remote-adapter';
 import { isDesktopApp } from '@/lib/platform';
-import { checkDesktopNativeUpdate, fetchDesktopLatestJsonUpdate, isDesktopAutoUpdateConfigured, installDesktopNativeUpdateWithSafety, setDesktopUpdatePending, isDesktopUpdatePending, type DesktopNativeUpdateInfo } from '@/lib/desktop/native-updater';
+import { checkDesktopNativeUpdate, fetchDesktopLatestJsonUpdate, isDesktopAutoUpdateConfigured, installDesktopNativeUpdate, prepareDesktopNativeUpdateInstallation, setDesktopUpdatePending, isDesktopUpdatePending, type DesktopNativeUpdateInfo } from '@/lib/desktop/native-updater';
 
 type UpdateState = {
   manifest: UpdateManifest | null;
@@ -134,6 +134,16 @@ function buildDesktopManifest(nativeUpdate: Awaited<ReturnType<typeof checkDeskt
   };
 }
 
+function withTimeout<T>(promise: Promise<T>, timeoutMs: number, label: string): Promise<T> {
+  let timeoutId: number | undefined;
+  const timeout = new Promise<never>((_, reject) => {
+    timeoutId = window.setTimeout(() => reject(new Error(label)), timeoutMs);
+  });
+  return Promise.race([promise, timeout]).finally(() => {
+    if (timeoutId) window.clearTimeout(timeoutId);
+  });
+}
+
 export function UpdateProvider({ children }: { children: React.ReactNode }) {
   const desktop = isDesktopApp();
   const desktopAutoUpdateConfigured = isDesktopAutoUpdateConfigured();
@@ -191,20 +201,23 @@ export function UpdateProvider({ children }: { children: React.ReactNode }) {
         const latest = await fetchDesktopLatestJsonUpdate();
         if (latest?.available) {
           log('check', `latest.json online: ${latest.version} disponível para ${latest.currentVersion}.`);
-          try {
-            const nativeUpdate = await checkDesktopNativeUpdate();
-            if (nativeUpdate?.available) return nativeUpdate;
-            log('check', `Tauri não confirmou update, mas latest.json indica ${latest.version}.`);
-          } catch (nativeError: any) {
-            const message = nativeError?.message || String(nativeError);
-            setDesktopUpdateError(message);
-            log('error', `Tauri falhou, usando latest.json como diagnóstico: ${message}`);
-            return { ...latest, error: message };
-          }
+          void withTimeout(checkDesktopNativeUpdate(), 6000, 'Timeout no check nativo do Tauri')
+            .then((nativeUpdate) => {
+              if (nativeUpdate?.available) {
+                log('check', `Tauri confirmou update nativo ${nativeUpdate.version || latest.version}.`);
+              } else {
+                log('check', `Tauri não confirmou update em segundo plano, mas latest.json indica ${latest.version}.`);
+              }
+            })
+            .catch((nativeError: any) => {
+              const message = nativeError?.message || String(nativeError);
+              setDesktopUpdateError(message);
+              log('error', `Tauri não respondeu ao check nativo; latest.json mantido como fonte: ${message}`);
+            });
           return latest;
         }
 
-        const nativeUpdate = await checkDesktopNativeUpdate();
+        const nativeUpdate = await withTimeout(checkDesktopNativeUpdate(), 12000, 'Timeout no check nativo do Tauri');
         if (nativeUpdate?.available) return nativeUpdate;
 
         log('check', `latest.json online sem update: servidor=${latest?.version || 'sem versão'} instalado=${BUILD_BASE_VERSION || BUILD_VERSION}.`);
@@ -335,19 +348,33 @@ export function UpdateProvider({ children }: { children: React.ReactNode }) {
     showToast('Preparando backup/checkpoint e instalando atualização assinada. Aguarde.', 'info', 8000);
 
     try {
-      await installDesktopNativeUpdateWithSafety({
+      await prepareDesktopNativeUpdateInstallation({
         backupBeforeInstall: true,
         checkpointBeforeInstall: true,
       });
+      await withTimeout(installDesktopNativeUpdate(), 35000, 'Timeout ao iniciar instalador nativo do Tauri');
       setDesktopUpdatePending(null);
       setDesktopUpdatePendingState(false);
     } catch (error: any) {
       log('error', `Falha no auto-update desktop: ${error?.message || String(error)}`);
-      showToast(error?.message || 'Falha ao instalar atualização do desktop.', 'error', 8000);
+      const fallbackUrl = desktopNativeUpdate?.downloadUrl || null;
+      if (fallbackUrl) {
+        try {
+          const { openExternalUrlByPlatform } = await import('@/lib/capabilities/external-url-adapter');
+          await openExternalUrlByPlatform(fallbackUrl);
+          log('apply', `Fallback aberto para instalador MSI online: ${fallbackUrl}`);
+          showToast('O updater nativo demorou. Abri o MSI online para instalar manualmente.', 'warning', 9000);
+        } catch (fallbackError: any) {
+          log('error', `Falha ao abrir MSI online: ${fallbackError?.message || String(fallbackError)}`);
+          showToast(fallbackError?.message || error?.message || 'Falha ao instalar atualização do desktop.', 'error', 9000);
+        }
+      } else {
+        showToast(error?.message || 'Falha ao instalar atualização do desktop.', 'error', 8000);
+      }
     } finally {
       setDesktopInstallInProgress(false);
     }
-  }, [desktop, desktopAutoUpdateConfigured, desktopInstallInProgress, log, updateAvailable]);
+  }, [desktop, desktopAutoUpdateConfigured, desktopInstallInProgress, desktopNativeUpdate?.downloadUrl, log, updateAvailable]);
 
   const reloadApp = useCallback(async () => {
     if (desktop) {
