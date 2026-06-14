@@ -268,6 +268,7 @@ function BackupPage() {
     }
     if (!backupPreview) return;
 
+    showToast('Será criado um backup automático de resgate antes de restaurar. Nenhum dado será apagado sem tentativa de cópia de segurança.', 'info', 7000);
     setLoading(true);
     const result = await restoreBackup(backupPreview, true);
     let attachmentWarnings: string[] = [];
@@ -297,7 +298,7 @@ function BackupPage() {
       if (combinedWarnings.length) {
         showToast(`Backup restaurado com alertas: ${combinedWarnings[0]}`, 'warning', 8500);
       } else {
-        showToast('Backup restaurado com sucesso! Se houver anexos locais, confira a galeria e faça um novo backup local em seguida.', 'success', 7000);
+        showToast('Restauração concluída. Feche e abra o sistema para validar todos os dados antes de vender.', 'success', 8000);
       }
       resetRestoreState();
       setTimeout(() => {

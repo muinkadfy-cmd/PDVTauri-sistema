@@ -898,6 +898,26 @@ function OrdensPage() {
   };
 
 
+  const isOrdemFormDirty = mostrarForm && (
+    Boolean(formData.clienteId) ||
+    Boolean(formData.clienteTelefone.trim()) ||
+    Boolean(formData.equipamento.trim()) ||
+    Boolean(formData.marca.trim()) ||
+    Boolean(formData.modelo.trim()) ||
+    Boolean(formData.cor.trim()) ||
+    Boolean(formData.defeito.trim()) ||
+    formData.defeitos_selecionados.length > 0 ||
+    Boolean(formData.defeito_descricao.trim()) ||
+    Boolean(formData.situacao.trim()) ||
+    Boolean(formData.observacoes.trim()) ||
+    formData.acessorios.length > 0 ||
+    Boolean(formData.valorServico) ||
+    Boolean(formData.valorPecas) ||
+    Boolean(formData.senhaCliente.trim()) ||
+    Boolean(formData.senhaPadrao.trim()) ||
+    Boolean(formData.laudoTecnico.trim())
+  );
+
   const readOnly = isReadOnlyMode();
   
   const session = getCurrentSession();
@@ -939,8 +959,11 @@ function OrdensPage() {
         onClose={limparForm}
         title={ordemEditando ? 'Editar Ordem de Serviço' : 'Nova Ordem de Serviço'}
         size="lg"
+        isDirty={isOrdemFormDirty}
+        closeConfirmMessage="A OS tem dados não salvos. Deseja sair mesmo assim?"
         footer={(
           <>
+            <span className="form-shortcut-hint">Ctrl+Enter salva · Ctrl+F busca</span>
             <button type="button" className="btn-secondary" onClick={limparForm}>
               Cancelar
             </button>
@@ -956,23 +979,34 @@ function OrdensPage() {
           </>
         )}
       >
-        <form id="os-form" onSubmit={handleSubmit} className="standard-form">
+        <form id="os-form" onSubmit={handleSubmit} className="standard-form" autoComplete="off">
+          <div className="form-validation-hint">Corrija os campos destacados antes de salvar.</div>
           <div className="form-grid">
             <FormField label="Cliente" required fullWidth>
               <ClientAutocomplete
                 clientes={clientes}
                 value={formData.clienteId}
                 onChange={(clienteId) => setFormData({ ...formData, clienteId })}
+                onSelectCliente={(cliente) => {
+                  setFormData((prev) => ({
+                    ...prev,
+                    clienteId: cliente.id,
+                    clienteTelefone: prev.clienteTelefone || cliente.telefone || '',
+                  }));
+                  if (cliente.telefone) showToast('Telefone do cliente preenchido automaticamente.', 'info');
+                }}
                 onNewClient={!ordemEditando ? () => setMostrarFormCliente(true) : undefined}
                 onQuickCreate={!ordemEditando ? handleCriarClienteRapido : undefined}
                 disabled={!!ordemEditando}
                 required
                 placeholder="Digite o nome do cliente..."
+                autoFocus
               />
             </FormField>
             <FormField label="Celular do Cliente" fullWidth>
               <input
                 type="tel"
+                autoComplete="tel"
                 value={formData.clienteTelefone}
                 onChange={(e) => {
                   if (readOnly) return;
@@ -1572,14 +1606,33 @@ function OrdensPage() {
                         if (readOnly) return;
                         setTermosEditaveis(e.target.value);
                       }}
-                      rows={6}
+                      rows={4}
                       className="form-textarea"
                       placeholder="Digite os termos de garantia..."
                       readOnly={readOnly}
-                      style={{ fontSize: 'var(--font-size-sm)' }}
+                      style={{ fontSize: 'var(--font-size-sm)', lineHeight: 1.35, resize: 'vertical' }}
                     />
                     {!readOnly && (
                       <div style={{ display: 'flex', gap: '8px', justifyContent: 'flex-end', flexWrap: 'wrap' }}>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setFormData({ ...formData, warranty_terms_enabled: true });
+                            setTermosEditaveis(warrantyDefaults.warranty_terms || '');
+                          }}
+                          style={{
+                            background: 'var(--primary)',
+                            border: '1px solid var(--primary)',
+                            padding: '6px 10px',
+                            borderRadius: 'var(--radius)',
+                            fontSize: 'var(--font-size-xs)',
+                            color: 'white',
+                            cursor: 'pointer',
+                            fontWeight: 600
+                          }}
+                        >
+                          Usar padrão
+                        </button>
                         <button
                           type="button"
                           onClick={() => {

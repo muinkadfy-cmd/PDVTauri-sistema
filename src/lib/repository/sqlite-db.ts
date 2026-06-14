@@ -211,7 +211,7 @@ export async function getSqliteDbForStore(storeId: string): Promise<SqlDatabase>
   const { fileName: file, resolvedPath, pickedFrom, dbPath } = resolvedMeta;
 
   if (import.meta.env.DEV) {
-    logger.log?.(`[SQLite] Abrindo ${file} via ${pickedFrom}: ${resolvedPath}`);
+    logger.debugOnce?.(`sqlite-open:${file}:${pickedFrom}`, `[SQLite] Abrindo ${file} via ${pickedFrom}: ${resolvedPath}`);
   }
 
   if (dbByKey.has(dbPath)) {
@@ -245,7 +245,7 @@ export async function closeDatabasesForStore(storeId: string): Promise<void> {
     dbResolutionByKey.delete(k);
   }
 
-  logger.log?.(`[SQLite] fechou conexões da loja ${storeId} (${keys.length})`);
+  logger.debugOnce?.(`sqlite-close:${storeId}`, `[SQLite] fechou conexões da loja ${storeId} (${keys.length})`);
 }
 
 // cleanup ao trocar loja

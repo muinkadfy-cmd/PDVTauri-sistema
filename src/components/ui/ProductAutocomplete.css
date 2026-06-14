@@ -1,0 +1,116 @@
+.product-autocomplete {
+  position: relative;
+  width: 100%;
+  min-width: 0;
+}
+
+.product-autocomplete-dropdown {
+  position: absolute;
+  z-index: 140;
+  left: 0;
+  right: auto;
+  top: calc(100% + 5px);
+  width: clamp(300px, 36vw, 520px) !important;
+  min-width: min(300px, calc(100vw - 36px));
+  max-width: min(520px, calc(100vw - 36px));
+  max-height: 224px;
+  overflow: auto;
+  border: 1px solid var(--border, #d8dee9);
+  border-radius: 8px;
+  background: var(--surface, #fff);
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.20);
+  padding: 4px;
+}
+
+.product-autocomplete-option {
+  width: 100%;
+  border: 0;
+  background: transparent;
+  border-radius: 6px;
+  padding: 7px 8px;
+  text-align: left;
+  cursor: pointer;
+  display: block;
+  color: inherit;
+  min-width: 0;
+  word-break: keep-all;
+  overflow-wrap: normal;
+}
+
+.product-autocomplete-option:hover,
+.product-autocomplete-option.selected {
+  background: var(--surface-hover, rgba(59, 130, 246, 0.10));
+}
+
+.product-autocomplete-main {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  min-width: 0;
+  font-size: 0.86rem;
+  line-height: 1.12;
+  white-space: nowrap;
+}
+
+.product-autocomplete-title {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  word-break: keep-all;
+  overflow-wrap: normal;
+}
+
+.product-autocomplete-price {
+  flex: 0 0 auto;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.product-autocomplete-meta,
+.product-autocomplete-empty {
+  display: block;
+  min-width: 0;
+  margin-top: 3px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--muted-foreground, #64748b);
+  font-size: 0.72rem;
+  line-height: 1.15;
+}
+
+.product-autocomplete-empty {
+  padding: 10px;
+  white-space: normal;
+}
+
+.product-autocomplete-option.stock-empty {
+  opacity: 0.72;
+}
+
+.product-autocomplete-option.stock-empty .product-autocomplete-meta {
+  color: #b45309;
+}
+
+@media (max-width: 720px) {
+  .product-autocomplete-dropdown {
+    width: min(360px, calc(100vw - 32px)) !important;
+    max-width: calc(100vw - 32px);
+  }
+}
+
+@media (max-width: 480px) {
+  .product-autocomplete-dropdown {
+    position: fixed;
+    left: 12px;
+    right: 12px;
+    top: auto;
+    bottom: 14px;
+    width: auto !important;
+    max-width: none;
+    max-height: 45vh;
+  }
+}

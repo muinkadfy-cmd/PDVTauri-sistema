@@ -671,6 +671,9 @@ function VendaUsadosPage() {
                 className="usados-input"
                 value={avulsoForm.modelo}
                 onChange={(e) => setAvulsoForm((p) => ({ ...p, modelo: e.target.value }))}
+                required
+                autoComplete="off"
+                data-modal-autofocus="true"
                 placeholder="Ex: iPhone 13"
               />
 
@@ -681,6 +684,7 @@ function VendaUsadosPage() {
                     className="usados-input"
                     value={avulsoForm.cor}
                     onChange={(e) => setAvulsoForm((p) => ({ ...p, cor: e.target.value }))}
+                    autoComplete="off"
                     placeholder="Ex: Branco"
                   />
                 </div>
@@ -691,6 +695,7 @@ function VendaUsadosPage() {
                     className="usados-input"
                     value={avulsoForm.imei}
                     onChange={(e) => setAvulsoForm((p) => ({ ...p, imei: e.target.value }))}
+                    autoComplete="off"
                     placeholder="Opcional"
                   />
                 </div>
@@ -742,6 +747,8 @@ function VendaUsadosPage() {
                 value={buyerForm.nome}
                 onChange={(e) => setBuyerForm((p) => ({ ...p, nome: e.target.value }))}
                 disabled={saving}
+                required
+                autoComplete="name"
               />
               <label className="usados-label">Telefone</label>
               <input
@@ -750,6 +757,7 @@ function VendaUsadosPage() {
                 onChange={(e) => setBuyerForm((p) => ({ ...p, telefone: e.target.value }))}
                 disabled={saving}
                 inputMode="tel"
+                autoComplete="tel"
               />
               <label className="usados-label">CPF/CNPJ</label>
               <input
@@ -758,6 +766,7 @@ function VendaUsadosPage() {
                 onChange={(e) => setBuyerForm((p) => ({ ...p, cpfCnpj: e.target.value }))}
                 disabled={saving}
                 inputMode="numeric"
+                autoComplete="off"
               />
               <label className="usados-label">Endereço</label>
               <input
@@ -765,6 +774,7 @@ function VendaUsadosPage() {
                 value={buyerForm.endereco}
                 onChange={(e) => setBuyerForm((p) => ({ ...p, endereco: e.target.value }))}
                 disabled={saving}
+                autoComplete="street-address"
               />
             </div>
           )}
@@ -781,6 +791,7 @@ function VendaUsadosPage() {
             value={valorVenda}
             onChange={(e) => setValorVenda(e.target.value)}
             disabled={saving}
+            required
             inputMode="decimal"
           />
           <label className="usados-label">Forma de pagamento *</label>

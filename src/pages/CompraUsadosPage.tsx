@@ -602,6 +602,8 @@ function CompraUsadosPage() {
               value={sellerForm.nome}
               onChange={(e) => setSellerForm((p) => ({ ...p, nome: e.target.value }))}
               disabled={saving}
+              required
+              autoComplete="name"
               placeholder="Nome do vendedor"
             />
             <label className="usados-label">Telefone</label>
@@ -611,6 +613,7 @@ function CompraUsadosPage() {
               onChange={(e) => setSellerForm((p) => ({ ...p, telefone: e.target.value }))}
               disabled={saving}
               inputMode="tel"
+              autoComplete="tel"
             />
             <label className="usados-label">CPF/CNPJ</label>
             <input
@@ -619,6 +622,7 @@ function CompraUsadosPage() {
               onChange={(e) => setSellerForm((p) => ({ ...p, cpfCnpj: e.target.value }))}
               disabled={saving}
               inputMode="numeric"
+              autoComplete="off"
             />
             <label className="usados-label">Endereço</label>
             <input
@@ -626,6 +630,7 @@ function CompraUsadosPage() {
               value={sellerForm.endereco}
               onChange={(e) => setSellerForm((p) => ({ ...p, endereco: e.target.value }))}
               disabled={saving}
+              autoComplete="street-address"
             />
           </div>
         </div>
@@ -638,6 +643,9 @@ function CompraUsadosPage() {
             value={usadoForm.titulo}
             onChange={(e) => setUsadoForm((p) => ({ ...p, titulo: e.target.value }))}
             disabled={saving}
+            required
+            data-modal-autofocus="true"
+            autoComplete="off"
             placeholder="Ex: iPhone 11 64GB"
           />
           <label className="usados-label">IMEI</label>
@@ -646,6 +654,7 @@ function CompraUsadosPage() {
             value={usadoForm.imei}
             onChange={(e) => setUsadoForm((p) => ({ ...p, imei: e.target.value }))}
             disabled={saving}
+            autoComplete="off"
             placeholder="Opcional"
           />
           <label className="usados-label">Descrição</label>
@@ -666,6 +675,7 @@ function CompraUsadosPage() {
             value={usadoForm.valorCompra}
             onChange={(e) => setUsadoForm((p) => ({ ...p, valorCompra: e.target.value }))}
             disabled={saving}
+            required
             inputMode="decimal"
           />
           <label className="usados-label">Forma de pagamento *</label>

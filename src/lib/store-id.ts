@@ -230,10 +230,10 @@ export function getStoreId(): { storeId: string | null; source: StoreIdSource } 
 export function getCurrentStoreId(): string | null {
   const { storeId } = getStoreId();
   if (storeId && isValidUUID(storeId)) {
-    if (import.meta.env.DEV) logger.log(`[StoreId] ✅ Store ID válido (UUID): ${storeId}`);
+    logger.debugOnce?.(`store-id-valid:${storeId}`, `[StoreId] ✅ Store ID válido (UUID): ${storeId}`);
     return storeId;
   }
-  if (import.meta.env.DEV) logger.warn(`[StoreId] ⚠️ Store ID inválido/ausente (usando null para Supabase)`);
+  logger.warnOnce?.('store-id-invalid-missing', `[StoreId] ⚠️ Store ID inválido/ausente (usando null para Supabase)`);
   return null;
 }
 

@@ -299,22 +299,36 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: var(--spacing-md);
+  margin-bottom: var(--spacing-sm);
   flex-wrap: wrap;
-  gap: var(--spacing-sm);
+  gap: 8px;
+}
+
+.vendas-form .venda-item-actions {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  flex: 0 0 auto;
+  flex-wrap: nowrap;
+  min-width: 0;
 }
 
 .vendas-form .btn-add-item {
   background: var(--primary);
   color: var(--text-inverse);
   border: none;
-  padding: var(--spacing-xs) var(--spacing-md);
+  padding: 0 12px;
   border-radius: var(--radius);
-  font-size: var(--font-size-sm);
+  font-size: 13px;
   font-weight: var(--font-weight-semibold);
   cursor: pointer;
   transition: background var(--transition-fast);
   min-height: 36px;
+  height: 36px;
+  line-height: 1;
+  white-space: nowrap;
+  flex: 0 0 auto;
 }
 
 .vendas-form .btn-add-item:hover {
@@ -337,12 +351,43 @@
 
 .vendas-form .item-row {
   display: grid;
-  grid-template-columns: 2fr 80px 100px 100px 1fr 40px;
-  gap: var(--spacing-sm);
+  grid-template-columns: minmax(0, 1fr) 66px 86px minmax(84px, auto) 36px;
+  gap: 8px;
   align-items: center;
-  padding: var(--spacing-sm);
+  padding: 8px;
+  width: 100%;
+  box-sizing: border-box;
   background: var(--bg-secondary);
   border-radius: var(--radius);
+  overflow: visible;
+}
+
+.vendas-form .item-row > * {
+  min-width: 0;
+}
+
+.vendas-form .item-wrap,
+.vendas-form .itens-list,
+.vendas-form .item-produto {
+  overflow: visible;
+  min-width: 0;
+}
+
+.vendas-form .item-produto .product-autocomplete {
+  min-width: 0;
+}
+
+.vendas-form .item-produto .product-autocomplete-dropdown {
+  width: clamp(280px, 40vw, 520px) !important;
+  max-width: min(520px, calc(100vw - 48px));
+}
+
+.vendas-form .item-produto .form-input {
+  min-width: 0;
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .vendas-form .item-produto select {
@@ -361,25 +406,96 @@
   font-weight: var(--font-weight-semibold);
   color: var(--text-primary);
   text-align: right;
+  white-space: nowrap;
+  justify-self: end;
+  min-width: 0;
 }
 
 .vendas-form .btn-remove-item {
   background: #e74c3c;
   color: white;
   border: none;
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  font-size: 1.5rem;
+  width: 34px;
+  height: 34px;
+  min-width: 34px;
+  border-radius: 8px;
+  font-size: 22px;
+  line-height: 1;
   cursor: pointer;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
+  justify-self: end;
   transition: background var(--transition-fast);
 }
 
 .vendas-form .btn-remove-item:hover {
   background: #c0392b;
+}
+
+
+/* UI VENDA MODAL MICROFIX P4 — modal de venda sem cortes em 1366x768 */
+.vendas-page .modal-content.modal-lg {
+  width: min(660px, calc(100vw - 42px)) !important;
+  max-height: calc(100vh - 56px) !important;
+}
+
+.vendas-page .modal-body {
+  overflow-x: hidden !important;
+  padding-bottom: 0 !important;
+}
+
+.vendas-page .modal-body .vendas-form {
+  padding-bottom: 86px !important;
+}
+
+.vendas-page .modal-footer {
+  flex-wrap: nowrap;
+  min-width: 0;
+}
+
+.vendas-page .modal-footer .btn-primary,
+.vendas-page .modal-footer .btn-secondary {
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
+
+.vendas-page .modal-footer .form-shortcut-hint {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+
+
+@media (max-width: 760px) {
+  .vendas-form .section-header {
+    align-items: flex-start;
+  }
+
+  .vendas-form .venda-item-actions {
+    width: 100%;
+    justify-content: stretch;
+  }
+
+  .vendas-form .venda-item-actions .btn-add-item {
+    flex: 1 1 0;
+    min-width: 0;
+  }
+
+  .vendas-form .item-row {
+    grid-template-columns: minmax(0, 1fr) 62px 78px 34px;
+  }
+
+  .vendas-form .item-produto {
+    grid-column: 1 / -1;
+  }
+
+  .vendas-form .item-subtotal {
+    grid-column: 1 / 4;
+    text-align: right;
+    justify-self: end;
+  }
 }
 
 .vendas-form .resumo-venda {
@@ -1163,5 +1279,24 @@
 
   .vendas-page .st-page-toolbar__left {
     justify-content: flex-start !important;
+  }
+}
+
+
+@media (max-width: 540px) {
+  .vendas-page .modal-content.modal-lg {
+    width: calc(100vw - 20px) !important;
+    max-height: calc(100vh - 20px) !important;
+  }
+
+  .vendas-form .item-row {
+    grid-template-columns: minmax(0, 1fr) 58px 72px 34px;
+    gap: 6px;
+    padding: 7px;
+  }
+
+  .vendas-form .btn-add-item {
+    padding: 0 8px;
+    font-size: 12px;
   }
 }

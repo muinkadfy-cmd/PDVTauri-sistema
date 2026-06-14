@@ -1,4 +1,4 @@
-import { escposPrintRawNative } from '@/lib/capabilities/native-print-adapter';
+import { escposPrintRawNative } from "@/lib/capabilities/native-print-adapter";
 import type { EmpresaInfo, PrintData, PrintMode } from "@/lib/print-template";
 
 export type EscposPreset = "58mm" | "80mm";
@@ -28,7 +28,10 @@ export function uint8ToBase64(data: Uint8Array) {
  * Sends RAW ESC/POS bytes to the Windows spooler via Tauri (silent/kiosk).
  * Requires Rust command: `escpos_print_raw`.
  */
-export async function escposPrintRaw(data: Uint8Array, opts: EscposPrintOptions = {}) {
+export async function escposPrintRaw(
+  data: Uint8Array,
+  opts: EscposPrintOptions = {},
+) {
   const { jobName, printerName, copies = 1 } = opts;
   const dataBase64 = uint8ToBase64(data);
 
@@ -36,7 +39,7 @@ export async function escposPrintRaw(data: Uint8Array, opts: EscposPrintOptions 
     jobName,
     printerName,
     copies,
-    dataBase64
+    dataBase64,
   });
 }
 
@@ -45,7 +48,10 @@ export async function escposPrintRaw(data: Uint8Array, opts: EscposPrintOptions 
 // ------------------------------
 
 function formatCurrency(value: number): string {
-  return new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }).format(value);
+  return new Intl.NumberFormat("pt-BR", {
+    style: "currency",
+    currency: "BRL",
+  }).format(value);
 }
 
 function normalizeText(input: unknown): string {
@@ -53,14 +59,16 @@ function normalizeText(input: unknown): string {
   if (!s) return "";
   // Remove accents to avoid codepage issues across different printers.
   // Keeps output consistent even when printer isn't configured for UTF-8.
-  return s
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .replace(/[“”]/g, '"')
-    .replace(/[‘’]/g, "'")
-    .replace(/[–—]/g, "-")
-    // Remove emojis / non-ASCII to avoid printer garbling
-    .replace(/[^\x20-\x7E]/g, "");
+  return (
+    s
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/[“”]/g, '"')
+      .replace(/[‘’]/g, "'")
+      .replace(/[–—]/g, "-")
+      // Remove emojis / non-ASCII to avoid printer garbling
+      .replace(/[^\x20-\x7E]/g, "")
+  );
 }
 
 function repeat(ch: string, n: number) {
@@ -153,7 +161,12 @@ function addWrapped(dst: number[], text: string, width: number) {
   }
 }
 
-function addKeyValue(dst: number[], key: string, value: unknown, width: number) {
+function addKeyValue(
+  dst: number[],
+  key: string,
+  value: unknown,
+  width: number,
+) {
   const v = normalizeText(value);
   if (!v) return;
   const k = normalizeText(key);
@@ -173,7 +186,6 @@ function addKeyValue(dst: number[], key: string, value: unknown, width: number) 
   }
 }
 
-
 function separatorThin(dst: number[], width: number) {
   addText(dst, repeat("-", width));
   lf(dst, 1);
@@ -184,30 +196,59 @@ function separatorThick(dst: number[], width: number) {
   lf(dst, 1);
 }
 
-function addLeftRight(dst: number[], left: string, right: string, width: number, emph = false) {
+function addLeftRight(
+  dst: number[],
+  left: string,
+  right: string,
+  width: number,
+  emph = false,
+) {
   const l = normalizeText(left);
   const r = normalizeText(right);
   if (!l && !r) return;
 
-  const lineFits = (l.length + 1 + r.length) <= width;
+  const lineFits = l.length + 1 + r.length <= width;
   if (!lineFits) {
-    if (emph) { escBold(dst, true); escDoubleStrike(dst, true); }
-    if (l) { addText(dst, l); lf(dst, 1); }
-    if (emph) { escBold(dst, false); escDoubleStrike(dst, false); }
-    if (r) { addText(dst, r); lf(dst, 1); }
+    if (emph) {
+      escBold(dst, true);
+      escDoubleStrike(dst, true);
+    }
+    if (l) {
+      addText(dst, l);
+      lf(dst, 1);
+    }
+    if (emph) {
+      escBold(dst, false);
+      escDoubleStrike(dst, false);
+    }
+    if (r) {
+      addText(dst, r);
+      lf(dst, 1);
+    }
     return;
   }
 
   const spaces = Math.max(1, width - l.length - r.length);
   const line = l + repeat(" ", spaces) + r;
 
-  if (emph) { escBold(dst, true); escDoubleStrike(dst, true); }
+  if (emph) {
+    escBold(dst, true);
+    escDoubleStrike(dst, true);
+  }
   addText(dst, line);
   lf(dst, 1);
-  if (emph) { escBold(dst, false); escDoubleStrike(dst, false); }
+  if (emph) {
+    escBold(dst, false);
+    escDoubleStrike(dst, false);
+  }
 }
 
-function addKeyValueEmph(dst: number[], key: string, value: unknown, width: number) {
+function addKeyValueEmph(
+  dst: number[],
+  key: string,
+  value: unknown,
+  width: number,
+) {
   const v = normalizeText(value);
   if (!v) return;
 
@@ -229,8 +270,15 @@ function formatPrintableDate(value: unknown): string {
   return normalizeText(raw);
 }
 
-function addSectionText(dst: number[], title: string, value: unknown, width: number) {
-  const raw = String(value ?? "").replace(/\r\n?/g, "\n").trim();
+function addSectionText(
+  dst: number[],
+  title: string,
+  value: unknown,
+  width: number,
+) {
+  const raw = String(value ?? "")
+    .replace(/\r\n?/g, "\n")
+    .trim();
   if (!raw) return;
   escBold(dst, true);
   addText(dst, normalizeText(title));
@@ -305,6 +353,328 @@ function addPatternOrderGrid(dst: number[], rawPattern: string, width: number) {
   }
 }
 
+function escTextSize(
+  dst: number[],
+  widthMultiplier: 0 | 1 = 0,
+  heightMultiplier: 0 | 1 = 0,
+) {
+  // GS ! n: bits 0-3 = altura, bits 4-7 = largura.
+  // 0 = normal, 1 = duplo. Mantemos simples para alta compatibilidade.
+  const n = ((widthMultiplier & 0x0f) << 4) | (heightMultiplier & 0x0f);
+  dst.push(0x1d, 0x21, n);
+}
+
+function addPremiumSectionTitle(dst: number[], title: string, width: number) {
+  escBold(dst, true);
+  escDoubleStrike(dst, true);
+  addWrapped(dst, title, width);
+  escDoubleStrike(dst, false);
+  escBold(dst, false);
+}
+
+function formatPhoneForThermal(value: unknown): string {
+  const raw = normalizeText(value).replace(/\D/g, "");
+  if (!raw) return "";
+  if (raw.length === 11)
+    return `${raw.slice(0, 2)} ${raw.slice(2, 7)}-${raw.slice(7)}`;
+  if (raw.length === 10)
+    return `${raw.slice(0, 2)} ${raw.slice(2, 6)}-${raw.slice(6)}`;
+  return normalizeText(value);
+}
+
+function normalizeEscposSentence(value: unknown): string {
+  return normalizeText(value)
+    .replace(/\s+([,.;:])/g, "$1")
+    .replace(/([,.;:])(?!\s|$)/g, "$1 ")
+    .replace(/\s{2,}/g, " ")
+    .trim();
+}
+
+function formatAddressForThermal(value: unknown): string {
+  return normalizeEscposSentence(value)
+    .replace(/\s+,/g, ",")
+    .replace(/,\s*,+/g, ",")
+    .replace(/\s{2,}/g, " ")
+    .trim();
+}
+
+function addKeyValueAligned(
+  dst: number[],
+  key: string,
+  value: unknown,
+  width: number,
+  labelWidth = 8,
+) {
+  const v = normalizeEscposSentence(value);
+  if (!v) return;
+  const k = normalizeText(key).padEnd(labelWidth, " ").slice(0, labelWidth);
+  const prefix = `${k}: `;
+  const firstWidth = Math.max(8, width - prefix.length);
+  const lines = wrapLine(v, firstWidth);
+  addText(dst, prefix + lines[0]);
+  lf(dst, 1);
+  const indent = repeat(" ", prefix.length);
+  for (const l of lines.slice(1)) {
+    addText(dst, indent + l);
+    lf(dst, 1);
+  }
+}
+
+function splitKnownDefects(value: string): string {
+  let s = ` ${normalizeEscposSentence(value)} `;
+  const known = [
+    "Sem audio",
+    "Bateria viciada",
+    "Tela quebrada",
+    "Troca de conector",
+    "Conector",
+    "Nao liga",
+    "Nao carrega",
+    "Sem imagem",
+    "Sem som",
+    "Outro",
+  ];
+  for (const term of known) {
+    const escaped = term.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    s = s.replace(new RegExp(`\\s+(${escaped})`, "gi"), "\n$1");
+  }
+  return s.trim();
+}
+
+function getPremiumBulletItems(value: unknown): string[] {
+  const raw = normalizeEscposSentence(value);
+  if (!raw) return [];
+  const prepared = splitKnownDefects(
+    raw
+      .replace(/[•●▪]/g, "\n")
+      .replace(/\s*;\s*/g, "\n")
+      .replace(/\s*,\s*/g, "\n")
+      .replace(/\r?\n/g, "\n"),
+  );
+  const items = prepared
+    .split(/\n+/g)
+    .map((item) =>
+      normalizeEscposSentence(item)
+        .replace(/^[-*]\s*/, "")
+        .trim(),
+    )
+    .filter(Boolean);
+  return items.length ? items : [raw];
+}
+
+function addPremiumBulletsEscpos(dst: number[], value: unknown, width: number) {
+  for (const item of getPremiumBulletItems(value)) {
+    addWrapped(dst, `- ${item}`, width);
+  }
+}
+
+const STANDARD_OS_WARRANTY_TERMS =
+  "Garantia conforme prazo informado na OS, sobre servico realizado e pecas substituidas. Nao cobre queda, liquido, mau uso, violacao, dano externo ou novo defeito. Apresente este comprovante.";
+
+function sanitizeWarrantyTerms(value: unknown): string {
+  let s = normalizeEscposSentence(value);
+
+  if (!s) return STANDARD_OS_WARRANTY_TERMS;
+
+  s = s
+    .replace(/^\s*(?:TERMOS?\s+DE\s+GARANTIA\s*[:.-]?\s*)+/i, "")
+    .replace(/^\s*(?:TERMO\s+DE\s+GARANTIA\s*[:.-]?\s*)+/i, "")
+    .replace(/^\s*(?:GARANTIA\s*[:.-]?\s*)+/i, "")
+    .replace(/TERMO\s+DE\s+GARANTIA\s*GARANTIA/gi, "GARANTIA")
+    .replace(/TERMOS\s+DE\s+GARANTIA\s*GARANTIA/gi, "GARANTIA")
+    .replace(/GARANTIA\s*GARANTIA/gi, "GARANTIA")
+    .replace(/GARANTIAGARANTIA/gi, "GARANTIA")
+    .replace(/\[\s*30\s*A\s*90\s*\]\s*DIAS?/gi, "")
+    .replace(/\b30\s*A\s*90\s*DIAS?\b/gi, "")
+    .replace(/\b90\s*DIAS?\b/gi, "")
+    .replace(/\b30\s*DIAS?\b/gi, "")
+    .replace(/DIASCOBRE/gi, "Cobre")
+    .replace(/DIAS\s*COBRE/gi, "Cobre")
+    .replace(/NAOCOBRE/gi, "Nao cobre")
+    .replace(/NAO\s+COBRE/gi, "Nao cobre")
+    .replace(/OUVIOLACAO/gi, "ou violacao")
+    .replace(/OU\s+VIOLACAO/gi, "ou violacao")
+    .replace(/APARELHOAPRESENTAR/gi, "aparelho. Apresentar")
+    .replace(/APARELHO\s+APRESENTAR/gi, "aparelho. Apresentar")
+    .replace(/FUNCIONALNAO/gi, "funcional. Nao")
+    .replace(/FUNCIONAL\s+NAO/gi, "funcional. Nao")
+    .replace(/([.;])\s*/g, "$1 ")
+    .replace(/,\s*/g, ", ")
+    .replace(/\s{2,}/g, " ")
+    .trim();
+
+  const looksBroken =
+    /GARANTIA\s*GARANTIA|DIASCOBRE|OUVIOLACAO|APARELHOAPRESENTAR|FUNCIONALNAO/i.test(s);
+  const isLegacyDefault =
+    /30\s*a\s*90|\[\s*30\s*a\s*90\s*\]|90\s*dias|30\s*dias|defeito funcional|cobre defeito funcional|apresentar comprovante/i.test(s) &&
+    /queda|mau uso|violacao|liquido|agua|tela|aparelho/i.test(s);
+
+  if (looksBroken || isLegacyDefault || /\b(?:30|90)\s*dias?\b/i.test(s) || s.length < 18) {
+    return STANDARD_OS_WARRANTY_TERMS;
+  }
+
+  return s;
+}
+
+function addPremiumBoxTotal(
+  dst: number[],
+  label: string,
+  value: string,
+  width: number,
+) {
+  // Algumas codepages ESC/POS imprimem o caractere vertical | como ñ.
+  // Por isso a caixa usa topo/base com +----+ e a linha do total sem laterais verticais.
+  const innerWidth = Math.max(10, width - 2);
+  const top = `+${repeat("-", innerWidth)}+`;
+  const cleanLabel = normalizeText(label);
+  const cleanValue = normalizeText(value).replace(/^R\$\s*/, "R$ ");
+  addText(dst, top);
+  lf(dst, 1);
+  escBold(dst, true);
+  escDoubleStrike(dst, true);
+  const fits = cleanLabel.length + 1 + cleanValue.length <= width;
+  if (fits) {
+    const spaces = repeat(" ", width - cleanLabel.length - cleanValue.length);
+    addText(dst, `${cleanLabel}${spaces}${cleanValue}`);
+    lf(dst, 1);
+  } else {
+    addWrapped(dst, cleanLabel, width);
+    escAlign(dst, 2);
+    addWrapped(dst, cleanValue, width);
+    escAlign(dst, 0);
+  }
+  escDoubleStrike(dst, false);
+  escBold(dst, false);
+  addText(dst, top);
+  lf(dst, 1);
+}
+
+function buildEscposPremiumServiceOrderReceipt(
+  data: PrintData,
+  empresa: EmpresaInfo,
+  preset: EscposPreset,
+  printMode: PrintMode = "compact",
+): Uint8Array {
+  const width = preset === "58mm" ? 32 : 42;
+  const compact = printMode === "compact";
+  const out: number[] = [];
+
+  out.push(0x1b, 0x40); // ESC @
+  escLineSpacing(out, compact ? 24 : 30);
+  lf(out, 1);
+
+  // Cabeçalho da empresa
+  escAlign(out, 1);
+  escBold(out, true);
+  escDoubleStrike(out, true);
+  addWrapped(out, normalizeText(empresa?.nome) || "SMART TECH", width);
+  escDoubleStrike(out, false);
+  escBold(out, false);
+
+  const tel = formatPhoneForThermal(empresa?.telefone);
+  const cnpj = normalizeText(empresa?.cnpj);
+  const end = formatAddressForThermal(empresa?.endereco);
+  const city = [empresa?.cidade, empresa?.estado]
+    .filter(Boolean)
+    .map(normalizeText)
+    .join(" - ");
+  if (tel) addWrapped(out, `Tel: ${tel}`, width);
+  if (cnpj) addWrapped(out, `CNPJ: ${cnpj}`, width);
+  if (end) addWrapped(out, end, width);
+  if (city) addWrapped(out, city, width);
+  escAlign(out, 0);
+  separatorThin(out, width);
+
+  // Título premium silencioso
+  escAlign(out, 1);
+  escTextSize(out, preset === "80mm" ? 1 : 0, 1);
+  escBold(out, true);
+  addWrapped(out, `O.S.: ${normalizeText(data.numero || "")}`.trim(), width);
+  escTextSize(out, 0, 0);
+  addWrapped(out, "COMPROVANTE DE RECEBIMENTO", width);
+  escBold(out, false);
+  escAlign(out, 0);
+  separatorThin(out, width);
+
+  // Entrada
+  const dt = data.data ? new Date(String(data.data)) : new Date();
+  const dtValid = !Number.isNaN(dt.getTime());
+  const dataStr = dtValid
+    ? dt.toLocaleDateString("pt-BR")
+    : normalizeText(data.data);
+  const horaStr = dtValid
+    ? dt.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" })
+    : normalizeText(data.hora);
+  addKeyValueEmph(out, "ENTRADA", `${dataStr} ${horaStr}`.trim(), width);
+  separatorThin(out, width);
+
+  // Cliente
+  addKeyValueAligned(out, "CLIENTE", data.clienteNome, width, 7);
+  addKeyValueAligned(
+    out,
+    "TEL",
+    formatPhoneForThermal(data.clienteTelefone),
+    width,
+    7,
+  );
+  addKeyValueAligned(out, "CPF/CNPJ", data.cpfCnpj, width, 7);
+  separatorThin(out, width);
+
+  // Equipamento
+  addPremiumSectionTitle(out, "EQUIPAMENTO", width);
+  addKeyValueAligned(out, "EQUIP.", data.equipamento, width);
+  addKeyValueAligned(out, "MARCA", data.marca, width);
+  addKeyValueAligned(out, "MODELO", data.modelo, width);
+  addKeyValueAligned(out, "COR", data.cor, width);
+  addKeyValueAligned(out, "GARANTIA", data.garantia, width);
+  addKeyValueAligned(out, "TECNICO", data.tecnico, width);
+  separatorThin(out, width);
+
+  // Defeitos e reparo
+  if (data.defeito) {
+    addPremiumSectionTitle(out, "DEFEITO RELATADO:", width);
+    addPremiumBulletsEscpos(out, data.defeito, width);
+    separatorThin(out, width);
+  }
+
+  if (data.reparo || data.observacoes) {
+    addPremiumSectionTitle(out, "REPARO/OBS TECNICA:", width);
+    addWrapped(out, normalizeText(data.reparo || data.observacoes), width);
+    separatorThin(out, width);
+  }
+
+  const principal =
+    typeof data.valorBruto === "number"
+      ? data.valorBruto
+      : typeof data.valorTotal === "number"
+        ? data.valorTotal
+        : undefined;
+  if (typeof principal === "number") {
+    addPremiumBoxTotal(out, "TOTAL A PAGAR", formatCurrency(principal), width);
+    separatorThin(out, width);
+  }
+
+  const termos = sanitizeWarrantyTerms(data.termosGarantia || "");
+  if (termos) {
+    addPremiumSectionTitle(out, "TERMOS DE GARANTIA:", width);
+    addWrapped(out, termos, width);
+    separatorThin(out, width);
+  }
+
+  escAlign(out, 1);
+  escBold(out, true);
+  addWrapped(out, "ASSINATURA DO CLIENTE", width);
+  escBold(out, false);
+  addText(out, repeat("_", Math.min(width, preset === "58mm" ? 26 : 36)));
+  lf(out, 2);
+  if (data.clienteNome) addWrapped(out, data.clienteNome, width);
+  escAlign(out, 0);
+  separatorThin(out, width);
+
+  lf(out, compact ? 4 : 8);
+  out.push(0x1d, 0x56, 0x01); // corte parcial
+  return Uint8Array.from(out);
+}
 
 /**
  * Build a thermal receipt (text) from your PrintData.
@@ -317,6 +687,15 @@ export function buildEscposReceiptFromPrintData(
   preset: EscposPreset,
   printMode: PrintMode = "compact",
 ): Uint8Array {
+  if ((data as PrintData).tipo === "ordem-servico") {
+    return buildEscposPremiumServiceOrderReceipt(
+      data,
+      empresa,
+      preset,
+      printMode,
+    );
+  }
+
   const width = preset === "58mm" ? 32 : 48;
   const compact = printMode === "compact";
 
@@ -343,7 +722,10 @@ export function buildEscposReceiptFromPrintData(
   const tel = normalizeText(empresa?.telefone);
   const cnpj = normalizeText(empresa?.cnpj);
   const end = normalizeText(empresa?.endereco);
-  const city = [empresa?.cidade, empresa?.estado].filter(Boolean).map(normalizeText).join(" - ");
+  const city = [empresa?.cidade, empresa?.estado]
+    .filter(Boolean)
+    .map(normalizeText)
+    .join(" - ");
 
   // Linha meta mais "responsiva": Tel + CNPJ na mesma linha quando possível
   if (tel && cnpj) {
@@ -367,11 +749,15 @@ export function buildEscposReceiptFromPrintData(
   escBold(out, true);
 
   const tipoLabel =
-    data.tipo === "ordem-servico" ? "O.S." :
-    data.tipo === "recibo" ? "RECIBO" :
-    data.tipo === "venda" ? "VENDA" :
-    data.tipo === "checklist" ? "CHECKLIST" :
-    "COMPROVANTE";
+    data.tipo === "ordem-servico"
+      ? "O.S."
+      : data.tipo === "recibo"
+        ? "RECIBO"
+        : data.tipo === "venda"
+          ? "VENDA"
+          : data.tipo === "checklist"
+            ? "CHECKLIST"
+            : "COMPROVANTE";
 
   const numero = normalizeText(data.numero || "");
   addWrapped(out, `${tipoLabel}: ${numero}`.trim(), width);
@@ -391,12 +777,17 @@ export function buildEscposReceiptFromPrintData(
   // =========================
   const dt = data.data ? new Date(String(data.data)) : new Date();
   const dtValid = !Number.isNaN(dt.getTime());
-  const dataStr = dtValid ? dt.toLocaleDateString("pt-BR") : normalizeText(data.data);
-  const horaStr = dtValid ? dt.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" }) : normalizeText(data.hora);
+  const dataStr = dtValid
+    ? dt.toLocaleDateString("pt-BR")
+    : normalizeText(data.data);
+  const horaStr = dtValid
+    ? dt.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" })
+    : normalizeText(data.hora);
   const dateTimeStr = `${dataStr} ${horaStr}`.trim();
 
   // OS costuma ser entendido como "ENTRADA" para o cliente
-  if (data.tipo === "ordem-servico") addKeyValueEmph(out, "ENTRADA", dateTimeStr, width);
+  if (data.tipo === "ordem-servico")
+    addKeyValueEmph(out, "ENTRADA", dateTimeStr, width);
   else addKeyValueEmph(out, "DATA", dateTimeStr, width);
 
   separatorThin(out, width);
@@ -416,7 +807,10 @@ export function buildEscposReceiptFromPrintData(
   // =========================
   const isOS = data.tipo === "ordem-servico";
   const isChecklist = data.tipo === "checklist";
-  const isReceipt = data.tipo === "ordem-servico" || data.tipo === "recibo" || data.tipo === "comprovante";
+  const isReceipt =
+    data.tipo === "ordem-servico" ||
+    data.tipo === "recibo" ||
+    data.tipo === "comprovante";
 
   if (!isOS && !isChecklist && data.garantia) {
     addKeyValueEmph(out, "GARANTIA", data.garantia, width);
@@ -434,8 +828,20 @@ export function buildEscposReceiptFromPrintData(
     addKeyValueEmph(out, "GARANTIA", data.garantia, width);
     addKeyValueEmph(out, "TECNICO", data.tecnico, width);
     if (data.situacao) addKeyValue(out, "SITUACAO", data.situacao, width);
-    if (data.dataPrevisao) addKeyValue(out, "PREVISAO", formatPrintableDate(data.dataPrevisao), width);
-    if (data.dataConclusao) addKeyValue(out, "CONCLUSAO", formatPrintableDate(data.dataConclusao), width);
+    if (data.dataPrevisao)
+      addKeyValue(
+        out,
+        "PREVISAO",
+        formatPrintableDate(data.dataPrevisao),
+        width,
+      );
+    if (data.dataConclusao)
+      addKeyValue(
+        out,
+        "CONCLUSAO",
+        formatPrintableDate(data.dataConclusao),
+        width,
+      );
 
     if (data.defeito) {
       separatorThin(out, width);
@@ -459,8 +865,10 @@ export function buildEscposReceiptFromPrintData(
       escBold(out, false);
       lf(out, 1);
 
-      if (data.senhaCliente) addKeyValueEmph(out, "SENHA/PIN", data.senhaCliente, width);
-      if (data.senhaPadrao) addPatternOrderGrid(out, String(data.senhaPadrao), width);
+      if (data.senhaCliente)
+        addKeyValueEmph(out, "SENHA/PIN", data.senhaCliente, width);
+      if (data.senhaPadrao)
+        addPatternOrderGrid(out, String(data.senhaPadrao), width);
     }
 
     if (Array.isArray(data.acessorios) && data.acessorios.length) {
@@ -486,28 +894,47 @@ export function buildEscposReceiptFromPrintData(
   // =========================
   // VALUES
   // =========================
-  const principal =
-    isOS
-      ? (typeof data.valorBruto === "number" ? data.valorBruto : (typeof data.valorTotal === "number" ? data.valorTotal : undefined))
-      : (typeof data.valorLiquido === "number" ? data.valorLiquido : (typeof data.valorTotal === "number" ? data.valorTotal : undefined));
+  const principal = isOS
+    ? typeof data.valorBruto === "number"
+      ? data.valorBruto
+      : typeof data.valorTotal === "number"
+        ? data.valorTotal
+        : undefined
+    : typeof data.valorLiquido === "number"
+      ? data.valorLiquido
+      : typeof data.valorTotal === "number"
+        ? data.valorTotal
+        : undefined;
 
-  const hasDetalhes = !isReceipt && (typeof data.valorServico === "number" || typeof data.valorPecas === "number");
+  const hasDetalhes =
+    !isReceipt &&
+    (typeof data.valorServico === "number" ||
+      typeof data.valorPecas === "number");
   const hasPrincipal = typeof principal === "number";
 
   if (hasPrincipal || hasDetalhes) {
     separatorThick(out, width);
 
     if (!isReceipt) {
-      if (typeof data.valorServico === "number") addKeyValue(out, "SERVICO", formatCurrency(data.valorServico), width);
-      if (typeof data.valorPecas === "number") addKeyValue(out, "PECAS", formatCurrency(data.valorPecas), width);
+      if (typeof data.valorServico === "number")
+        addKeyValue(out, "SERVICO", formatCurrency(data.valorServico), width);
+      if (typeof data.valorPecas === "number")
+        addKeyValue(out, "PECAS", formatCurrency(data.valorPecas), width);
       separatorThin(out, width);
     }
 
     if (hasPrincipal) {
-      addLeftRight(out, isReceipt ? "TOTAL A PAGAR" : "TOTAL", formatCurrency(principal!), width, true);
+      addLeftRight(
+        out,
+        isOS || isReceipt ? "TOTAL A PAGAR" : "TOTAL",
+        formatCurrency(principal!),
+        width,
+        true,
+      );
     }
 
-    if (data.formaPagamento) addKeyValue(out, "PAGAMENTO", data.formaPagamento, width);
+    if (data.formaPagamento)
+      addKeyValue(out, "PAGAMENTO", data.formaPagamento, width);
     if (data.parcelas) addKeyValue(out, "PARCELAS", data.parcelas, width);
 
     separatorThick(out, width);
@@ -550,7 +977,9 @@ export function buildEscposReceiptFromPrintData(
   }
 
   const termosRaw = normalizeText(data.termosGarantia || "");
-  const termos = termosRaw.replace(/^(?:\s*TERMOS\s+DE\s+GARANTIA\s*[:\-–]*\s*)+/i, "").trim();
+  const termos = termosRaw
+    .replace(/^(?:\s*TERMOS\s+DE\s+GARANTIA\s*[:\-–]*\s*)+/i, "")
+    .trim();
 
   if (termos) {
     addSectionText(out, "TERMOS DE GARANTIA:", termos, width);
@@ -560,7 +989,11 @@ export function buildEscposReceiptFromPrintData(
   // =========================
   // SIGNATURE (RECEBIMENTO)
   // =========================
-  const isComprovanteRecebimento = data.tipo === "ordem-servico" || data.tipo === "recibo" || data.tipo === "venda" || data.tipo === "comprovante";
+  const isComprovanteRecebimento =
+    data.tipo === "ordem-servico" ||
+    data.tipo === "recibo" ||
+    data.tipo === "venda" ||
+    data.tipo === "comprovante";
   if (isComprovanteRecebimento) {
     escAlign(out, 1);
     addText(out, "ASSINATURA DO CLIENTE");

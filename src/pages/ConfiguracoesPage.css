@@ -1228,3 +1228,140 @@
     justify-self: start;
   }
 }
+
+/* Mega Lote P3 — diagnóstico seguro de sistema e impressão */
+.diagnostics-panel,
+.print-diagnostics-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+.diagnostics-panel__head,
+.print-diagnostics-panel__head {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.diagnostics-panel__head h3,
+.print-diagnostics-panel__head h3 {
+  margin: 0 0 0.25rem;
+}
+
+.diagnostics-panel__head p,
+.print-diagnostics-panel__head p {
+  margin: 0;
+  color: var(--text-secondary, #94a3b8);
+  font-size: 0.88rem;
+}
+
+.diagnostics-panel__actions,
+.print-diagnostics-panel__actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.diagnostics-panel__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(135px, 1fr));
+  gap: 0.6rem;
+}
+
+.diagnostics-panel__card {
+  border: 1px solid rgba(148, 163, 184, 0.22);
+  border-radius: 12px;
+  padding: 0.75rem;
+  background: rgba(15, 23, 42, 0.32);
+  min-width: 0;
+}
+
+.diagnostics-panel__card span,
+.diagnostics-panel__safe-list span {
+  display: block;
+  color: var(--text-secondary, #94a3b8);
+  font-size: 0.75rem;
+  margin-bottom: 0.2rem;
+}
+
+.diagnostics-panel__card strong,
+.diagnostics-panel__safe-list strong {
+  display: block;
+  color: var(--text-primary, #f8fafc);
+  overflow-wrap: anywhere;
+}
+
+.diagnostics-panel__card small {
+  display: inline-block;
+  margin-top: 0.45rem;
+  font-size: 0.68rem;
+  opacity: 0.85;
+}
+
+.diagnostics-panel__card.tone-ok { border-color: rgba(16, 185, 129, 0.28); }
+.diagnostics-panel__card.tone-warn { border-color: rgba(245, 158, 11, 0.36); }
+.diagnostics-panel__card.tone-danger { border-color: rgba(239, 68, 68, 0.38); }
+
+.diagnostics-panel__safe-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 0.6rem;
+}
+
+.diagnostics-panel__safe-list > div {
+  background: rgba(148, 163, 184, 0.08);
+  border: 1px solid rgba(148, 163, 184, 0.14);
+  border-radius: 10px;
+  padding: 0.65rem;
+}
+
+.diagnostics-panel__warning,
+.print-diagnostics-panel__checklist {
+  border: 1px solid rgba(245, 158, 11, 0.28);
+  background: rgba(245, 158, 11, 0.08);
+  border-radius: 10px;
+  padding: 0.75rem;
+  color: var(--text-primary, #f8fafc);
+}
+
+.diagnostics-panel__pre {
+  max-height: 280px;
+  overflow: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+  border-radius: 12px;
+  padding: 0.85rem;
+  background: rgba(2, 6, 23, 0.55);
+  border: 1px solid rgba(148, 163, 184, 0.16);
+  font-size: 0.78rem;
+}
+
+.print-diagnostics-panel__badge {
+  border: 1px solid rgba(59, 130, 246, 0.28);
+  background: rgba(59, 130, 246, 0.12);
+  color: #bfdbfe;
+  border-radius: 999px;
+  padding: 0.35rem 0.65rem;
+  font-size: 0.78rem;
+  white-space: nowrap;
+}
+
+.print-diagnostics-panel__actions button,
+.diagnostics-panel__actions button {
+  min-height: 34px;
+}
+
+@media (max-width: 720px) {
+  .diagnostics-panel__head,
+  .print-diagnostics-panel__head {
+    flex-direction: column;
+  }
+  .diagnostics-panel__actions,
+  .print-diagnostics-panel__actions {
+    width: 100%;
+    justify-content: flex-start;
+  }
+}

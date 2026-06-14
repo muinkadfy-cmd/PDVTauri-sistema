@@ -226,7 +226,7 @@ function DevolucaoPage() {
           reason={readOnly ? 'Modo leitura (licença expirada)' : 'Sem permissão para criar'}
         >
           <button
-            className="btn-primary"
+            className="btn-primary page-action-button devolucao-create-button"
             onClick={() => {
               limparForm();
               setMostrarForm(true);
@@ -394,7 +394,7 @@ function DevolucaoPage() {
           {canCreateDev ? (
             <button
               type="button"
-              className="btn-primary devolucao-empty-action"
+              className="btn-primary page-action-button devolucao-empty-action"
               onClick={() => {
                 limparForm();
                 setMostrarForm(true);

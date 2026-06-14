@@ -112,12 +112,13 @@ export async function criarEstornosEspelhoPorOrigem(
   origemId: string,
   responsavel: string,
   motivo?: string
-): Promise<{ created: number; skipped: number; sourceCount: number; }> {
+): Promise<{ created: number; skipped: number; failed: number; sourceCount: number; }> {
   const all = getMovimentacoes();
   const fontes = all.filter(m => m.origem_tipo === origemTipo && m.origem_id === origemId);
 
   let created = 0;
   let skipped = 0;
+  let failed = 0;
 
   for (const fonte of fontes) {
     if (!fonte?.id) continue;
@@ -129,7 +130,10 @@ export async function criarEstornosEspelhoPorOrigem(
     }
 
     const valor = Math.abs(Number(fonte.valor || 0));
-    if (!Number.isFinite(valor) || valor <= 0) continue;
+    if (!Number.isFinite(valor) || valor <= 0) {
+      skipped++;
+      continue;
+    }
 
     const tipo = reverseTipo(fonte);
     const categoria = categoriaEstorno(origemTipo, fonte);
@@ -146,12 +150,13 @@ export async function criarEstornosEspelhoPorOrigem(
       });
       created++;
     } catch (e) {
+      failed++;
       logger.error('[Financeiro] Falha ao criar estorno espelho:', e);
     }
   }
 
-  logger.log(`[Financeiro] Estornos espelho (${origemTipo}:${origemId}) fontes=${fontes.length} criados=${created} pulados=${skipped}`);
-  return { created, skipped, sourceCount: fontes.length };
+  logger.log(`[Financeiro] Estornos espelho (${origemTipo}:${origemId}) fontes=${fontes.length} criados=${created} pulados=${skipped} falhas=${failed}`);
+  return { created, skipped, failed, sourceCount: fontes.length };
 }
 
 export async function criarEstornoFallback(
@@ -161,18 +166,24 @@ export async function criarEstornoFallback(
   valor: number,
   categoria: string,
   descricao: string
-): Promise<void> {
+): Promise<boolean> {
   const v = Math.abs(Number(valor || 0));
-  if (!Number.isFinite(v) || v <= 0) return;
+  if (!Number.isFinite(v) || v <= 0) return true;
 
   // evita duplicar fallback
   const all = getMovimentacoes();
   const key = `Ref:fallback:${categoria}:${origemId}`;
-  if (all.some(m => m.origem_tipo === 'estorno' && String(m.descricao || '').includes(key))) return;
+  if (all.some(m => m.origem_tipo === 'estorno' && String(m.descricao || '').includes(key))) return true;
 
-  await createMovimentacao(tipo, v, responsavel || 'Sistema', `${descricao} (${key})`, {
-    origem_tipo: 'estorno',
-    origem_id: origemId,
-    categoria
-  });
+  try {
+    await createMovimentacao(tipo, v, responsavel || 'Sistema', `${descricao} (${key})`, {
+      origem_tipo: 'estorno',
+      origem_id: origemId,
+      categoria
+    });
+    return true;
+  } catch (e) {
+    logger.error('[Financeiro] Falha ao criar estorno fallback:', e);
+    return false;
+  }
 }

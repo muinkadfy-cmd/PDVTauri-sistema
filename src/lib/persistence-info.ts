@@ -176,7 +176,7 @@ export async function getPersistenceInfo(): Promise<PersistenceInfo> {
 export async function logStartupPersistenceSnapshot(reason: string): Promise<void> {
   try {
     const info = await getPersistenceInfo();
-    logger.warn(`[PersistenceStartup] reason=${reason}`, {
+    logger.infoOnce?.(`persistence-startup:${reason}`, `[PersistenceStartup] reason=${reason}`, {
       platform: info.platform,
       dbStatus: info.dbStatus,
       activeStoreId: info.activeStoreId,

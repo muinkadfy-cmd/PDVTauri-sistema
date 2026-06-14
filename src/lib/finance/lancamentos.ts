@@ -32,7 +32,7 @@ export async function criarLancamentosVenda(venda: Venda): Promise<boolean> {
     const taxaCartaoValor = vendaNormalizada.taxa_cartao_valor || 0;
 
     const movimentacoes = getMovimentacoes();
-    logger.warn('[P0-10][FinanceiroWrite] venda', {
+    logger.diagnostic('[P0-10][FinanceiroWrite] venda', {
       origemId: venda.id,
       totalFinal,
       statusPagamento,
@@ -68,7 +68,7 @@ export async function criarLancamentosVenda(venda: Venda): Promise<boolean> {
       });
 
       logger.log(`[Financeiro] ✅ Lançamento de venda criado: ${venda.id} (R$ ${totalFinal})`);
-      logger.warn('[P0-10][FinanceiroWrite] venda_lancada', { origemId: venda.id, movimentacaoId: mov?.id ?? null, totalFinal });
+      logger.diagnostic('[P0-10][FinanceiroWrite] venda_lancada', { origemId: venda.id, movimentacaoId: mov?.id ?? null, totalFinal });
     }
 
     // 2) Taxa do cartão (idempotente por categoria, sem travar a criação se a venda já existe)
@@ -127,7 +127,7 @@ export async function criarLancamentosOS(
     const taxaCartaoValor = ordemNormalizada.taxa_cartao_valor || 0;
 
     const movimentacoes = getMovimentacoes();
-    logger.warn('[P0-10][FinanceiroWrite] ordem_servico', {
+    logger.diagnostic('[P0-10][FinanceiroWrite] ordem_servico', {
       origemId: ordem.id,
       revision,
       totalFinal,
@@ -172,7 +172,7 @@ ${ordemNormalizada.equipamento} - ${ordemNormalizada.defeito}`;
       });
 
       logger.log(`[Financeiro] ✅ Lançamento de OS criado: ${ordem.id} (R$ ${totalFinal})`);
-      logger.warn('[P0-10][FinanceiroWrite] ordem_lancada', { origemId: ordem.id, movimentacaoId: mov?.id ?? null, totalFinal, revision });
+      logger.info('[P0-10][FinanceiroWrite] ordem_lancada', { origemId: ordem.id, movimentacaoId: mov?.id ?? null, totalFinal, revision });
     }
 
     // 2) Taxa do cartão do serviço (idempotente por revisão)

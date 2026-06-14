@@ -60,7 +60,7 @@ export default function ThermalPrintSettings() {
           <button
             type="button"
             className="thermal-settings__testbtn"
-            onClick={() => openPrintTest()}
+            onClick={() => { void openPrintTest({ paperWidth: settings.paperWidth, label: `${settings.paperWidth}mm` }); }}
           >
             Impressão de teste
           </button>

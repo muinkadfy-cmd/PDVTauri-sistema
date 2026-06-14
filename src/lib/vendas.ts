@@ -335,36 +335,15 @@ export async function criarVenda(venda: Omit<Venda, 'data' | 'id'> & { id?: stri
     return updated;
   }
   
-  // Obter ou solicitar range de numeração
-  const range = await getOrRequestRange('venda', storeId, 100);
-  const numeroSeq = range ? consumeNext('venda', storeId) : null;
-  
-  // Determinar número e status
-  let numero_venda: string;
-  let numero_venda_num: number | undefined;
-  let number_status: 'final' | 'pending';
-  let number_assigned_at: string | undefined;
-  
-  if (numeroSeq !== null) {
-    // Número final atribuído
-    numero_venda_num = numeroSeq;
-    numero_venda = formatSequenceNumber(numeroSeq);
-    number_status = 'final';
-    number_assigned_at = new Date().toISOString();
-  } else {
-    // Número pendente (offline ou range esgotado)
-    numero_venda = generatePendingNumber();
-    numero_venda_num = undefined;
-    number_status = 'pending';
-    number_assigned_at = undefined;
-  }
-  
+  // P9: a numeração só será consumida após validar itens/estoque/pagamento.
+  // Isso evita pular número quando a venda é bloqueada por estoque insuficiente.
+
   const novaVenda: Venda = {
     ...venda,
     id: vendaId, // ✅ Usar ID fornecido ou gerado
     data: new Date().toISOString(),
     vendedor: venda.vendedor.trim(),
-    clienteNome: venda.clienteNome?.trim(),
+    clienteNome: venda.clienteNome?.trim() || 'Consumidor final',
     observacoes: venda.observacoes?.trim(),
     total: totalBruto, // Usar total bruto calculado
     total_bruto: totalBruto,
@@ -374,10 +353,10 @@ export async function criarVenda(venda: Omit<Venda, 'data' | 'id'> & { id?: stri
     taxa_cartao_percentual: taxaCartaoPercentual,
     taxa_cartao_valor: taxaCartaoValor,
     total_liquido: totalLiquido,
-    numero_venda_num,
-    numero_venda,
-    number_status,
-    number_assigned_at,
+    numero_venda_num: undefined,
+    numero_venda: generatePendingNumber(),
+    number_status: 'pending',
+    number_assigned_at: undefined,
     status_pagamento: venda.status_pagamento || 'pago', // Padrão: pago (vendas são sempre pagas na criação)
     data_pagamento: venda.data_pagamento || new Date().toISOString(), // Data de pagamento = data da venda
     storeId: storeId as any,
@@ -389,7 +368,7 @@ export async function criarVenda(venda: Omit<Venda, 'data' | 'id'> & { id?: stri
   if (import.meta.env.DEV) {
     logger.log('[Vendas] Criando venda:', {
       id: novaVenda.id,
-      clienteNome: novaVenda.clienteNome,
+      clienteNome: novaVenda.clienteNome || 'Consumidor final',
       total: novaVenda.total,
       storeId: storeId
     });
@@ -504,7 +483,7 @@ try {
     const estoqueDisponivel = produto.estoque - reservasPendentes;
 
     if (estoqueDisponivel < qty) {
-      logger.error('[Vendas] Estoque insuficiente ao criar venda', {
+      logger.warn('[Vendas] Venda bloqueada por estoque insuficiente', {
         produtoId: produto.id,
         produtoNome: produto.nome,
         estoqueReal: produto.estoque,
@@ -569,6 +548,31 @@ try {
 
   await rollbackVendaCreation();
   return null;
+}
+
+// P9: consumir número somente depois de validar/aplicar estoque com sucesso.
+// Assim venda bloqueada por estoque insuficiente não pula sequência.
+try {
+  const range = await getOrRequestRange('venda', storeId, 100);
+  const numeroSeq = range ? consumeNext('venda', storeId) : null;
+
+  if (numeroSeq !== null) {
+    novaVenda.numero_venda_num = numeroSeq;
+    novaVenda.numero_venda = formatSequenceNumber(numeroSeq);
+    novaVenda.number_status = 'final';
+    novaVenda.number_assigned_at = new Date().toISOString();
+  } else {
+    novaVenda.numero_venda_num = undefined;
+    novaVenda.numero_venda = generatePendingNumber();
+    novaVenda.number_status = 'pending';
+    novaVenda.number_assigned_at = undefined;
+  }
+} catch (numberError) {
+  logger.warn('[Vendas] Falha ao atribuir numero final; venda seguira com numero pendente:', numberError);
+  novaVenda.numero_venda_num = undefined;
+  novaVenda.numero_venda = generatePendingNumber();
+  novaVenda.number_status = 'pending';
+  novaVenda.number_assigned_at = undefined;
 }
 
 // 2. Salvar venda (usa Repository - salva local + adiciona à outbox)
@@ -651,9 +655,13 @@ export async function deletarVenda(id: string): Promise<boolean> {
 
     const res = await criarEstornosEspelhoPorOrigem('venda', venda.id, usuario, `Venda #${numero} deletada`);
 
+    if (res.failed > 0 || res.created + res.skipped < res.sourceCount) {
+      throw new Error(`Estorno incompleto da venda ${numero}: fontes=${res.sourceCount}, criados=${res.created}, pulados=${res.skipped}, falhas=${res.failed}`);
+    }
+
     // Se por algum motivo não existiam lançamentos (base antiga / falha), cria fallback
     if (res.sourceCount === 0) {
-      await criarEstornoFallback(
+      const fallbackOk = await criarEstornoFallback(
         venda.id,
         usuario,
         'saida',
@@ -661,12 +669,15 @@ export async function deletarVenda(id: string): Promise<boolean> {
         'ESTORNO_VENDA',
         `🔄 Estorno - Venda #${numero} (fallback)`
       );
+      if (!fallbackOk) {
+        throw new Error(`Falha ao criar estorno fallback da venda ${numero}`);
+      }
     }
 
-    logger.log(`[Vendas] Estornos criados para venda ${id} (fontes=${res.sourceCount}, criados=${res.created})`);
+    logger.log(`[Vendas] Estornos criados para venda ${id} (fontes=${res.sourceCount}, criados=${res.created}, pulados=${res.skipped}, falhas=${res.failed})`);
   } catch (error) {
-    logger.error('[Vendas] Erro ao criar estorno espelho:', error);
-    // Continua com a exclusão mesmo se o estorno falhar
+    logger.error('[Vendas] Exclusão cancelada: erro ao criar estorno financeiro obrigatório:', error);
+    return false;
   }
 
   // Usa Repository (remove local + adiciona à outbox)

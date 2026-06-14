@@ -10,6 +10,7 @@ import { getLastSelfTest } from '@/lib/self-test';
 import { logger } from '@/utils/logger';
 import { getDiagLogs } from '@/lib/telemetry/diag-log';
 import { getPersistenceInfo } from '@/lib/persistence-info';
+import { maskDiagnosticValue } from '@/lib/support/system-diagnostics';
 import { downloadBlobInBrowser, saveBlobWithDialog } from '@/lib/capabilities/file-save-adapter';
 import { getDesktopPaths } from '@/lib/capabilities/desktop-path-adapter';
 import { readDesktopDir, readDesktopFileBytes, statDesktopPathSafe } from '@/lib/capabilities/desktop-fs-adapter';
@@ -79,9 +80,17 @@ export async function downloadSupportPack(): Promise<void> {
 
   const now = new Date();
   const date = now.toISOString().split('T')[0];
-  const deviceId = await getDeviceId();
+  const deviceIdRaw = await getDeviceId();
+  const deviceId = maskDiagnosticValue(deviceIdRaw, 8, 6);
 
-  const license = await getLicenseStatusAsync().catch(() => null);
+  const rawLicense = await getLicenseStatusAsync().catch(() => null as any);
+  const license = rawLicense ? {
+    status: rawLicense.status,
+    validUntil: rawLicense.validUntil || rawLicense.expires_at,
+    daysRemaining: rawLicense.daysRemaining,
+    source: rawLicense.source,
+    message: rawLicense.message,
+  } : null;
   const errors = isDesktopApp() ? await getDesktopErrors().catch(() => []) : [];
   const crashLog = await exportCrashLog().catch(() => '[]');
   const crashCount = await getCrashLogCount().catch(() => 0);
@@ -181,7 +190,8 @@ export async function downloadSupportPack(): Promise<void> {
   }
 
   const blob = await zip.generateAsync({ type: 'blob', compression: 'DEFLATE', compressionOptions: { level: 6 } });
-  const filename = `suporte-smart-tech-${deviceId || 'device'}-${date}.zip`;
+  const safeDevice = String(deviceId || 'device').replace(/[^a-zA-Z0-9_-]+/g, '-');
+  const filename = `suporte-smart-tech-${safeDevice}-${date}.zip`;
 
   if (isDesktopApp()) {
     const ok = await saveBlobDesktop(blob, filename);

@@ -239,7 +239,7 @@ function FornecedoresPage() {
           mode="disable"
           reason={readOnly ? 'Modo leitura (licença expirada)' : 'Sem permissão para criar'}
         >
-          <button type="button" className="btn-primary" onClick={abrirNovo} disabled={readOnly}>
+          <button type="button" className="btn-primary page-action-button fornecedores-create-button" onClick={abrirNovo} disabled={readOnly}>
             Novo fornecedor
           </button>
         </Guard>
@@ -271,7 +271,7 @@ function FornecedoresPage() {
               mode="disable"
               reason={readOnly ? 'Modo leitura (licença expirada)' : 'Sem permissão para criar'}
             >
-              <button type="button" className="btn-secondary" onClick={abrirNovo} disabled={readOnly}>
+              <button type="button" className="btn-secondary page-action-button fornecedores-empty-action" onClick={abrirNovo} disabled={readOnly}>
                 Cadastrar primeiro fornecedor
               </button>
             </Guard>

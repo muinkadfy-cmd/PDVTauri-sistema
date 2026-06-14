@@ -43,6 +43,33 @@ function shouldPersist(level: DiagLogLevel): boolean {
   return isDiagnosticsEnabled() || level === 'warn' || level === 'error';
 }
 
+const SENSITIVE_KEY_RE = /(senha|password|token|secret|private|chave|key|authorization|assinatura|signature|licen[cç]a|license)/i;
+const SENSITIVE_VALUE_RE = /(Bearer\s+[^\s]+|STML[12][A-Za-z0-9._-]+|-----BEGIN [^-]+-----[\s\S]*?-----END [^-]+-----)/gi;
+
+function sanitizeText(value: string): string {
+  return value.replace(SENSITIVE_VALUE_RE, '[redigido]').slice(0, 1000);
+}
+
+function sanitizeMeta(meta: unknown, depth = 0): unknown {
+  if (meta == null) return meta;
+  if (typeof meta === 'string') return sanitizeText(meta);
+  if (typeof meta === 'number' || typeof meta === 'boolean') return meta;
+  if (depth > 3) return '[limite]';
+  if (Array.isArray(meta)) return meta.slice(0, 20).map((item) => sanitizeMeta(item, depth + 1));
+  if (typeof meta === 'object') {
+    const out: Record<string, unknown> = {};
+    for (const [key, value] of Object.entries(meta as Record<string, unknown>).slice(0, 30)) {
+      if (SENSITIVE_KEY_RE.test(key)) {
+        out[key] = '[redigido]';
+        continue;
+      }
+      out[key] = sanitizeMeta(value, depth + 1);
+    }
+    return out;
+  }
+  return String(meta).slice(0, 500);
+}
+
 function sanitizeEntries(input: unknown): DiagLogEntry[] {
   if (!Array.isArray(input)) return [];
   return input
@@ -126,7 +153,12 @@ export async function hydrateDiagLogs(): Promise<void> {
 }
 
 export function diagLog(level: DiagLogLevel, message: string, meta?: unknown) {
-  const entry: DiagLogEntry = { ts: Date.now(), level, message, ...(meta !== undefined ? { meta } : {}) };
+  const entry: DiagLogEntry = {
+    ts: Date.now(),
+    level,
+    message: sanitizeText(String(message || '')),
+    ...(meta !== undefined ? { meta: sanitizeMeta(meta) } : {})
+  };
   buf.push(entry);
   if (buf.length > MAX) buf = buf.slice(-MAX);
   if (shouldPersist(level)) {

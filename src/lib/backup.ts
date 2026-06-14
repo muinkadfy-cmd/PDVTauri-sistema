@@ -46,6 +46,7 @@ import { fetchCompany, upsertCompany } from './company-service';
 import { forceValidateLicense } from './license-service';
 import { reconcileFinancialMirrors } from './finance/reconciliation';
 import { soldDevicesRepo } from './sold-devices';
+import { diagLog } from './telemetry/diag-log';
 
 // Hardening: rawStorage do backup é dado não confiável (pode vir de arquivo externo).
 // Permitimos apenas chaves do tenant no formato smarttech:<STORE_ID>:*
@@ -353,6 +354,22 @@ async function saveBlobToDesktopAppBackups(blob: Blob, filename: string): Promis
     logger.warn('[Backup] Falha ao salvar backup silencioso em AppData/backups.');
   }
   return ok;
+}
+
+async function saveRestoreRescueBackupToAppData(backup: BackupData): Promise<string | null> {
+  try {
+    const safeClient = String(backup.clientId || 'cliente').replace(/[^a-zA-Z0-9_-]+/g, '-').slice(0, 48);
+    const stamp = new Date().toISOString().replace(/[:.]/g, '-');
+    const filename = `resgate-antes-restore-${safeClient}-${stamp}.json`;
+    const blob = new Blob([JSON.stringify(backup, null, 2)], { type: 'application/json' });
+    const ok = isDesktopApp()
+      ? await saveBlobToDesktopAppBackups(blob, filename)
+      : downloadBackupBlob(blob, filename);
+    return ok ? filename : null;
+  } catch (error) {
+    logger.warn('[Backup] Não foi possível salvar o backup de resgate antes do restore:', error);
+    return null;
+  }
 }
 
 function estimateDataUrlBytes(dataUrl: string): number {
@@ -1333,6 +1350,12 @@ export async function restoreBackup(backup: BackupData, confirmOverwrite: boolea
     }
 
     logger.log('[Backup] Iniciando restauração...');
+    diagLog('warn', '[Backup] Restauração iniciada', {
+      confirmOverwrite,
+      backupClientId: backup.clientId,
+      backupStoreId: backup.storeId,
+      currentStoreId: getValidStoreIdOrNull(),
+    });
 
     // ✅ Importante: garantir que o restore use o mesmo STORE_ID do backup.
     // Caso o cliente tenha limpado dados do navegador, um novo store_id pode ser gerado.
@@ -1395,9 +1418,20 @@ export async function restoreBackup(backup: BackupData, confirmOverwrite: boolea
       if (confirmOverwrite && hasExistingData) {
         try {
           rescueBackup = await exportBackup({ includeOfflineFilesBase64: true });
-          if (rescueBackup) logger.log('[Backup] Snapshot de resgate criado antes da sobrescrita.');
+          if (rescueBackup) {
+            const rescueFilename = await saveRestoreRescueBackupToAppData(rescueBackup);
+            logger.log('[Backup] Snapshot de resgate criado antes da sobrescrita.', rescueFilename || '(não salvo em arquivo)');
+            diagLog('warn', '[Backup] Backup automático de resgate criado antes do restore', {
+              rescueFilename: rescueFilename || 'memoria',
+              clientId: rescueBackup.clientId,
+              storeId: rescueBackup.storeId,
+            });
+          }
         } catch (e) {
           logger.warn('[Backup] Falha ao criar snapshot de resgate antes do restore:', e);
+          diagLog('error', '[Backup] Falha ao criar snapshot de resgate antes do restore', {
+            message: e instanceof Error ? e.message : String(e),
+          });
         }
       }
 
@@ -1459,6 +1493,11 @@ export async function restoreBackup(backup: BackupData, confirmOverwrite: boolea
       logger.warn('[Backup] Restore concluído com divergências de contagem:', verificationWarnings);
     }
     logger.log(`[Backup] Restauração concluída: ${totalRestored} registros em ${Object.keys(stats).length} coleções`);
+    diagLog(verificationWarnings.length ? 'warn' : 'info', '[Backup] Restauração concluída', {
+      totalRestored,
+      collections: Object.keys(stats).length,
+      warnings: verificationWarnings,
+    });
 
     // P9: checkpoint imediato após restore (garante WAL limpo e melhora estabilidade)
     try { await forceSqliteCheckpoint('after-restore'); } catch { /* ignore */ }
@@ -1493,6 +1532,9 @@ export async function restoreBackup(backup: BackupData, confirmOverwrite: boolea
     return { success: true, stats, warnings: verificationWarnings };
     } catch (innerError) {
       logger.error('[Backup] Erro durante restauração dos dados:', innerError);
+      diagLog('error', '[Backup] Erro durante restauração dos dados; tentando rollback', {
+        message: innerError instanceof Error ? innerError.message : String(innerError),
+      });
       if (rescueBackup) {
         try {
           const rescueStoreId = resolveRestoreStoreId(rescueBackup, currentStoreId) || currentStoreId || undefined;
@@ -1502,14 +1544,21 @@ export async function restoreBackup(backup: BackupData, confirmOverwrite: boolea
           const rollbackStats: Record<string, number> = {};
           await applyBackupPayload(rescueBackup, rollbackStats, rescueStoreId);
           logger.warn('[Backup] Rollback automático concluído.');
+          diagLog('warn', '[Backup] Rollback automático concluído após falha no restore');
         } catch (rollbackError) {
           logger.error('[Backup] Falha no rollback automático após erro de restore:', rollbackError);
+          diagLog('error', '[Backup] Falha no rollback automático após erro de restore', {
+            message: rollbackError instanceof Error ? rollbackError.message : String(rollbackError),
+          });
         }
       }
       throw innerError;
     }
   } catch (error) {
     logger.error('[Backup] Erro ao restaurar backup:', error);
+    diagLog('error', '[Backup] Erro ao restaurar backup', {
+      message: error instanceof Error ? error.message : String(error),
+    });
     return {
       success: false,
       error: error instanceof Error ? error.message : 'Erro desconhecido ao restaurar'

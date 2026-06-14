@@ -144,11 +144,16 @@ export async function prepareRouteModuleForPathname(pathname: string, source = '
  */
 export function warmCriticalRouteModules(): void {
   if (queueStarted || typeof window === 'undefined') return;
+
+  // PC fraco: não aquece todos os chunks em segundo plano para não consumir RAM/CPU
+  // logo após login. O carregamento sob demanda por hover/click continua ativo.
+  if (isLowEndModeActive()) return;
+
   queueStarted = true;
 
   idle(() => {
     void (async () => {
-      const delay = isLowEndModeActive() ? 360 : 120;
+      const delay = 120;
       for (const key of criticalOrder) {
         const mod = moduleByKey(key);
         if (!mod) continue;

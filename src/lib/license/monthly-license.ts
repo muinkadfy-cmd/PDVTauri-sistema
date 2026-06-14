@@ -1,6 +1,7 @@
 import { getDeviceId } from '@/lib/device';
 import { isDesktopApp } from '@/lib/platform';
 import { kvGet, kvSet, kvRemove } from '@/lib/desktop-kv';
+import { LICENSE_PUBLIC_JWK } from '@/lib/license-public-key';
 
 export type MonthlyLicenseStatusType = 'active' | 'warning' | 'expired' | 'not_found' | 'blocked';
 
@@ -47,15 +48,16 @@ export type MonthlyLicenseStatus = {
 
 const LICENSE_STATE_KEY = 'smart-tech:monthly-license-state';
 const DESKTOP_KV_KEY = 'monthly_license_state_v1';
-const LICENSE_CODE_PREFIX = 'STML1';
+const LICENSE_CODE_PREFIX = 'STML2';
 const WARNING_DAYS = 7;
 const CLOCK_ROLLBACK_TOLERANCE_MS = 6 * 60 * 60 * 1000;
 const LAST_SEEN_WRITE_INTERVAL_MS = 60 * 60 * 1000;
 const DAY_MS = 24 * 60 * 60 * 1000;
 
-// Trava simples offline por código. Segurança básica: suficiente para uso comercial comum,
-// não é proteção bancária contra engenharia reversa avançada.
-const MONTHLY_LICENSE_SECRET = 'smart-tech-pdv-monthly-license-v1-local-2026';
+// Licença mensal offline assinada por chave privada fora do app.
+// O cliente final recebe somente a chave pública (LICENSE_PUBLIC_JWK).
+// Prefixo antigo STML1/HMAC é rejeitado para não manter segredo no bundle.
+const LEGACY_HMAC_LICENSE_CODE_PREFIX = 'STML1';
 
 function hasWindow(): boolean {
   return typeof window !== 'undefined';
@@ -156,16 +158,34 @@ function stringToArrayBuffer(input: string): ArrayBuffer {
   return bytes.buffer.slice(bytes.byteOffset, bytes.byteOffset + bytes.byteLength) as ArrayBuffer;
 }
 
-async function hmacSha256Base64Url(message: string): Promise<string> {
-  const key = await crypto.subtle.importKey(
-    'raw',
-    stringToArrayBuffer(MONTHLY_LICENSE_SECRET),
-    { name: 'HMAC', hash: 'SHA-256' },
-    false,
-    ['sign']
-  );
-  const signature = await crypto.subtle.sign('HMAC', key, stringToArrayBuffer(message));
-  return bytesToBase64url(new Uint8Array(signature));
+function base64urlToBytes(input: string): Uint8Array {
+  const b64 = input.replace(/-/g, '+').replace(/_/g, '/') + '='.repeat((4 - (input.length % 4)) % 4);
+  const bin = atob(b64);
+  const bytes = new Uint8Array(bin.length);
+  for (let i = 0; i < bin.length; i += 1) bytes[i] = bin.charCodeAt(i);
+  return bytes;
+}
+
+async function verifyMonthlyLicenseSignature(payloadB64: string, signatureB64: string): Promise<boolean> {
+  try {
+    const sigBytes = base64urlToBytes(signatureB64);
+    const sigBuffer = sigBytes.buffer.slice(sigBytes.byteOffset, sigBytes.byteOffset + sigBytes.byteLength) as ArrayBuffer;
+    const key = await crypto.subtle.importKey(
+      'jwk',
+      LICENSE_PUBLIC_JWK as any,
+      { name: 'RSA-PSS', hash: 'SHA-256' },
+      false,
+      ['verify']
+    );
+    return await crypto.subtle.verify(
+      { name: 'RSA-PSS', saltLength: 32 },
+      key,
+      sigBuffer,
+      stringToArrayBuffer(payloadB64)
+    );
+  } catch {
+    return false;
+  }
 }
 
 async function shortHash(value: string): Promise<string> {
@@ -180,11 +200,11 @@ function normalizeCodeInput(input: string): string {
     .replace(/\s+/g, '');
 }
 
-function parseCodeParts(code: string): { payloadB64: string; signature: string } | null {
+function parseCodeParts(code: string): { prefix: string; payloadB64: string; signature: string } | null {
   const clean = normalizeCodeInput(code);
   const parts = clean.split('.');
-  if (parts.length === 3 && parts[0] === LICENSE_CODE_PREFIX) {
-    return { payloadB64: parts[1], signature: parts[2] };
+  if (parts.length === 3 && (parts[0] === LICENSE_CODE_PREFIX || parts[0] === LEGACY_HMAC_LICENSE_CODE_PREFIX)) {
+    return { prefix: parts[0], payloadB64: parts[1], signature: parts[2] };
   }
   return null;
 }
@@ -335,8 +355,12 @@ export async function activateMonthlyLicenseCode(code: string): Promise<{ ok: bo
     return { ok: false, error: 'Código inválido. Use o código completo enviado pelo suporte.' };
   }
 
-  const expectedSignature = await hmacSha256Base64Url(parts.payloadB64);
-  if (expectedSignature !== parts.signature) {
+  if (parts.prefix === LEGACY_HMAC_LICENSE_CODE_PREFIX) {
+    return { ok: false, error: 'Código antigo STML1 bloqueado por segurança. Gere um novo código STML2 assinado no PC admin.' };
+  }
+
+  const signatureOk = await verifyMonthlyLicenseSignature(parts.payloadB64, parts.signature);
+  if (!signatureOk) {
     return { ok: false, error: 'Assinatura do código inválida.' };
   }
 

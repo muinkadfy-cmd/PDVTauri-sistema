@@ -36,6 +36,8 @@ import {deleteCompany, upsertCompany} from '@/lib/company-service';
 // Taxas removidas - usar aba "Simular Taxas" para configuração
 import { getRuntimeStoreId } from '@/lib/runtime-context';
 import { getPersistenceInfo, type PersistenceInfo } from '@/lib/persistence-info';
+import SystemDiagnosticsPanel from '@/components/diagnostics/SystemDiagnosticsPanel';
+import PrintDiagnosticsPanel from '@/components/diagnostics/PrintDiagnosticsPanel';
 import './ConfiguracoesPage.css';
 
 const PrinterSettings = lazy(() => import('@/components/PrinterSettings'));
@@ -692,6 +694,10 @@ function ConfiguracoesPage() {
     <ThermalPrintSettings />
   </div>
 
+  <div className="setting-section" style={{ marginTop: 'var(--spacing-md)' }}>
+    <PrintDiagnosticsPanel />
+  </div>
+
   {/* Tamanho do Papel */}
   <div className="setting-section" style={{ marginTop: 'var(--spacing-md)' }}>
       <div className="setting-label-group">
@@ -1245,6 +1251,10 @@ function ConfiguracoesPage() {
               </div>
             )}
           </div>
+        </div>
+
+        <div className="config-card">
+          <SystemDiagnosticsPanel />
         </div>
 
         <div className="config-card">

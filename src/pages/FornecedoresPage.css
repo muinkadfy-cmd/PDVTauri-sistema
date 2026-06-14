@@ -375,3 +375,34 @@
 [data-theme="dark"] .fornecedor-card-actions {
   border-top-color: rgba(255, 255, 255, 0.08);
 }
+
+/* MEGA LOTE UI RESPONSIVO P1 — botões de ação compactos e responsivos */
+.fornecedores-actions .page-action-button,
+.fornecedores-empty .fornecedores-empty-action {
+  width: auto;
+  max-width: min(100%, 240px);
+  min-width: 160px;
+  min-height: 38px;
+  padding: 0 var(--spacing-md);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
+
+.fornecedores-actions {
+  align-items: flex-start;
+}
+
+.fornecedores-search-wrap {
+  flex: 1 1 420px;
+}
+
+@media (max-width: 699px) {
+  .fornecedores-actions .page-action-button,
+  .fornecedores-empty .fornecedores-empty-action {
+    width: 100%;
+    max-width: 100%;
+  }
+}

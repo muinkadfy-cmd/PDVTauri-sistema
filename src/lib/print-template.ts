@@ -95,6 +95,47 @@ function renderTextBlock(value: unknown, opts?: { extraClass?: string; compactPa
 }
 
 
+function splitPrintableItems(value: unknown): string[] {
+  const raw = String(value ?? '').replace(/\r\n?/g, '\n').trim();
+  if (!raw) return [];
+  const normalized = raw
+    .replace(/[•●▪]/g, '\n')
+    .replace(/\s+-\s+/g, '\n')
+    .replace(/\s*;\s*/g, '\n');
+  const lines = normalized
+    .split(/\n+/)
+    .map((line) => line.replace(/^[-*]\s*/, '').trim())
+    .filter(Boolean);
+
+  if (lines.length > 1) return lines;
+
+  // Quando o técnico digita vários defeitos separados por vírgula, transforma em lista.
+  if (raw.includes(',')) {
+    const parts = raw.split(',').map((part) => part.trim()).filter(Boolean);
+    if (parts.length > 1) return parts;
+  }
+
+  return lines;
+}
+
+function renderPremiumBullets(value: unknown): string {
+  const items = splitPrintableItems(value);
+  if (!items.length) return '';
+  return `<ul class="os-premium-list">${items.map((item) => `<li>${t(item)}</li>`).join('')}</ul>`;
+}
+
+function renderPremiumText(value: unknown): string {
+  const raw = String(value ?? '').replace(/\r\n?/g, '\n').trim();
+  if (!raw) return '';
+  return raw
+    .split(/\n+/)
+    .map((line) => line.trim())
+    .filter(Boolean)
+    .map((line) => `<p>${t(line)}</p>`)
+    .join('');
+}
+
+
 export interface EmpresaInfo {
   nome: string;
   cnpj?: string;
@@ -328,6 +369,36 @@ function renderPatternSVG(pattern?: string, modo: PrintMode = 'normal'): string 
  * Usa o tamanho de papel da Configurações (A4, 58mm, 80mm) se paperSize não for informado.
  * Usa o modo de impressão (normal/compact) das Configurações.
  */
+
+const STANDARD_OS_WARRANTY_TERMS_PRINT = 'Garantia conforme prazo informado na OS, sobre servico realizado e pecas substituidas. Nao cobre queda, liquido, mau uso, violacao, dano externo ou novo defeito. Apresente este comprovante.';
+
+function sanitizePrintableWarrantyTerms(value: unknown): string {
+  const raw = String(value ?? '').replace(/\r\n?/g, '\n').trim();
+  if (!raw) return '';
+  const oneLine = raw
+    .replace(/^\s*(?:TERMOS?\s+DE\s+GARANTIA\s*[:\-–]*\s*)+/i, '')
+    .replace(/^\s*(?:TERMO\s+DE\s+GARANTIA\s*[:\-–]*\s*)+/i, '')
+    .replace(/^\s*(?:GARANTIA\s*[:\-–]*\s*)+/i, '')
+    .replace(/GARANTIAGARANTIA/gi, 'GARANTIA')
+    .replace(/\[\s*30\s*A\s*90\s*\]\s*DIAS?/gi, '')
+    .replace(/\b30\s*A\s*90\s*DIAS?\b/gi, '')
+    .replace(/\b(?:30|90)\s*DIAS?\b/gi, '')
+    .replace(/DIASCOBRE/gi, 'Cobre')
+    .replace(/NAOCOBRE/gi, 'Nao cobre')
+    .replace(/OUVIOLACAO/gi, 'ou violacao')
+    .replace(/APARELHOAPRESENTAR/gi, 'aparelho. Apresentar')
+    .replace(/FUNCIONALNAO/gi, 'funcional. Nao')
+    .replace(/\s+([,.;:])/g, '$1')
+    .replace(/([,.;:])(?!\s|$)/g, '$1 ')
+    .replace(/\s{2,}/g, ' ')
+    .trim();
+
+  const legacy = /30\s*a\s*90|\[\s*30\s*a\s*90\s*\]|90\s*dias|30\s*dias|defeito funcional|cobre defeito funcional/i.test(oneLine);
+  const broken = /GARANTIA\s*GARANTIA|DIASCOBRE|OUVIOLACAO|APARELHOAPRESENTAR|FUNCIONALNAO/i.test(oneLine);
+  if (legacy || broken || oneLine.length < 18) return STANDARD_OS_WARRANTY_TERMS_PRINT;
+  return oneLine;
+}
+
 export function generatePrintTemplate(
   data: PrintData,
   empresa: EmpresaInfo = DEFAULT_EMPRESA,
@@ -377,10 +448,7 @@ export function generatePrintTemplate(
 
 
 
-  const termosGarantiaLimpo = (() => {
-    const raw = String(data.termosGarantia ?? '').trim();
-    return raw.replace(/^(?:\s*TERMOS\s+DE\s+GARANTIA\s*[:\-–]*\s*)+/i, '').trim();
-  })();
+  const termosGarantiaLimpo = sanitizePrintableWarrantyTerms(data.termosGarantia);
 
   const termosCompraLimpo = (() => {
     const raw = String(data.termosCompra ?? '').trim();
@@ -520,40 +588,117 @@ export function generatePrintTemplate(
     </div>
     <div class="separator-thin"></div>`;
 
-// Layout comprovante (ordem de serviço): igual ao padrão físico
+// Layout comprovante premium de O.S. (fiel ao modelo 80mm enviado pelo cliente)
   const ordemServicoBodyHTML =
     data.tipo === 'ordem-servico'
       ? `
-        ${headerOS}
-        
-        <div class="documento-titulo">OS: ${data.numero}</div>
-        <div class="documento-subtitulo">COMPROVANTE DE RECEBIMENTO</div>
-        <div class="separator-thin"></div>
-        <div class="info-section">
-          ${data.clienteNome ? `<div class="info-line"><span class="info-label">CLIENTE:</span><span class="info-value">${t(data.clienteNome)}</span></div>` : ''}
-          ${data.clienteTelefone ? `<div class="info-line"><span class="info-label">TELEFONE:</span><span class="info-value">${t(data.clienteTelefone)}</span></div>` : ''}
-          ${data.cpfCnpj ? `<div class="info-line"><span class="info-label">CPF/CNPJ:</span><span class="info-value">${t(data.cpfCnpj)}</span></div>` : ''}
-          ${data.clienteEndereco ? `<div class="info-line"><span class="info-label">ENDEREÇO:</span><span class="info-value">${t(data.clienteEndereco)}</span></div>` : ''}
-          ${data.modelo ? `<div class="info-line"><span class="info-label">MODELO:</span><span class="info-value">${t(data.modelo)}</span></div>` : ''}
-          ${data.marca ? `<div class="info-line"><span class="info-label">MARCA:</span><span class="info-value">${t(data.marca)}</span></div>` : ''}
-          ${data.cor ? `<div class="info-line"><span class="info-label">COR:</span><span class="info-value">${t(data.cor)}</span></div>` : ''}
-          ${data.garantia ? `<div class="info-line"><span class="info-label">GARANTIA:</span><span class="info-value">${t(data.garantia)}</span></div>` : ''}
-          ${data.data ? `<div class="info-line"><span class="info-label">ENTRADA:</span><span class="info-value">${dataFormatada} ${horaFormatada}</span></div>` : ''}
-                              ${data.tecnico ? `<div class="info-line"><span class="info-label">TÉCNICO:</span><span class="info-value">${t(data.tecnico)}</span></div>` : ''}
+        <div class="os-premium os-premium-${papel}">
+          <div class="os-premium-company">
+            <div class="os-premium-icon os-premium-icon-tools" aria-hidden="true">✚</div>
+            <div class="os-premium-company-text">
+              <div class="os-premium-company-name">${t(empresa.nome || 'Smart Tech')}</div>
+              <div class="os-premium-company-meta">
+                ${empresa.telefone ? `<span>Tel: ${t(empresa.telefone)}</span>` : ''}
+                ${empresa.cnpj ? `<span>CNPJ: ${t(empresa.cnpj)}</span>` : ''}
+              </div>
+              ${enderecoCompleto ? `<div class="os-premium-company-address">${t(enderecoCompleto)}</div>` : ''}
+            </div>
+          </div>
+
+          <div class="os-premium-dash"></div>
+
+          <div class="os-premium-title-row">
+            <div class="os-premium-icon" aria-hidden="true">☑</div>
+            <div class="os-premium-title-text">
+              <div class="os-premium-title">O.S.: ${t(data.numero)}</div>
+              <div class="os-premium-subtitle">COMPROVANTE DE RECEBIMENTO</div>
+            </div>
+          </div>
+
+          <div class="os-premium-dash"></div>
+
+          <div class="os-premium-section os-premium-date-row">
+            <div class="os-premium-icon" aria-hidden="true">◷</div>
+            <div class="os-premium-date"><strong>ENTRADA:</strong> ${t(`${dataFormatada} ${horaFormatada}`)}</div>
+          </div>
+
+          <div class="os-premium-line"></div>
+
+          <div class="os-premium-section os-premium-info-row">
+            <div class="os-premium-icon" aria-hidden="true">●</div>
+            <div class="os-premium-info">
+              ${data.clienteNome ? `<div><strong>CLIENTE:</strong> ${t(data.clienteNome)}</div>` : ''}
+              ${data.clienteTelefone ? `<div><strong>TEL:</strong> ${t(data.clienteTelefone)}</div>` : ''}
+              ${data.cpfCnpj ? `<div><strong>CPF/CNPJ:</strong> ${t(data.cpfCnpj)}</div>` : ''}
+            </div>
+          </div>
+
+          <div class="os-premium-line"></div>
+
+          <div class="os-premium-section os-premium-info-row">
+            <div class="os-premium-icon" aria-hidden="true">▯</div>
+            <div class="os-premium-info">
+              ${data.equipamento ? `<div><strong>EQUIP:</strong> ${t(data.equipamento)}</div>` : ''}
+              ${data.marca ? `<div><strong>MARCA:</strong> ${t(data.marca)}</div>` : ''}
+              ${data.modelo ? `<div><strong>MODELO:</strong> ${t(data.modelo)}</div>` : ''}
+              ${data.cor ? `<div><strong>COR:</strong> ${t(data.cor)}</div>` : ''}
+              ${data.garantia ? `<div><strong>GARANTIA:</strong> ${t(data.garantia)}</div>` : ''}
+              ${data.tecnico ? `<div><strong>TECNICO:</strong> ${t(data.tecnico)}</div>` : ''}
+            </div>
+          </div>
+
+          <div class="os-premium-line"></div>
+
+          ${data.defeito ? `
+          <div class="os-premium-section os-premium-info-row os-premium-block">
+            <div class="os-premium-icon" aria-hidden="true">⚠</div>
+            <div class="os-premium-info">
+              <div class="os-premium-block-title">DEFEITO RELATADO:</div>
+              ${renderPremiumBullets(data.defeito)}
+            </div>
+          </div>
+          <div class="os-premium-line"></div>
+          ` : ''}
+
+          ${(data.reparo || data.laudoTecnico || data.observacoes) ? `
+          <div class="os-premium-section os-premium-info-row os-premium-block">
+            <div class="os-premium-icon os-premium-icon-tools" aria-hidden="true">✚</div>
+            <div class="os-premium-info">
+              <div class="os-premium-block-title">REPARO/OBS TECNICA:</div>
+              <div class="os-premium-text">${renderPremiumText(data.reparo || data.laudoTecnico || data.observacoes)}</div>
+            </div>
+          </div>
+          ` : ''}
+
+          ${(principal != null && Number(principal) > 0) ? `
+          <div class="os-premium-dash"></div>
+          <div class="os-premium-total-box">
+            <div class="os-premium-total-label">TOTAL A PAGAR</div>
+            <div class="os-premium-total-value">${formatCurrency(Number(principal || 0))}</div>
+          </div>
+          ` : ''}
+
+          ${termosGarantiaLimpo ? `
+          <div class="os-premium-dash"></div>
+          <div class="os-premium-section os-premium-info-row os-premium-block">
+            <div class="os-premium-icon" aria-hidden="true">⬟</div>
+            <div class="os-premium-info">
+              <div class="os-premium-block-title">TERMOS DE GARANTIA:</div>
+              <div class="os-premium-terms termos-garantia-responsive">${renderPremiumText(termosGarantiaLimpo)}</div>
+            </div>
+          </div>
+          ` : ''}
+
+          ${data.clienteNome ? `
+          <div class="os-premium-dash"></div>
+          <div class="os-premium-signature">
+            <div class="os-premium-signature-title">ASSINATURA DO CLIENTE</div>
+            <div class="os-premium-signature-line"></div>
+            <div class="os-premium-signature-name">${t(data.clienteNome)}</div>
+          </div>
+          <div class="os-premium-dash"></div>
+          ` : ''}
         </div>
-        <div class="separator-thin"></div>
-        ${data.defeito ? `<div class="info-section"><div class="info-full"><div class="info-full-label">DEFEITO RELATADO:</div><div class="info-full-value">${renderTextBlock(data.defeito, { compactParagraphs: true })}</div></div></div>` : ''}
-        ${data.reparo ? `<div class="info-section"><div class="info-full"><div class="info-full-label">REPARO TÉCNICO:</div><div class="info-full-value">${renderTextBlock(data.reparo, { compactParagraphs: true })}</div></div></div>` : ''}
-        <div class="separator-thin"></div>
-        ${valoresHTML || ''}
-        <div class="separator-thin"></div>
-        ${(data.observacoes || data.termosGarantia) ? `
-        <div class="observacoes-section">
-          <div class="observacoes-label">OBSERVAÇÕES</div>
-          <div class="observacoes-text">${renderTextBlock([data.observacoes, data.termosGarantia].filter(Boolean).join('\n\n'), { compactParagraphs: true })}</div>
-        </div>
-        ` : ''}
-        ${data.clienteNome ? `<div class="assinatura"><div class="assinatura-line"></div><div class="assinatura-nome">${t(data.clienteNome)}</div></div>` : ''}
       `
       : null;
 
@@ -1147,8 +1292,17 @@ export function generatePrintTemplate(
             font-size: ${modo === 'compact' ? '8px' : '9px'};
             line-height: ${modo === 'compact' ? '1.15' : '1.25'};
             text-align: left;
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+            word-break: normal;
           }
           
+          .termos-garantia-responsive {
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+            word-break: normal;
+          }
+
           .observacoes-label {
             font-weight: bold;
             text-transform: uppercase;
@@ -1183,6 +1337,225 @@ export function generatePrintTemplate(
             text-align: center;
           }
           
+
+          /* =============================
+             O.S. PREMIUM - modelo fiel ao layout enviado
+             ============================= */
+          .os-premium {
+            width: 100%;
+            color: #000;
+            background: #fff;
+            font-family: "Arial Narrow", "Roboto Condensed", Arial, sans-serif;
+            font-stretch: condensed;
+            font-variant-numeric: tabular-nums;
+          }
+          .os-premium * {
+            color: #000 !important;
+            box-shadow: none !important;
+            text-shadow: none !important;
+            break-inside: avoid;
+            page-break-inside: avoid;
+          }
+          .os-premium-company,
+          .os-premium-section,
+          .os-premium-title-row {
+            display: grid;
+            grid-template-columns: 22mm minmax(0, 1fr);
+            gap: 3mm;
+            align-items: center;
+          }
+          .os-premium-icon {
+            width: 18mm;
+            min-width: 18mm;
+            height: 18mm;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12mm;
+            font-weight: 900;
+            line-height: 1;
+            text-align: center;
+          }
+          .os-premium-icon-tools {
+            transform: rotate(-12deg);
+          }
+          .os-premium-company-name {
+            font-size: 11.5mm;
+            line-height: 0.95;
+            font-weight: 900;
+            text-transform: lowercase;
+            letter-spacing: -0.4mm;
+            white-space: normal;
+          }
+          .os-premium-company-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4mm;
+            font-size: 5.2mm;
+            line-height: 1.1;
+            margin-top: 1.3mm;
+          }
+          .os-premium-company-address {
+            font-size: 4.8mm;
+            line-height: 1.15;
+            margin-top: 1mm;
+            overflow-wrap: anywhere;
+          }
+          .os-premium-dash {
+            border-top: 1.1mm dashed #000;
+            margin: 3mm 0;
+          }
+          .os-premium-line {
+            border-top: 0.75mm solid #000;
+            margin: 3mm 0;
+          }
+          .os-premium-title-row {
+            align-items: center;
+          }
+          .os-premium-title-text {
+            text-align: center;
+          }
+          .os-premium-title {
+            font-size: 12mm;
+            line-height: 1;
+            font-weight: 900;
+            letter-spacing: 0.2mm;
+          }
+          .os-premium-subtitle {
+            font-size: 5.8mm;
+            line-height: 1.05;
+            font-weight: 900;
+            letter-spacing: 0.5mm;
+            margin-top: 1.2mm;
+          }
+          .os-premium-date {
+            font-size: 6.4mm;
+            line-height: 1.1;
+            font-weight: 800;
+          }
+          .os-premium-info {
+            min-width: 0;
+            font-size: 5.8mm;
+            line-height: 1.25;
+            overflow-wrap: anywhere;
+          }
+          .os-premium-info strong {
+            font-weight: 900;
+            letter-spacing: 0.1mm;
+          }
+          .os-premium-block-title {
+            font-size: 6.5mm;
+            line-height: 1.05;
+            font-weight: 900;
+            letter-spacing: 0.2mm;
+            margin-bottom: 1mm;
+          }
+          .os-premium-list {
+            margin: 0;
+            padding-left: 5mm;
+            font-size: 5.7mm;
+            line-height: 1.25;
+          }
+          .os-premium-list li {
+            margin: 0 0 0.8mm 0;
+            padding-left: 1mm;
+          }
+          .os-premium-text,
+          .os-premium-terms {
+            font-size: 5.5mm;
+            line-height: 1.25;
+            overflow-wrap: anywhere;
+          }
+          .os-premium-text p,
+          .os-premium-terms p {
+            margin: 0 0 0.9mm 0;
+          }
+          .os-premium-total-box {
+            border: 0.8mm solid #000;
+            border-radius: 3mm;
+            padding: 3mm 4mm;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 4mm;
+          }
+          .os-premium-total-label {
+            font-size: 8.2mm;
+            line-height: 1;
+            font-weight: 900;
+            letter-spacing: 0.4mm;
+            white-space: nowrap;
+          }
+          .os-premium-total-value {
+            font-size: 11.5mm;
+            line-height: 1;
+            font-weight: 900;
+            white-space: nowrap;
+          }
+          .os-premium-signature {
+            text-align: center;
+            padding-top: 1mm;
+          }
+          .os-premium-signature-title {
+            font-size: 7.4mm;
+            font-weight: 900;
+            letter-spacing: 0.4mm;
+            margin-bottom: 9mm;
+          }
+          .os-premium-signature-line {
+            border-top: 0.75mm solid #000;
+            margin: 0 0 4mm 0;
+          }
+          .os-premium-signature-name {
+            font-size: 6.5mm;
+            font-weight: 800;
+          }
+
+          body.paper-80mm .os-premium {
+            padding: 1mm 2mm;
+          }
+          body.paper-58mm .os-premium {
+            padding: 0.5mm 1mm;
+          }
+          body.paper-58mm .os-premium-company,
+          body.paper-58mm .os-premium-section,
+          body.paper-58mm .os-premium-title-row {
+            grid-template-columns: 12mm minmax(0, 1fr);
+            gap: 2mm;
+          }
+          body.paper-58mm .os-premium-icon {
+            width: 10mm;
+            min-width: 10mm;
+            height: 10mm;
+            font-size: 7mm;
+          }
+          body.paper-58mm .os-premium-company-name { font-size: 6.4mm; letter-spacing: -0.2mm; }
+          body.paper-58mm .os-premium-company-meta { gap: 2mm; font-size: 3.2mm; }
+          body.paper-58mm .os-premium-company-address { font-size: 3.1mm; }
+          body.paper-58mm .os-premium-dash { border-top-width: 0.6mm; margin: 2mm 0; }
+          body.paper-58mm .os-premium-line { border-top-width: 0.45mm; margin: 2mm 0; }
+          body.paper-58mm .os-premium-title { font-size: 6.8mm; }
+          body.paper-58mm .os-premium-subtitle { font-size: 3.4mm; letter-spacing: 0.2mm; }
+          body.paper-58mm .os-premium-date { font-size: 3.8mm; }
+          body.paper-58mm .os-premium-info { font-size: 3.5mm; line-height: 1.22; }
+          body.paper-58mm .os-premium-block-title { font-size: 3.9mm; }
+          body.paper-58mm .os-premium-list { font-size: 3.4mm; padding-left: 3.6mm; }
+          body.paper-58mm .os-premium-text,
+          body.paper-58mm .os-premium-terms { font-size: 3.3mm; }
+          body.paper-58mm .os-premium-total-box { border-width: 0.45mm; border-radius: 2mm; padding: 2mm; gap: 2mm; }
+          body.paper-58mm .os-premium-total-label { font-size: 4.5mm; letter-spacing: 0.15mm; }
+          body.paper-58mm .os-premium-total-value { font-size: 6.2mm; }
+          body.paper-58mm .os-premium-signature-title { font-size: 4.1mm; margin-bottom: 7mm; }
+          body.paper-58mm .os-premium-signature-name { font-size: 3.9mm; }
+
+          body.paper-A4 .os-premium {
+            width: 80mm;
+            max-width: 80mm;
+            margin: 0 auto;
+            padding: 4mm 3mm;
+            border: 0;
+          }
+
           /* Layout por tamanho de papel (Configurações > Impressora) */
           body.paper-80mm {
             width: 80mm;
@@ -1552,7 +1925,18 @@ async function resolveEscposPrinterName(explicitPrinterName?: string): Promise<s
 
 export function printDocument(
   data: PrintData,
-  options?: { empresa?: EmpresaInfo; paperSize?: TamanhoPapel; printMode?: PrintMode; copies?: number }
+  options?: {
+    empresa?: EmpresaInfo;
+    paperSize?: TamanhoPapel;
+    printMode?: PrintMode;
+    copies?: number;
+    /**
+     * Força o motor HTML/PDF mesmo em papel térmico no Desktop.
+     * Usado no layout Premium da O.S.; o ESC/POS RAW continua disponível
+     * quando esta opção estiver false/ausente.
+     */
+    preferHtmlThermal?: boolean;
+  }
 ): void {
   let empresa = options?.empresa ?? DEFAULT_EMPRESA;
   const profile = loadPrintProfile();
@@ -1585,10 +1969,12 @@ export function printDocument(
 
   const shouldUseEscposThermal =
     isDesktopApp() &&
-    isThermal;
+    isThermal &&
+    !options?.preferHtmlThermal;
 
-  // ✅ Térmica no desktop sempre usa RAW ESC/POS silencioso e monocromático.
-  // Isso evita preview torto, diálogo do navegador e inconsistências de layout.
+  // ✅ Térmica no desktop usa RAW ESC/POS quando não há layout premium HTML solicitado.
+  // Para O.S. Premium, preferHtmlThermal permite sair o layout fiel 80mm/58mm/A4,
+  // mantendo o ESC/POS como fallback seguro para os demais documentos.
   if (shouldUseEscposThermal) {
     void (async () => {
       const bytes = buildEscposReceiptFromPrintData(data, empresa, preset, modo);

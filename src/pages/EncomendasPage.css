@@ -708,3 +708,40 @@
     align-items: flex-start;
   }
 }
+
+/* MEGA LOTE UI RESPONSIVO P1 — botões de ação compactos e responsivos */
+.encomendas-page .page-header .page-action-button,
+.encomendas-page .encomendas-empty-action {
+  width: auto;
+  max-width: min(100%, 220px);
+  min-width: 158px;
+  min-height: 38px;
+  padding: 0 var(--spacing-md);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
+
+.encomendas-page .page-header {
+  align-items: flex-start;
+}
+
+.encomendas-page .page-header > div:first-child {
+  flex: 1 1 360px;
+  min-width: 0;
+}
+
+@media (max-width: 699px) {
+  .encomendas-page .page-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .encomendas-page .page-header .page-action-button,
+  .encomendas-page .encomendas-empty-action {
+    width: 100%;
+    max-width: 100%;
+  }
+}

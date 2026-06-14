@@ -20,13 +20,7 @@ function getStoreIdOrThrow(): string {
 export function getDefaultWarrantySettings(storeId: string): WarrantySettings {
   // Texto padrão (editável) dos Termos de Garantia impresso na OS.
   // Obs: o usuário ainda pode personalizar em Configurações → Termos de Garantia.
-  const termosDefault = `TERMO DE GARANTIA
-GARANTIA: [30 A 90] DIAS
-COBRE DEFEITO FUNCIONAL.
-NAO COBRE QUEDA, TELA,
-AGUA, MAU USO OU
-VIOLACAO DO APARELHO.
-APRESENTAR COMPROVANTE.`;
+  const termosDefault = `Garantia conforme prazo informado na OS, sobre servico realizado e pecas substituidas. Nao cobre queda, liquido, mau uso, violacao, dano externo ou novo defeito. Apresente este comprovante.`;
 
   return {
     id: storeId,
@@ -74,7 +68,7 @@ export async function getWarrantySettings(): Promise<{ success: boolean; data?: 
 
     // Migração (legado): algumas versões antigas vinham com um texto de "Direitos de registro"
     // como padrão. Se o usuário ainda não personalizou (ou ficou com o padrão antigo),
-    // atualizamos automaticamente para o novo texto de garantia (3 meses / 90 dias).
+    // atualizamos automaticamente para o novo texto de garantia curto e editável.
     try {
       const txt = String(local?.warranty_terms || '').trim();
       const isLegacyRights =
@@ -84,6 +78,9 @@ export async function getWarrantySettings(): Promise<{ success: boolean; data?: 
         txt.includes('Direitos Autorais');
       const previousDefaultWarranty =
         txt.startsWith('🛡️ TERMOS DE GARANTIA — 90 DIAS') ||
+        txt.startsWith('TERMO DE GARANTIA') ||
+        txt.includes('GARANTIA: [30 A 90] DIAS') ||
+        txt.includes('COBRE DEFEITO FUNCIONAL') ||
         txt.includes('A garantia é de 90 dias a partir da data de entrega') ||
         txt.includes('Cobre: defeito diretamente relacionado ao reparo') ||
         txt.includes('Para validação: apresentação do comprovante');

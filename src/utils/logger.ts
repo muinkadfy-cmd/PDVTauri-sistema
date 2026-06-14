@@ -8,6 +8,15 @@ import { getDiagnosticsEnabled } from '@/lib/diagnostics';
  */
 
 const isDevelopment = import.meta.env.DEV;
+const onceKeys = new Set<string>();
+
+function shouldLogOnce(key: string): boolean {
+  const normalized = String(key || '').slice(0, 180);
+  if (!normalized) return true;
+  if (onceKeys.has(normalized)) return false;
+  onceKeys.add(normalized);
+  return true;
+}
 
 function isDiag(): boolean {
   try { return getDiagnosticsEnabled(); } catch { return isDevelopment; }
@@ -117,6 +126,36 @@ export const logger = {
     if (isDesktopApp() && isDiag()) {
       void tauriLog('debug', message);
     }
+  },
+
+  diagnostic: (...args: any[]) => {
+    if (!isDiag()) return;
+    console.debug(...args);
+    const message = stringifyArgs(args);
+    try { diagLog('debug', message, buildMeta(args)); } catch {}
+    if (isDesktopApp()) {
+      void tauriLog('debug', message);
+    }
+  },
+
+  infoOnce: (key: string, ...args: any[]) => {
+    if (!shouldLogOnce(`info:${key}`)) return;
+    logger.info(...args);
+  },
+
+  debugOnce: (key: string, ...args: any[]) => {
+    if (!shouldLogOnce(`debug:${key}`)) return;
+    logger.debug(...args);
+  },
+
+  diagnosticOnce: (key: string, ...args: any[]) => {
+    if (!shouldLogOnce(`diagnostic:${key}`)) return;
+    logger.diagnostic(...args);
+  },
+
+  warnOnce: (key: string, ...args: any[]) => {
+    if (!shouldLogOnce(`warn:${key}`)) return;
+    logger.warn(...args);
   },
 };
 

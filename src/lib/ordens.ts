@@ -455,8 +455,12 @@ export async function deletarOrdem(id: string): Promise<boolean> {
 
     const res = await criarEstornosEspelhoPorOrigem('ordem_servico', ordem.id, usuario, `OS ${numero} deletada`);
 
+    if (res.failed > 0 || res.created + res.skipped < res.sourceCount) {
+      throw new Error(`Estorno incompleto da OS ${numero}: fontes=${res.sourceCount}, criados=${res.created}, pulados=${res.skipped}, falhas=${res.failed}`);
+    }
+
     if (res.sourceCount === 0) {
-      await criarEstornoFallback(
+      const fallbackOk = await criarEstornoFallback(
         ordem.id,
         usuario,
         'saida',
@@ -464,12 +468,15 @@ export async function deletarOrdem(id: string): Promise<boolean> {
         'ESTORNO_OS',
         `🔄 Estorno - OS ${numero} (fallback)`
       );
+      if (!fallbackOk) {
+        throw new Error(`Falha ao criar estorno fallback da OS ${numero}`);
+      }
     }
 
-    logger.log(`[Ordens] Estornos criados para OS ${id} (fontes=${res.sourceCount}, criados=${res.created})`);
+    logger.log(`[Ordens] Estornos criados para OS ${id} (fontes=${res.sourceCount}, criados=${res.created}, pulados=${res.skipped}, falhas=${res.failed})`);
   } catch (error) {
-    logger.error('[Ordens] Erro ao criar estorno espelho:', error);
-    // Continua com a exclusão mesmo se o estorno falhar
+    logger.error('[Ordens] Exclusão cancelada: erro ao criar estorno financeiro obrigatório:', error);
+    return false;
   }
 
   // Usa Repository (remove local + adiciona à outbox)

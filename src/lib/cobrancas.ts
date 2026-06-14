@@ -147,8 +147,12 @@ export async function deletarCobranca(id: string): Promise<boolean> {
 
       const res = await criarEstornosEspelhoPorOrigem('cobranca', cobranca.id, usuario, `Cobrança deletada`);
 
+      if (res.failed > 0 || res.created + res.skipped < res.sourceCount) {
+        throw new Error(`Estorno incompleto da cobrança: fontes=${res.sourceCount}, criados=${res.created}, pulados=${res.skipped}, falhas=${res.failed}`);
+      }
+
       if (res.sourceCount === 0) {
-        await criarEstornoFallback(
+        const fallbackOk = await criarEstornoFallback(
           cobranca.id,
           usuario,
           'saida',
@@ -156,9 +160,12 @@ export async function deletarCobranca(id: string): Promise<boolean> {
           'ESTORNO_COBRANCA',
           `🔄 Estorno - Cobrança (fallback)`
         );
+        if (!fallbackOk) {
+          throw new Error('Falha ao criar estorno fallback da cobrança');
+        }
       }
 
-      logger.log(`[Cobrancas] Estornos criados para cobrança ${id} (fontes=${res.sourceCount}, criados=${res.created})`);
+      logger.log(`[Cobrancas] Estornos criados para cobrança ${id} (fontes=${res.sourceCount}, criados=${res.created}, pulados=${res.skipped}, falhas=${res.failed})`);
     } catch (error) {
       logger.error('[Cobrancas] Erro ao criar estorno espelho. Exclusão cancelada para evitar divergência:', error);
       return false;

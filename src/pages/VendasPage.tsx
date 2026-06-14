@@ -26,6 +26,7 @@ import { printReceipt } from '@/services/print/receipt-service';
 import { usePagination } from '@/hooks/usePagination';
 import { SearchBar } from '@/components/SearchBar';
 import ClientAutocomplete from '@/components/ui/ClientAutocomplete';
+import ProductAutocomplete from '@/components/ui/ProductAutocomplete';
 import { getPinnedProductIds, togglePinnedProduct } from '@/lib/pinned-products';
 import { APP_EVENTS } from '@/lib/app-events';
 import ResumoFinanceiro, { DadosFinanceiros } from '@/components/ResumoFinanceiro';
@@ -174,9 +175,7 @@ function VendasPage() {
 
   useEffect(() => {
   try { perfMarkOnce('screen_mounted:vendas'); } catch {}
-  if (import.meta.env.DEV) {
-    logger.log('[VendasPage] Montou - carregamento leve (deferred)');
-  }
+  logger.diagnosticOnce?.('vendas-page-mount', '[VendasPage] Montou - carregamento leve (deferred)');
 
   setLoadError(null);
 
@@ -362,9 +361,12 @@ function VendasPage() {
       novosItens[index] = { ...novosItens[index], ...updates };
       
       if (updates.quantidade !== undefined || updates.precoUnitario !== undefined) {
-        novosItens[index].subtotal = 
-          (updates.quantidade ?? novosItens[index].quantidade) * 
-          (updates.precoUnitario ?? novosItens[index].precoUnitario);
+        const quantidade = updates.quantidade ?? novosItens[index].quantidade;
+        const precoUnitario = updates.precoUnitario ?? novosItens[index].precoUnitario;
+        novosItens[index].subtotal = quantidade * precoUnitario;
+        if (novosItens[index].custoUnitario !== undefined) {
+          novosItens[index].custoTotal = quantidade * (novosItens[index].custoUnitario || 0);
+        }
       }
       
       return novosItens;
@@ -549,7 +551,9 @@ function VendasPage() {
         // Vendas são carregadas automaticamente via useMemo
         limparForm();
       } else {
-        showToast(getLastVendaError() || 'Erro ao registrar venda. Revise os dados e tente novamente.', 'error');
+        const vendaError = getLastVendaError() || 'Erro ao registrar venda. Revise os dados e tente novamente.';
+        const toastType = vendaError.toLowerCase().includes('estoque insuficiente') ? 'warning' : 'error';
+        showToast(vendaError, toastType);
       }
     } catch (error: any) {
       showToast(error?.message || 'Erro inesperado ao registrar venda. Tente novamente.', 'error');
@@ -648,6 +652,17 @@ const descNum = parseMoneyBR(rawDesc);
     void printReceipt({ type: 'sale', id: venda.id });
   };
 
+  const isVendaFormDirty = mostrarForm && (
+    itens.length > 0 ||
+    Boolean(formData.clienteId) ||
+    Boolean(formData.desconto) ||
+    Boolean(formData.observacoes.trim()) ||
+    Number(formData.warranty_months || 0) > 0 ||
+    Boolean(formData.warranty_terms.trim()) ||
+    formData.formaPagamento !== 'dinheiro' ||
+    formData.parcelas !== 1
+  );
+
   const readOnly = isReadOnlyMode();
   const canCreateVenda = canCreate() && !readOnly;
   const canDeleteVenda = canDelete() && !readOnly;
@@ -718,8 +733,11 @@ const descNum = parseMoneyBR(rawDesc);
         onClose={limparForm}
         title={quickSale ? 'Venda rápida' : 'Nova venda'}
         size="lg"
+        isDirty={isVendaFormDirty && !submitting}
+        closeConfirmMessage="A venda tem dados não salvos. Deseja sair mesmo assim?"
         footer={(
           <>
+            <span className="form-shortcut-hint">Ctrl+Enter salva</span>
             <button type="button" className="btn-secondary" onClick={limparForm} disabled={submitting}>
               Cancelar
             </button>
@@ -735,7 +753,8 @@ const descNum = parseMoneyBR(rawDesc);
           </>
         )}
       >
-        <form id="venda-form" onSubmit={handleSubmit} className="standard-form vendas-form">
+        <form id="venda-form" onSubmit={handleSubmit} className="standard-form vendas-form" autoComplete="off">
+          <div className="form-validation-hint">Corrija os campos destacados antes de salvar.</div>
           {quickSale && (
             <div className="quick-sale-panel">
               <div className="quick-sale-header">
@@ -791,6 +810,10 @@ const descNum = parseMoneyBR(rawDesc);
                 clientes={clientes}
                 value={formData.clienteId}
                 onChange={(clienteId) => setFormData({ ...formData, clienteId })}
+                onSelectCliente={(cliente) => {
+                  setFormData((prev) => ({ ...prev, clienteId: cliente.id }));
+                  if (cliente.telefone) showToast(`Cliente selecionado: ${cliente.nome} · ${cliente.telefone}`, 'info');
+                }}
                 onQuickCreate={async (nome) => {
                   const c = await criarCliente({ nome: nome.trim() });
                   if (c) {
@@ -803,6 +826,7 @@ const descNum = parseMoneyBR(rawDesc);
                 }}
                 disabled={readOnly}
                 placeholder="Digite o nome do cliente (opcional)..."
+                autoFocus
               />
             </FormField>
           </div>
@@ -815,14 +839,14 @@ const descNum = parseMoneyBR(rawDesc);
                 mode="disable"
                 reason={readOnly ? 'Modo leitura' : 'Sem permissão'}
               >
-                <div style={{ display: 'flex', gap: '0.5rem' }}>
+                <div className="venda-item-actions">
                   <button
                     type="button"
                     className="btn-add-item"
                     onClick={adicionarItem}
                     title="Adicionar produto do cadastro"
                   >
-                    + Adicionar Item
+                    + Item
                   </button>
                   <button
                     type="button"
@@ -834,7 +858,7 @@ const descNum = parseMoneyBR(rawDesc);
                       borderColor: 'var(--warning, #f59e0b)'
                     }}
                   >
-                    ✏️ Item Manual
+                    Manual
                   </button>
                 </div>
               </Guard>
@@ -866,6 +890,7 @@ const descNum = parseMoneyBR(rawDesc);
                                                       fontStyle: 'italic'
                                                     }}
                                                     title="Item manual (não desconta estoque)"
+                                                    autoComplete="off"
                                                   />
                           <button
                             type="button"
@@ -876,36 +901,34 @@ const descNum = parseMoneyBR(rawDesc);
                           </button>
                         </div>
                       ) : (
-                        // ✅ ITEM CADASTRADO: Select de produtos
-                        <select
+                        // ✅ ITEM CADASTRADO: busca rápida por nome, código, categoria ou ID
+                        <ProductAutocomplete
+                          produtos={produtos}
                           value={item.produtoId || ''}
-                          onChange={(e) => {
-                            if (readOnly) return;
-                            const produtoSelecionado = produtos.find(p => p.id === e.target.value);
-                            if (produtoSelecionado) {
-                              atualizarItem(index, {
-                                produtoId: produtoSelecionado.id,
-                                produtoNome: produtoSelecionado.nome,
-                                precoUnitario: produtoSelecionado.preco,
-                                subtotal: item.quantidade * produtoSelecionado.preco
-                              });
-                            }
-                          }}
-                          className="form-input"
                           disabled={readOnly}
-                        >
-                          {produtos.map(prod => (
-                            <option key={prod.id} value={prod.id}>
-                              {prod.nome} - {formatCurrency(prod.preco)}
-                            </option>
-                          ))}
-                        </select>
+                          placeholder="Buscar produto por nome, código, categoria..."
+                          autoFocus={index === 0 && !formData.clienteId}
+                          onChange={(produtoSelecionado) => {
+                            if (readOnly) return;
+                            const custo = produtoSelecionado.custo_unitario ?? produtoSelecionado.custo ?? 0;
+                            atualizarItem(index, {
+                              produtoId: produtoSelecionado.id,
+                              produtoNome: produtoSelecionado.nome,
+                              precoUnitario: produtoSelecionado.preco,
+                              subtotal: item.quantidade * produtoSelecionado.preco,
+                              custoUnitario: custo,
+                              custoTotal: item.quantidade * custo,
+                            });
+                          }}
+                        />
                       )}
                     </div>
                     <div className="item-quantidade">
                       <input
                         type="number"
                         min="1"
+                        required
+                        inputMode="numeric"
                         value={item.quantidade}
                         onChange={(e) => {
                           if (readOnly) return;
@@ -920,6 +943,8 @@ const descNum = parseMoneyBR(rawDesc);
                         type="number"
                         step="0.01"
                         min="0"
+                        required
+                        inputMode="decimal"
                         value={item.precoUnitario}
                         onChange={(e) => {
                           if (readOnly) return;
@@ -960,6 +985,7 @@ const descNum = parseMoneyBR(rawDesc);
                               atualizarItem(index, { manual_modelo: e.target.value });
                             }}
                             readOnly={readOnly}
+                            autoComplete="off"
                           />
                         </div>
 
@@ -975,6 +1001,7 @@ const descNum = parseMoneyBR(rawDesc);
                               atualizarItem(index, { manual_cor: e.target.value });
                             }}
                             readOnly={readOnly}
+                            autoComplete="off"
                           />
                         </div>
 
@@ -1058,19 +1085,9 @@ const descNum = parseMoneyBR(rawDesc);
               )}
 
               <FormField label="Garantia e termos" fullWidth>
-                <div
-                  style={{
-                    border: '1px solid var(--border-light)',
-                    borderRadius: '12px',
-                    padding: '14px',
-                    background: 'var(--bg-secondary)',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    gap: '14px'
-                  }}
-                >
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-                    <strong style={{ fontSize: '0.98rem' }}>Garantia (meses)</strong>
+                <div className="sale-warranty-card">
+                  <div className="sale-warranty-head">
+                    <strong>Garantia (meses)</strong>
                     <small className="muted">Aparece no comprovante da venda.</small>
                   </div>
 
@@ -1114,14 +1131,13 @@ const descNum = parseMoneyBR(rawDesc);
                   </div>
 
                   <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-                    <strong style={{ fontSize: '0.98rem' }}>Termos de garantia</strong>
+                    <strong>Termos de garantia</strong>
                     <small className="muted">Sai impresso no comprovante. Use para regras de garantia e troca.</small>
                   </div>
 
                   <textarea
                     className="form-input"
-                    rows={6}
-                    style={{ minHeight: 140 }}
+                    rows={4}
                     placeholder="Ex: Garantia cobre defeitos de fabricação. Não cobre quedas, líquido ou mau uso."
                     value={formData.warranty_terms}
                     onChange={(e) =>

@@ -545,8 +545,24 @@
   height: 100%;
   background:
     linear-gradient(90deg, #16c760 0%, #31d978 48%, #74f2ff 100%);
+  position: relative;
+  overflow: hidden;
   box-shadow: 0 0 16px rgba(49, 217, 120, 0.38);
-  transition: width 90ms linear;
+  transition: width 260ms ease;
+}
+
+.login-boot-progress span::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.26), transparent);
+  transform: translateX(-100%);
+  animation: login-boot-shimmer 1.15s ease-in-out infinite;
+}
+
+@keyframes login-boot-shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
 }
 
 .login-boot-console {
@@ -589,8 +605,17 @@
   text-align: right;
 }
 
+.login-boot-line--wait {
+  color: #6f8aa2 !important;
+}
+
+.login-boot-line--wait b {
+  color: #5e7890 !important;
+}
+
 .login-boot-line--run {
   color: #d6f8e4 !important;
+  text-shadow: 0 0 10px rgba(34, 197, 94, 0.22);
 }
 
 .login-boot-line--run b {

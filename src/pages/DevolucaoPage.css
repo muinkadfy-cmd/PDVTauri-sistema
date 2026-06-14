@@ -450,3 +450,31 @@
     max-width: 100%;
   }
 }
+
+/* MEGA LOTE UI RESPONSIVO P1 — botões de ação compactos e responsivos */
+.devolucao-page .page-header .page-action-button,
+.devolucao-page .devolucao-empty-action {
+  width: auto;
+  max-width: min(100%, 220px);
+  min-width: 158px;
+  min-height: 38px;
+  padding: 0 var(--spacing-md);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
+
+.devolucao-page .page-header > div:first-child {
+  flex: 1 1 360px;
+  min-width: 0;
+}
+
+@media (max-width: 699px) {
+  .devolucao-page .page-header .page-action-button,
+  .devolucao-page .devolucao-empty-action {
+    width: 100%;
+    max-width: 100%;
+  }
+}

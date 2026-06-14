@@ -117,7 +117,7 @@ export function consumeNext(entity: string, storeId: string | null): number | nu
   // Persistir atualização
   saveStoredRange(key, stored);
 
-  logger.log(`[SequenceRange] Número consumido: ${entity} #${nextNumber}`);
+  logger.diagnostic(`[SequenceRange] Número consumido: ${entity} #${nextNumber}`);
 
   return nextNumber;
 }
@@ -141,7 +141,7 @@ export async function requestNewRangeOnline(
   const deviceId = getDeviceId();
 
   try {
-    logger.log(`[SequenceRange] Solicitando range: ${entity} (store_id: ${validStoreId}, blockSize: ${blockSize})`);
+    logger.diagnostic(`[SequenceRange] Solicitando range: ${entity} (store_id: ${validStoreId}, blockSize: ${blockSize})`);
 
     const { data, error } = await allocateRemoteSequenceRange({
       storeId: validStoreId,
@@ -175,7 +175,7 @@ export async function requestNewRangeOnline(
     const key = `${validStoreId}:${entity}`;
     saveStoredRange(key, range);
 
-    logger.log(`[SequenceRange] Range alocado: ${entity} ${range.start}-${range.end}`);
+    logger.diagnostic(`[SequenceRange] Range alocado: ${entity} ${range.start}-${range.end}`);
 
     return range;
   } catch (error) {
@@ -189,7 +189,7 @@ export async function requestNewRangeOnline(
  */
 export async function preWarmRanges(storeId: string | null, entities: string[] = ['os', 'venda']): Promise<void> {
   if (!isOnline()) {
-    logger.log('[SequenceRange] Offline - pulando pré-aquecimento');
+    logger.diagnostic('[SequenceRange] Offline - pulando pre-aquecimento');
     return;
   }
 
@@ -201,7 +201,7 @@ export async function preWarmRanges(storeId: string | null, entities: string[] =
     return;
   }
 
-  logger.log(`[SequenceRange] Pré-aquecendo ranges para store_id: ${validStoreId}...`);
+  logger.diagnostic(`[SequenceRange] Pre-aquecendo ranges para store_id: ${validStoreId}...`);
 
   for (const entity of entities) {
     const key = `${validStoreId}:${entity}`;

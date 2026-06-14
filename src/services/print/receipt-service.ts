@@ -1,4 +1,5 @@
 import { isDesktopApp } from '@/lib/platform';
+import { diagLog } from '@/lib/telemetry/diag-log';
 import { printDocument } from '@/lib/print-template';
 import { getRuntimeStoreId } from '@/lib/runtime-context';
 import { loadThermalPrintSettings, type ThermalPrintSettings } from './settings';
@@ -15,6 +16,12 @@ function getThermalMode(settings: ThermalPrintSettings) {
   return settings.printDensity === 'compact' ? 'compact' : 'normal';
 }
 
+function shouldForceSilentServiceOrder(request: PrintReceiptRequest): boolean {
+  // Regra comercial: O.S. térmica nunca deve abrir rota/janela de navegador.
+  // O layout Premium precisa sair pelo motor silencioso RAW ESC/POS no Desktop.
+  return request.type === 'service-order';
+}
+
 async function printResolvedReceipt(request: PrintReceiptRequest) {
   const settings = loadThermalPrintSettings();
   const paperWidth = request.paperWidth ?? settings.paperWidth;
@@ -22,7 +29,10 @@ async function printResolvedReceipt(request: PrintReceiptRequest) {
   const resolved = await resolveReceiptPrintData(request.type, request.id);
   if (!resolved) throw new Error('Documento de impressão não encontrado.');
 
-  if (isDesktopApp()) {
+  const forceSilentServiceOrder = shouldForceSilentServiceOrder(request);
+  const useBrowserRoute = settings.backend === 'browser-route' && !forceSilentServiceOrder;
+
+  if (isDesktopApp() && !useBrowserRoute) {
     printDocument(resolved.printData, {
       paperSize: paperWidth === '80' ? '80mm' : '58mm',
       printMode: thermalMode,
@@ -55,16 +65,41 @@ function buildPrintRoute(request: PrintReceiptRequest) {
   return `/print/${request.type}/${encodeURIComponent(request.id)}?${params.toString()}`;
 }
 
-export function openPrintTest(): void {
-  void printResolvedReceipt({ type: 'test', id: 'sample' }).catch((error) => {
+export interface PrintTestOptions {
+  paperWidth?: '58' | '80';
+  label?: string;
+}
+
+export async function openPrintTest(options: PrintTestOptions = {}): Promise<void> {
+  const paperWidth = options.paperWidth;
+  const label = options.label || (paperWidth ? `${paperWidth}mm` : 'padrão');
+  try {
+    diagLog('info', '[Print] Teste de impressão iniciado', { label, paperWidth });
+    await printResolvedReceipt({ type: 'test', id: 'sample', ...(paperWidth ? { paperWidth } : {}) });
+    diagLog('info', '[Print] Teste de impressão enviado', { label, paperWidth });
+  } catch (error) {
     console.error('[Print] Teste térmico falhou:', error);
     const message = error instanceof Error ? error.message : String(error);
+    diagLog('error', '[Print] Teste térmico falhou', { label, paperWidth, message });
     alert(
-      'Falha ao imprimir o cupom de teste.\n\n' +
+      'Não foi possível imprimir o cupom de teste.\n\n' +
       `${message}\n\n` +
-      'Confira a impressora configurada no desktop e tente novamente.'
+      'Confira a impressora configurada no desktop e tente novamente. A versão atual continua funcionando e nenhum dado foi alterado.'
     );
+    throw error;
+  }
+}
+
+export function openPrintPreviewTest(options: PrintTestOptions = {}): void {
+  const route = buildPrintRoute({
+    type: 'test',
+    id: 'sample',
+    ...(options.paperWidth ? { paperWidth: options.paperWidth } : {})
   });
+  const win = window.open(route, '_blank', 'width=420,height=720');
+  if (!win) {
+    throw new Error('O navegador bloqueou a janela de prévia. Permita pop-ups para testar a impressão.');
+  }
 }
 
 export async function printReceipt(request: PrintReceiptRequest): Promise<void> {
@@ -72,6 +107,12 @@ export async function printReceipt(request: PrintReceiptRequest): Promise<void> 
     await printResolvedReceipt(request);
   } catch (error) {
     console.error('[Print] Falha ao imprimir recibo:', error);
+    diagLog('error', '[Print] Falha ao imprimir recibo', {
+      type: request.type,
+      id: request.id,
+      paperWidth: request.paperWidth,
+      message: error instanceof Error ? error.message : String(error),
+    });
     const message = error instanceof Error ? error.message : String(error);
     alert(
       'Impressão térmica indisponível no momento.\n\n' +

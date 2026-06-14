@@ -13,8 +13,6 @@ import { BUILD_BASE_VERSION } from '@/config/buildInfo';
 
 import './LoginPage.css';
 
-const LOGIN_BOOT_DELAY_MS = 4000;
-
 const LOGIN_BOOT_LINES = [
   'smarttech-auth --validar-credenciais',
   'sqlite-local-store --abrir-cofre',
@@ -22,32 +20,65 @@ const LOGIN_BOOT_LINES = [
   'desktop-shell --liberar-sistema'
 ];
 
+const LOGIN_BOOT_DURATION_MS = 3000;
+const LOGIN_BOOT_MIN_VISIBLE_MS = 3000;
+const LOGIN_BOOT_TICK_MS = 80;
+const LOGIN_BOOT_COMMAND_MS = 550;
+
 function waitForLoginPaint(): Promise<void> {
   return new Promise((resolve) => {
     window.requestAnimationFrame(() => window.requestAnimationFrame(() => resolve()));
   });
 }
 
-function runLoginBootProgress(setProgress: (value: number) => void): Promise<void> {
-  return new Promise((resolve) => {
-    const startedAt = performance.now();
-    setProgress(0);
+function delay(ms: number): Promise<void> {
+  return new Promise((resolve) => window.setTimeout(resolve, ms));
+}
 
-    const tick = (now: number) => {
-      const elapsed = now - startedAt;
-      const progress = Math.min(100, Math.round((elapsed / LOGIN_BOOT_DELAY_MS) * 100));
-      setProgress(progress);
+async function runLoginBootProgress(
+  setProgress: (value: number) => void,
+  setCommandIndex: (value: number) => void,
+): Promise<void> {
+  // Loading suave igual ao fechamento com backup: tempo minimo real, avanço contínuo e sem salto brusco.
+  const startedAt = window.performance?.now?.() ?? Date.now();
+  setProgress(0);
+  setCommandIndex(0);
+  await waitForLoginPaint();
 
-      if (progress >= 100) {
-        resolve();
-        return;
-      }
+  await new Promise<void>((resolve) => {
+    let done = false;
 
-      window.requestAnimationFrame(tick);
+    const finish = () => {
+      if (done) return;
+      done = true;
+      window.clearInterval(timer);
+      resolve();
     };
 
-    window.requestAnimationFrame(tick);
+    const tick = () => {
+      const now = window.performance?.now?.() ?? Date.now();
+      const elapsed = now - startedAt;
+      const timedProgress = Math.min(96, Math.round((elapsed / LOGIN_BOOT_MIN_VISIBLE_MS) * 96));
+      const nextCommandIndex = Math.floor(elapsed / LOGIN_BOOT_COMMAND_MS) % LOGIN_BOOT_LINES.length;
+
+      setProgress(timedProgress);
+      setCommandIndex(nextCommandIndex);
+
+      if (elapsed >= LOGIN_BOOT_MIN_VISIBLE_MS) finish();
+    };
+
+    const timer = window.setInterval(tick, LOGIN_BOOT_TICK_MS);
+    tick();
   });
+
+  const elapsed = (window.performance?.now?.() ?? Date.now()) - startedAt;
+  const remaining = Math.max(0, LOGIN_BOOT_MIN_VISIBLE_MS - elapsed);
+  if (remaining > 0) await delay(remaining);
+
+  setCommandIndex(LOGIN_BOOT_LINES.length - 1);
+  setProgress(100);
+  await delay(350);
+  await waitForLoginPaint();
 }
 
 function EyeIcon(props: React.SVGProps<SVGSVGElement>) {
@@ -200,6 +231,7 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [bootProgress, setBootProgress] = useState(0);
+  const [bootCommandIndex, setBootCommandIndex] = useState(0);
   const [error, setError] = useState('');
   const [okMsg, setOkMsg] = useState('');
 
@@ -281,6 +313,7 @@ export default function LoginPage() {
     setError('');
     setOkMsg('');
     setBootProgress(0);
+    setBootCommandIndex(0);
     setLoading(true);
 
     try {
@@ -310,12 +343,13 @@ export default function LoginPage() {
 
       playAppSound('success');
 
-      await runLoginBootProgress(setBootProgress);
+      await runLoginBootProgress(setBootProgress, setBootCommandIndex);
 
       const from = location?.state?.from;
       navigate(from || '/painel', { replace: true });
     } finally {
       setBootProgress(0);
+      setBootCommandIndex(0);
       setLoading(false);
     }
   }
@@ -483,7 +517,7 @@ export default function LoginPage() {
               {loading ? (
                 <span className="btn-primary-content">
                   <WindowsLoaderIcon />
-                  <span>Entrando...</span>
+                  <span>Carregando sistema...</span>
                 </span>
               ) : (
                 <span className="btn-primary-content">
@@ -518,7 +552,7 @@ export default function LoginPage() {
             {loading ? (
               <div className="login-boot-panel" role="status" aria-live="polite">
                 <div className="login-boot-head">
-                  <span>Inicializando sessão local</span>
+                  <span>Carregando sistema local</span>
                   <strong>{bootProgress}%</strong>
                 </div>
                 <div className="login-boot-progress" aria-hidden="true">
@@ -526,13 +560,15 @@ export default function LoginPage() {
                 </div>
                 <div className="login-boot-console" aria-hidden="true">
                   {LOGIN_BOOT_LINES.map((line, index) => {
-                    const start = index * 25;
-                    const lineProgress = Math.max(0, Math.min(100, Math.round((bootProgress - start) * 4)));
-                    const status = lineProgress >= 100 ? 'ok' : lineProgress > 0 ? 'run' : 'wait';
+                    const stepSize = 100 / LOGIN_BOOT_LINES.length;
+                    const doneAt = Math.round((index + 1) * stepSize);
+                    const isDone = bootProgress >= doneAt || bootProgress >= 100;
+                    const isActive = !isDone && index === bootCommandIndex;
+                    const status = isDone ? 'ok' : isActive ? 'run' : 'wait';
                     return (
                       <code className={`login-boot-line login-boot-line--${status}`} key={line}>
                         <span>PS C:\SmartTech&gt; {line}</span>
-                        <b>{lineProgress}%</b>
+                        <b>{isDone ? 'ok' : isActive ? '...' : '--'}</b>
                       </code>
                     );
                   })}

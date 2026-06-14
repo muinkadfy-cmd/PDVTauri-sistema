@@ -352,9 +352,7 @@
   line-height: 1.5;
 }
 
-.btn-primary,
-.btn-secondary,
-.btn-danger {
+.backup-page :where(.btn-primary, .btn-secondary, .btn-danger) {
   padding: var(--spacing-sm) var(--spacing-lg);
   border-radius: var(--radius);
   font-size: var(--font-size-base);
@@ -365,39 +363,37 @@
   width: 100%;
 }
 
-.btn-primary:hover,
-.btn-secondary:hover,
-.btn-danger:hover {
+.backup-page :where(.btn-primary, .btn-secondary, .btn-danger):hover {
   transform: translateY(-1px);
 }
 
-.btn-primary {
+.backup-page .btn-primary {
   background: var(--primary);
   color: var(--text-inverse);
   border: none;
 }
 
-.btn-primary:hover {
+.backup-page .btn-primary:hover {
   background: var(--primary-dark);
 }
 
-.btn-secondary {
+.backup-page .btn-secondary {
   background: var(--bg-secondary);
   color: var(--text-primary);
   border: 1px solid var(--border-light);
 }
 
-.btn-secondary:hover {
+.backup-page .btn-secondary:hover {
   background: var(--border-light);
 }
 
-.btn-danger {
+.backup-page .btn-danger {
   background: #ef4444;
   color: white;
   border: none;
 }
 
-.btn-danger:hover {
+.backup-page .btn-danger:hover {
   background: #dc2626;
 }
 

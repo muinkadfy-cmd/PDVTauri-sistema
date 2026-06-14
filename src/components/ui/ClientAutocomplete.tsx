@@ -8,9 +8,11 @@ interface ClientAutocompleteProps {
   onChange: (clienteId: string) => void;
   onNewClient?: () => void;
   onQuickCreate?: (nome: string) => void;
+  onSelectCliente?: (cliente: Cliente) => void;
   disabled?: boolean;
   required?: boolean;
   placeholder?: string;
+  autoFocus?: boolean;
 }
 
 function ClientAutocomplete({
@@ -19,9 +21,11 @@ function ClientAutocomplete({
   onChange,
   onNewClient,
   onQuickCreate,
+  onSelectCliente,
   disabled = false,
   required = false,
-  placeholder = 'Digite o nome do cliente...'
+  placeholder = 'Digite o nome do cliente...',
+  autoFocus = false
 }: ClientAutocompleteProps) {
   // ✅ Segurança: evita crash quando "clientes" vier undefined (ex.: carregamento assíncrono)
   const clientesSafe: Cliente[] = Array.isArray(clientes) ? clientes : [];
@@ -44,8 +48,11 @@ function ClientAutocomplete({
 
   useEffect(() => {
     if (busca.trim()) {
+      const termo = busca.toLowerCase();
       const filtrados = clientesSafe.filter(cliente =>
-        cliente.nome.toLowerCase().includes(busca.toLowerCase())
+        [cliente.nome, cliente.telefone, cliente.cpf, cliente.email, cliente.endereco]
+          .filter(Boolean)
+          .some((valor) => String(valor).toLowerCase().includes(termo))
       );
       setClientesFiltrados(filtrados);
       setMostrarDropdown(filtrados.length > 0 || busca.length > 0);
@@ -85,6 +92,7 @@ function ClientAutocomplete({
 
   const handleSelectCliente = (cliente: Cliente) => {
     onChange(cliente.id);
+    onSelectCliente?.(cliente);
     setBusca(cliente.nome);
     setMostrarDropdown(false);
     inputRef.current?.blur();
@@ -121,6 +129,8 @@ function ClientAutocomplete({
           placeholder={placeholder}
           className="form-input"
           autoComplete="off"
+          autoFocus={autoFocus}
+          data-modal-search="true"
         />
         {onNewClient && !disabled && (
           <button
@@ -146,8 +156,10 @@ function ClientAutocomplete({
                   onClick={() => handleSelectCliente(cliente)}
                 >
                   <div className="option-name">{cliente.nome}</div>
-                  {cliente.telefone && (
-                    <div className="option-phone">{cliente.telefone}</div>
+                  {(cliente.telefone || cliente.cpf || cliente.email) && (
+                    <div className="option-phone">
+                      {[cliente.telefone, cliente.cpf, cliente.email].filter(Boolean).join(' · ')}
+                    </div>
                   )}
                 </button>
               ))}

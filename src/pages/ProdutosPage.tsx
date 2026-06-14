@@ -187,9 +187,7 @@ function ProdutosPage() {
     setAllProdutos(base);
     setPinnedIds(getPinnedProductIds());
 
-    if (import.meta.env.DEV) {
-      logger.log('[ProdutosPage] Base recarregada:', { total: base.length });
-    }
+    logger.diagnosticOnce?.(`produtos-base-recarregada:${base.length}`, '[ProdutosPage] Base recarregada:', { total: base.length });
   }, []);
 
   const produtos = useMemo(() => {
@@ -211,9 +209,7 @@ function ProdutosPage() {
   // Carregar produtos ao montar componente
   useEffect(() => {
     try { perfMarkOnce('screen_mounted:produtos'); } catch {}
-    if (import.meta.env.DEV) {
-      logger.log('[ProdutosPage] Carregando produtos ao montar componente');
-    }
+    logger.diagnosticOnce?.('produtos-page-mount', '[ProdutosPage] Carregando produtos ao montar componente');
     refreshProdutosBase();
 
     try {

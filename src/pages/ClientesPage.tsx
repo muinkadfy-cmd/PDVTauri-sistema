@@ -267,6 +267,8 @@ function ClientesPage() {
     return new Date(dateString).toLocaleDateString('pt-BR');
   };
 
+  const isClienteFormDirty = mostrarForm && Object.values(formData).some((valor) => String(valor ?? '').trim().length > 0);
+
   const readOnly = isReadOnlyMode();
   const canCreateClient = canCreate() && !readOnly;
   const canEditClient = canEdit() && !readOnly;
@@ -326,8 +328,11 @@ function ClientesPage() {
         onClose={limparForm}
         title={clienteEditando ? 'Editar Cliente' : 'Novo Cliente'}
         size="md"
+        isDirty={isClienteFormDirty}
+        closeConfirmMessage="O cadastro de cliente tem dados não salvos. Deseja sair mesmo assim?"
         footer={(
           <>
+            <span className="form-shortcut-hint">Ctrl+Enter salva</span>
             <button type="button" className="btn-secondary" onClick={limparForm}>
               Cancelar
             </button>
@@ -343,7 +348,8 @@ function ClientesPage() {
           </>
         )}
       >
-        <form id="cliente-form" onSubmit={handleSubmit} className="standard-form">
+        <form id="cliente-form" onSubmit={handleSubmit} className="standard-form" autoComplete="on">
+          <div className="form-validation-hint">Corrija os campos destacados antes de salvar.</div>
           {hasDraft && !clienteEditando && (
             <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: 8 }}>
               <button
@@ -370,6 +376,7 @@ function ClientesPage() {
                 className="form-input"
                 readOnly={readOnly}
                 autoFocus
+                autoComplete="name"
               />
             </FormField>
             <FormField label="Email">
@@ -380,6 +387,7 @@ function ClientesPage() {
                 className="form-input"
                 placeholder="exemplo@email.com"
                 readOnly={readOnly}
+                autoComplete="email"
               />
             </FormField>
             <FormField label="Telefone">
@@ -394,6 +402,7 @@ function ClientesPage() {
                   placeholder="(11) 98765-4321"
                   readOnly={readOnly}
                   mask="phone"
+                  autoComplete="tel"
                 />
                 {formData.telefone && (
                   <WhatsAppIcon telefone={formData.telefone} className="inline" />
@@ -411,6 +420,7 @@ function ClientesPage() {
                 placeholder="123.456.789-00"
                 readOnly={readOnly}
                 mask="cpf"
+                autoComplete="off"
               />
             </FormField>
             <FormField label="Endereço">
@@ -420,6 +430,7 @@ function ClientesPage() {
                 onChange={(e) => setFormData({ ...formData, endereco: e.target.value })}
                 className="form-input"
                 readOnly={readOnly}
+                autoComplete="street-address"
               />
             </FormField>
             <FormField label="Cidade">
@@ -429,6 +440,7 @@ function ClientesPage() {
                 onChange={(e) => setFormData({ ...formData, cidade: e.target.value })}
                 className="form-input"
                 readOnly={readOnly}
+                autoComplete="address-level2"
               />
             </FormField>
             <FormField label="Estado">
@@ -438,6 +450,7 @@ function ClientesPage() {
                 onChange={(e) => setFormData({ ...formData, estado: e.target.value })}
                 className="form-input"
                 readOnly={readOnly}
+                autoComplete="address-level1"
               />
             </FormField>
             <FormField label="CEP">
@@ -451,6 +464,7 @@ function ClientesPage() {
                 placeholder="12345-678"
                 readOnly={readOnly}
                 mask="cep"
+                autoComplete="postal-code"
               />
             </FormField>
           </div>

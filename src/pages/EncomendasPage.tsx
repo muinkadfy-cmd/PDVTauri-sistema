@@ -295,7 +295,7 @@ function EncomendasPage() {
           reason={readOnly ? 'Modo leitura (licença expirada)' : 'Sem permissão para criar'}
         >
           <button
-            className="btn-primary"
+            className="btn-primary page-action-button encomendas-create-button"
             onClick={() => {
               limparForm();
               setMostrarForm(true);
@@ -523,7 +523,7 @@ function EncomendasPage() {
             {canCreateEnc ? (
               <button
                 type="button"
-                className="btn-primary encomendas-empty-action"
+                className="btn-primary page-action-button encomendas-empty-action"
                 onClick={() => {
                   if (busca.trim()) {
                     setBusca('');
