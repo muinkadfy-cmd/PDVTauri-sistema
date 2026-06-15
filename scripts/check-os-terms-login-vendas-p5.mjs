@@ -14,12 +14,10 @@ const osPremiumBlock = escpos.slice(
 
 const checks = [
   [
-    'Termo padrao da OS foi mantido resumido e ASCII seguro',
+    'Termo padrao da OS foi resumido para 90 dias e ASCII seguro',
     escpos.includes('STANDARD_OS_WARRANTY_TERMS') &&
-      (escpos.includes('Garantia sobre o servico realizado e pecas substituidas') || escpos.includes('Garantia conforme prazo informado na OS')) &&
-      escpos.includes('Nao cobre queda, liquido, mau uso, violacao') &&
-      escpos.includes('novo defeito') &&
-      !escpos.includes('Garantia de 90 dias sobre o servico realizado'),
+      escpos.includes('Garantia de 90 dias sobre o servico realizado e pecas substituidas') &&
+      escpos.includes('Nao cobre queda, liquido, mau uso, violacao, novo defeito ou dano externo'),
   ],
   [
     'Termos antigos quebrados continuam sanitizados',
@@ -46,10 +44,9 @@ const checks = [
   [
     'Login tem loading intencional de 3 segundos apos login valido',
     login.includes('LOGIN_BOOT_DURATION_MS = 3000') &&
-      (login.includes('await runLoginBootProgress(setBootProgress)') || login.includes('await runLoginBootProgress(setBootProgress, setBootCommandIndex)')) &&
+      login.includes('await runLoginBootProgress(setBootProgress)') &&
       login.includes('Carregando sistema') &&
-      login.includes('LOGIN_BOOT_MIN_VISIBLE_MS = 3000') &&
-      login.includes('await delay(350)'),
+      login.includes('delay(LOGIN_BOOT_DURATION_MS - step * 2)'),
   ],
   [
     'Vendas usa bloco de garantia padronizado e compacto',

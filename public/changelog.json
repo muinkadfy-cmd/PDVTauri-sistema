@@ -1,10 +1,16 @@
 {
-  "version": "2.0.59.20260614182519",
-  "build": "2026-06-14T18:25:19.241Z",
-  "commit": "ea7e171",
+  "version": "2.0.59.20260614235328",
+  "build": "2026-06-14T23:53:28.584Z",
+  "commit": "a54b19d",
   "limit": 80,
   "sections": {
     "Novidades": [
+      {
+        "hash": "a54b19d",
+        "date": "2026-06-14T20:37:55-03:00",
+        "type": "feat",
+        "text": "sistema novo atualizado"
+      },
       {
         "hash": "ea7e171",
         "date": "2026-06-13T21:07:00-03:00",
@@ -115,5 +121,5 @@
       }
     ]
   },
-  "generated_at": "2026-06-14T18:25:19.241Z"
+  "generated_at": "2026-06-14T23:53:28.584Z"
 }

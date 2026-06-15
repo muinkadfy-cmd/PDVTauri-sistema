@@ -13,12 +13,11 @@ const loginBootBlock = login.slice(login.indexOf('async function runLoginBootPro
 const checks = [
   [
     'Termo padrao remove 30/90 dias e fica curto para cupom termico',
-    (standardTerm.includes('Garantia sobre o servico realizado e pecas substituidas') || standardTerm.includes('Garantia conforme prazo informado na OS')) &&
-      standardTerm.includes('Nao cobre queda, liquido, mau uso, violacao') &&
-      standardTerm.includes('novo defeito') &&
+    standardTerm.includes('Garantia sobre o servico realizado e pecas substituidas') &&
+      standardTerm.includes('Nao cobre queda, liquido, mau uso, violacao, novo defeito ou dano externo') &&
       standardTerm.includes('Apresente este comprovante') &&
       !/30\s*a\s*90|30\s*dias|90\s*dias/i.test(standardTerm) &&
-      standardTerm.length < 220,
+      standardTerm.length < 180,
   ],
   [
     'Sanitizacao remove heranca antiga de prazo no bloco de termos',
@@ -53,12 +52,8 @@ const checks = [
   ],
   [
     'Login nao navega antes de concluir a barra de loading',
-    (login.includes('await runLoginBootProgress(setBootProgress);') ||
-      login.includes('await runLoginBootProgress(setBootProgress, setBootCommandIndex);')) &&
-      Math.max(
-        login.indexOf('await runLoginBootProgress(setBootProgress);'),
-        login.indexOf('await runLoginBootProgress(setBootProgress, setBootCommandIndex);'),
-      ) < login.indexOf("navigate(from || '/painel'"),
+    login.includes('await runLoginBootProgress(setBootProgress);') &&
+      login.indexOf('await runLoginBootProgress(setBootProgress);') < login.indexOf("navigate(from || '/painel'"),
   ],
   [
     'OS termica continua ESC/POS RAW silencioso sem browser no bloco premium',
