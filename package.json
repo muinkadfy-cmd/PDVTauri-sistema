@@ -1,6 +1,6 @@
 {
   "name": "smart-tech",
-  "version": "2.0.71",
+  "version": "2.0.80",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -18,7 +18,7 @@
     "verify:pwa": "node scripts/verify-pwa-icons.mjs",
     "icons:all": "npm run icons:pwa && npm run verify:pwa",
     "screenshots:pwa": "node scripts/generate-pwa-screenshots.mjs",
-    "prebuild": "node scripts/sync-tauri-version.mjs && node scripts/generate-version-json.mjs && node scripts/generate-changelog.mjs",
+    "prebuild": "node scripts/sync-tauri-version.mjs && node scripts/generate-version-json.mjs && node scripts/generate-changelog.mjs && node scripts/fix-public-version-exact-p10m.mjs",
     "dev:desktop": "vite --mode desktop",
     "build:desktop": "npm run prebuild && tsc && vite build --mode desktop",
     "tauri": "tauri",
@@ -123,9 +123,18 @@
     "check:appdata-db-manifest-p10k": "node scripts/check-appdata-db-manifest-p10k.mjs",
     "diagnose:appdata-db-p10k": "node scripts/diagnose-appdata-db-p10k.mjs",
     "release:zip:client:p10k": "node scripts/generate-client-clean-zip-p10k.mjs",
-    "license:admin:p10l": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/license-admin-p10l.ps1",
     "check:hybrid-license-p10l": "node scripts/check-hybrid-license-p10l.mjs",
-    "check:release-p10m": "node scripts/check-release-p10m.mjs"
+    "check:release-p10m": "node scripts/check-release-p10m.mjs",
+    "smart:admin": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/smart-admin-p10n.ps1",
+    "smart:release": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/smart-release-p10p.ps1",
+    "smart:release:test": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/smart-release-p10p.ps1 -AllowUnsigned",
+    "license:admin:p10l": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/license-admin-p10l.ps1",
+    "check:p10n-automation": "node scripts/check-p10n-automation.mjs",
+    "release:fix-version-json": "node scripts/fix-public-version-exact-p10m.mjs",
+    "check:print-simple-p10o": "node scripts/check-print-simple-p10o.mjs",
+    "smart:release:publish": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/smart-release-p10p.ps1 -AllowUnsigned -Publish",
+    "check:p10p-release": "node scripts/check-release-p10p.mjs",
+    "check:release-p10q": "node scripts/check-release-p10q.mjs"
   },
   "dependencies": {
     "@razein97/tauri-plugin-rusqlite2": "^2.2.7",
