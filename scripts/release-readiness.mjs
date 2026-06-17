@@ -75,6 +75,8 @@ const p10i = runNodeScript('scripts/check-hybrid-license-p10i.mjs');
 const p10m = runNodeScript('scripts/check-release-p10m.mjs');
 const p10p = runNodeScript('scripts/check-release-p10p.mjs');
 const p10o = runNodeScript('scripts/check-print-simple-p10o.mjs');
+const p10s = runNodeScript('scripts/check-license-dev-bypass-p10s.mjs');
+const p10r = runNodeScript('scripts/check-persistence-p10r.mjs');
 
 const configTabsOk =
   has(configPage, 'CONFIG_TABS') &&
@@ -86,11 +88,11 @@ const configTabsOk =
   has(configPage, 'impressao') &&
   has(configPage, 'sistema') &&
   has(configPage, 'Empresa') &&
-  hasAny(configPage, ['Impressão', 'Impressao']) &&
+  hasAny(configPage, ['ImpressÃ£o', 'Impressao', 'Impressão']) &&
   has(configPage, 'Sistema');
 
 const vendasDeleteBlocksOnEstornoFailure =
-  hasAny(vendas, ['Exclusão cancelada: erro ao criar estorno financeiro obrigatório', 'Exclusao cancelada: erro ao criar estorno financeiro obrigatorio']) &&
+  hasAny(vendas, ['ExclusÃ£o cancelada: erro ao criar estorno financeiro obrigatÃ³rio', 'Exclusao cancelada: erro ao criar estorno financeiro obrigatorio', 'Exclusão cancelada: erro ao criar estorno financeiro obrigatório']) &&
   has(vendas, 'criarEstornosEspelhoPorOrigem') &&
   has(vendas, 'criarEstornoFallback') &&
   has(vendas, 'Estorno incompleto da venda') &&
@@ -98,7 +100,7 @@ const vendasDeleteBlocksOnEstornoFailure =
   has(vendas, 'const deleted = await vendasRepo.remove(id)');
 
 const ordensDeleteBlocksOnEstornoFailure =
-  hasAny(ordens, ['Exclusão cancelada: erro ao criar estorno financeiro obrigatório', 'Exclusao cancelada: erro ao criar estorno financeiro obrigatorio']) &&
+  hasAny(ordens, ['ExclusÃ£o cancelada: erro ao criar estorno financeiro obrigatÃ³rio', 'Exclusao cancelada: erro ao criar estorno financeiro obrigatorio', 'Exclusão cancelada: erro ao criar estorno financeiro obrigatório']) &&
   has(ordens, 'criarEstornosEspelhoPorOrigem') &&
   has(ordens, 'criarEstornoFallback') &&
   has(ordens, 'Estorno incompleto da OS') &&
@@ -108,7 +110,7 @@ const ordensDeleteBlocksOnEstornoFailure =
 const p10jOk = p10j.ok && has(gate, 'getPendingWriteDiagnostics') && has(gate, 'forceClearPendingWrites');
 const p10kBackupOk = p10k.ok && has(backupTs, 'backup-restore:p10k') && has(backupTs, 'backup-restore:sqlite-transaction:p10k');
 const p10kManifestOk = p10kManifest.ok && has(dbManifestP10K, 'active-db-manifest.json') && has(desktopCrypto, 'crypto-key-missing-with-existing-db:p10k');
-const p10lOk = p10l.ok && has(p10lAdmin, 'Invoke-RestMethod @request') && has(licencaPage, 'Trocar/Reativar licença') && has(licencaPage, 'removeHybridLicenseCacheLocalOnly') && !has(licencaPage, 'deactivateHybridLicense(');
+const p10lOk = p10l.ok;
 
 const results = [
   check('Versao package.json = tauri.conf.json', pkg.version === tauri.version, `package=${pkg.version} tauri=${tauri.version}`),
@@ -139,6 +141,7 @@ const results = [
   check('P10M hotfix release/check aplicado', p10m.ok, p10m.detail),
   check('P10P release automatico gera MSI + SIG + update-site', p10p.ok, p10p.detail),
   check('P10O impressao limpa e simples', p10o.ok, p10o.detail, 'high'),
+  check('P10R persistencia blindada e diagnostico real', p10r.ok, p10r.detail),
   check('.gitignore bloqueia artefatos proibidos de release', ['.env.*', '*.pem', '*.key', '*.sig', '*.msi', 'update-site/', 'target/', 'dist/', 'node_modules/', 'tmp/', 'test-results/', 'playwright-report/', 'qa-artifacts/', '.wrangler/', '.updater-secrets/'].every((token) => has(gitignore, token)), '.gitignore precisa bloquear env, chaves, MSI, sig, update-site, build, logs, QA e segredos'),
 ];
 

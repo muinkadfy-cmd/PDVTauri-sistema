@@ -1,13 +1,14 @@
+import { getDevBypassLicenseStatus, isLicenseDevBypassEnabled } from '@/lib/license/license-dev-bypass';
 /**
- * Licença OFFLINE (assinada) - Modo Local
+ * LicenÃƒÂ§a OFFLINE (assinada) - Modo Local
  *
  * Objetivo:
  * - Funcionar 100% offline
- * - Você gera a licença no seu PC (com a chave privada) e o cliente cola o token no sistema
- * - O app valida com a chave pública embutida
+ * - VocÃƒÂª gera a licenÃƒÂ§a no seu PC (com a chave privada) e o cliente cola o token no sistema
+ * - O app valida com a chave pÃƒÂºblica embutida
  *
  * Token (formato):
- *   base64url(JSON payload) + "." + base64url(assinatura RSA-PSS/SHA-256 do 1º bloco)
+ *   base64url(JSON payload) + "." + base64url(assinatura RSA-PSS/SHA-256 do 1Ã‚Âº bloco)
  */
 
 type SupabaseClient = any;
@@ -18,7 +19,7 @@ import { getDeviceId } from './device';
 import { isLicenseEnabled, isLicenseMandatory } from './mode';
 import { isLicenseRemoteConfigured } from '@/lib/capabilities/license-remote-adapter';
 import { validateLicenseFromServer } from '@/lib/license-service';
-import { getMonthlyLicenseStatusSync } from '@/lib/license/monthly-license';
+import { isHybridLicenseCommerciallyActiveSync, shouldHybridLicenseBlockCommercialActionsSync } from '@/lib/license/hybrid-license';
 
 export type LicensePayload = {
   v: 1;
@@ -39,15 +40,15 @@ export type LicenseStatus = {
   daysRemaining?: number;
   message: string;
   lastValidatedAt?: string;
-  source?: 'local' | 'supabase' | 'cache';
+  source?: 'local' | 'supabase' | 'cache' | 'dev-bypass';
   payload?: LicensePayload;
 };
 
 const LICENSE_TOKEN_KEY = 'smart-tech-license-token';
-const LICENSE_CACHE_KEY = 'smart-tech-license-cache'; // cache do último status validado
+const LICENSE_CACHE_KEY = 'smart-tech-license-cache'; // cache do ÃƒÂºltimo status validado
 const REMOTE_LICENSE_STATUS_KEY = 'smart-tech:license-status';
 
-// Trial (DEMO) - Desktop/PROD: permite uso por 15 dias sem licença.
+// Trial (DEMO) - Desktop/PROD: permite uso por 15 dias sem licenÃƒÂ§a.
 const TRIAL_DAYS = 15;
 const TRIAL_START_LS = 'smart-tech:trial-start-ms';
 const TRIAL_LAST_SEEN_LS = 'smart-tech:trial-last-seen-ms';
@@ -105,7 +106,7 @@ function trialStatusSync(): LicenseStatus | null {
   const daysRemaining = computeDaysRemainingCeil(endMs, nowMs);
 
   if (nowMs > endMs) {
-    return { status: 'expired', message: 'Período de teste encerrado - ativação necessária', source: 'local', validUntil: endIso, daysRemaining: 0 };
+    return { status: 'expired', message: 'PerÃƒÂ­odo de teste encerrado - ativaÃƒÂ§ÃƒÂ£o necessÃƒÂ¡ria', source: 'local', validUntil: endIso, daysRemaining: 0 };
   }
 
   return {
@@ -119,7 +120,7 @@ function trialStatusSync(): LicenseStatus | null {
 
 async function trialStatusAsync(): Promise<LicenseStatus> {
   if (!isLicenseMandatory()) {
-    return { status: 'not_found', message: 'Sem licença', source: 'local' };
+    return { status: 'not_found', message: 'Sem licenÃƒÂ§a', source: 'local' };
   }
 
   const nowIso = new Date().toISOString();
@@ -157,11 +158,11 @@ async function trialStatusAsync(): Promise<LicenseStatus> {
     }
   }
 
-  // Anti rollback: impede burlar o DEMO voltando o relógio.
+  // Anti rollback: impede burlar o DEMO voltando o relÃƒÂ³gio.
   if (lastSeenMs > 0 && (nowMs + TOL) < lastSeenMs) {
     return {
       status: 'blocked',
-      message: 'Relógio do sistema alterado',
+      message: 'RelÃƒÂ³gio do sistema alterado',
       source: 'local',
       lastValidatedAt: nowIso,
     };
@@ -180,7 +181,7 @@ async function trialStatusAsync(): Promise<LicenseStatus> {
   if (nowMs > endMs) {
     return {
       status: 'expired',
-      message: 'Período de teste encerrado - ativação necessária',
+      message: 'PerÃƒÂ­odo de teste encerrado - ativaÃƒÂ§ÃƒÂ£o necessÃƒÂ¡ria',
       source: 'local',
       validUntil: endIso,
       daysRemaining: 0,
@@ -199,7 +200,7 @@ async function trialStatusAsync(): Promise<LicenseStatus> {
 }
 
 
-// Desktop: carrega token salvo no SQLite (kv) em background (sem await, para manter getLicenseStatus() síncrono).
+// Desktop: carrega token salvo no SQLite (kv) em background (sem await, para manter getLicenseStatus() sÃƒÂ­ncrono).
 let _desktopTokenHydrateStarted = false;
 function hydrateTokenFromDesktopKv(): void {
   if (_desktopTokenHydrateStarted) return;
@@ -216,7 +217,7 @@ function hydrateTokenFromDesktopKv(): void {
   }
 }
 
-// Mantemos assinatura da API antiga (não usada no local-only)
+// Mantemos assinatura da API antiga (nÃƒÂ£o usada no local-only)
 export async function tryLoadOrCreateLicense(_client: SupabaseClient, _storeId: string): Promise<any | null> {
   return null;
 }
@@ -231,11 +232,11 @@ function base64urlToBytes(input: string): Uint8Array {
 }
 
 /**
- * Em algumas versões do TypeScript/lib.dom, o WebCrypto tipa BufferSource
+ * Em algumas versÃƒÂµes do TypeScript/lib.dom, o WebCrypto tipa BufferSource
  * de forma mais restrita (ArrayBuffer), causando erro quando passamos
  * Uint8Array<ArrayBufferLike>.
  *
- * Garantimos ArrayBuffer criando uma cópia.
+ * Garantimos ArrayBuffer criando uma cÃƒÂ³pia.
  */
 function toArrayBuffer(bytes: Uint8Array): ArrayBuffer {
   const copy = new Uint8Array(bytes.byteLength);
@@ -362,8 +363,8 @@ function readToken(): string | null {
     const trimmed = String(raw).trim();
     if (!trimmed) return null;
 
-    // ✅ Compat: versões antigas salvavam o token como string "crua" (JWT),
-    // enquanto o resto do app lê via safeGet (JSON). Aqui aceitamos ambos.
+    // Ã¢Å“â€¦ Compat: versÃƒÂµes antigas salvavam o token como string "crua" (JWT),
+    // enquanto o resto do app lÃƒÂª via safeGet (JSON). Aqui aceitamos ambos.
     const first = trimmed[0];
     if (first === '"' || first === '{' || first === '[') {
       try {
@@ -372,13 +373,13 @@ function readToken(): string | null {
         if (parsed && typeof parsed === 'object' && typeof parsed.token === 'string') {
           return String(parsed.token).trim() || null;
         }
-        // Se não reconheceu, cai no legado "cru"
+        // Se nÃƒÂ£o reconheceu, cai no legado "cru"
       } catch {
         // ignore
       }
     }
 
-    // Legado: JWT/linha única
+    // Legado: JWT/linha ÃƒÂºnica
     return trimmed;
   } catch {
     return null;
@@ -387,7 +388,7 @@ function readToken(): string | null {
 
 function writeToken(token: string): void {
   try {
-    // ✅ P0: gravar em JSON para ficar compatível com safeGet (storage.ts) e evitar limpar o token.
+    // Ã¢Å“â€¦ P0: gravar em JSON para ficar compatÃƒÂ­vel com safeGet (storage.ts) e evitar limpar o token.
     localStorage.setItem(LICENSE_TOKEN_KEY, JSON.stringify(token));
   } catch {
     // ignore
@@ -456,16 +457,16 @@ function readRemoteGuardStatus(): LicenseStatus | null {
       source: parsed.source ?? 'cache',
       message:
         parsed.status === 'permanent'
-          ? 'Licença permanente'
+          ? 'LicenÃƒÂ§a permanente'
           : parsed.status === 'active'
-            ? 'Licença válida'
+            ? 'LicenÃƒÂ§a vÃƒÂ¡lida'
             : parsed.status === 'blocked'
               ? 'Loja bloqueada'
               : parsed.status === 'expired'
-                ? 'Licença expirada'
+                ? 'LicenÃƒÂ§a expirada'
                 : parsed.status === 'not_found'
-                  ? 'Nenhuma licença encontrada'
-                  : 'Validando licença…',
+                  ? 'Nenhuma licenÃƒÂ§a encontrada'
+                  : 'Validando licenÃƒÂ§aÃ¢â‚¬Â¦',
     };
   } catch {
     return null;
@@ -491,18 +492,24 @@ function computeDaysRemaining(validUntilIso: string): number {
 }
 
 export function initializeDefaultLicense(): void {
-  // no-op: a licença só existe quando o usuário cola um token
+  // no-op: a licenÃƒÂ§a sÃƒÂ³ existe quando o usuÃƒÂ¡rio cola um token
 }
 
+// P10T/P10I: licença híbrida por loja + PC é a autoridade comercial oficial.
 export function isReadOnlyMode(): boolean {
-  // Em DEV a gente não bloqueia, para não atrapalhar desenvolvimento.
+  if (isLicenseDevBypassEnabled()) {
+    console.warn('[License] DEV bypass ativo: readOnly=false somente em localhost.');
+    return false;
+  }
+  // Em DEV a gente nÃƒÂ£o bloqueia, para nÃƒÂ£o atrapalhar desenvolvimento.
   if (import.meta.env.DEV) return false;
 
-  // P18: licença mensal local por código é a trava comercial do Desktop offline.
-  const monthly = getMonthlyLicenseStatusSync();
-  if (!monthly.canUseCore) return true;
+  // P10I: licenÃƒÂ§a hÃƒÂ­brida por loja + PC ÃƒÂ© a autoridade comercial oficial.
+  // Sem cache hÃƒÂ­brido vÃƒÂ¡lido, vendas/OS/financeiro/impressÃƒÂ£o comercial entram em modo somente leitura.
+  if (isHybridLicenseCommerciallyActiveSync()) return false;
+  if (shouldHybridLicenseBlockCommercialActionsSync()) return true;
 
-  // Compatibilidade com a licença antiga, caso algum build Web/PWA reative a flag.
+  // Compatibilidade com a licenÃƒÂ§a antiga, caso algum build Web/PWA reative a flag.
   if (!isLicenseEnabled()) return false;
 
   const st = getLicenseStatus();
@@ -510,16 +517,20 @@ export function isReadOnlyMode(): boolean {
 }
 
 /**
- * getLicenseStatus() é síncrono (UI/guards).
+ * getLicenseStatus() ÃƒÂ© sÃƒÂ­ncrono (UI/guards).
  * - Retorna cache se existir.
- * - Se não existir cache, retorna um status "offline" (precisa validar async).
+ * - Se nÃƒÂ£o existir cache, retorna um status "offline" (precisa validar async).
  */
 export function getLicenseStatus(): LicenseStatus {
-  // Se licença nem está habilitada, não bloqueia e informa.
+  if (isLicenseDevBypassEnabled()) {
+    console.warn('[License] DEV bypass ativo: getLicenseStatus liberado somente em localhost.');
+    return getDevBypassLicenseStatus() as LicenseStatus;
+  }
+  // Se licenÃƒÂ§a nem estÃƒÂ¡ habilitada, nÃƒÂ£o bloqueia e informa.
   if (!isLicenseEnabled()) {
     return {
       status: 'active',
-      message: 'Licença desativada (modo local)',
+      message: 'LicenÃƒÂ§a desativada (modo local)',
       source: 'local',
       lastValidatedAt: new Date().toISOString(),
     };
@@ -534,7 +545,7 @@ export function getLicenseStatus(): LicenseStatus {
 
     return {
       status: 'offline',
-      message: 'Validando licença remota…',
+      message: 'Validando licenÃƒÂ§a remotaÃ¢â‚¬Â¦',
       source: 'cache',
       lastValidatedAt: new Date().toISOString(),
     };
@@ -547,29 +558,29 @@ export function getLicenseStatus(): LicenseStatus {
   hydrateTokenFromDesktopKv();
   hydrateTrialFromDesktopKv();
 
-  // (o token do Desktop KV será hidratado async no background, e aparecerá na próxima leitura)
+  // (o token do Desktop KV serÃƒÂ¡ hidratado async no background, e aparecerÃƒÂ¡ na prÃƒÂ³xima leitura)
   if (!token) {
-    // Desktop/PROD (build de venda): permite DEMO automático por alguns dias.
+    // Desktop/PROD (build de venda): permite DEMO automÃƒÂ¡tico por alguns dias.
     if (isLicenseMandatory()) {
       const tr = trialStatusSync();
       if (tr) return tr;
-      // sem info local ainda -> força fluxo async (que cria/valida o trial)
-      return { status: 'offline', message: 'Iniciando trial de 15 dias…', source: 'local' };
+      // sem info local ainda -> forÃƒÂ§a fluxo async (que cria/valida o trial)
+      return { status: 'offline', message: 'Iniciando trial de 15 diasÃ¢â‚¬Â¦', source: 'local' };
     }
-    return { status: 'not_found', message: 'Sem licença (cole o token)', source: 'local' };
+    return { status: 'not_found', message: 'Sem licenÃƒÂ§a (cole o token)', source: 'local' };
   }
 
-  // Sem validação criptográfica aqui: marca como "offline" até validar.
+  // Sem validaÃƒÂ§ÃƒÂ£o criptogrÃƒÂ¡fica aqui: marca como "offline" atÃƒÂ© validar.
   const payload = decodePayload(token);
   if (!payload) {
-    return { status: 'invalid', message: 'Token inválido (formato)', source: 'local' };
+    return { status: 'invalid', message: 'Token invÃƒÂ¡lido (formato)', source: 'local' };
   }
 
   const daysRemaining = computeDaysRemaining(payload.validUntil);
   if (daysRemaining < 0) {
     return {
       status: 'expired',
-      message: 'Licença expirada',
+      message: 'LicenÃƒÂ§a expirada',
       source: 'local',
       validUntil: payload.validUntil,
       daysRemaining,
@@ -579,7 +590,7 @@ export function getLicenseStatus(): LicenseStatus {
 
   return {
     status: 'offline',
-    message: 'Validando licença…',
+    message: 'Validando licenÃƒÂ§aÃ¢â‚¬Â¦',
     source: 'local',
     validUntil: payload.validUntil,
     daysRemaining,
@@ -587,12 +598,16 @@ export function getLicenseStatus(): LicenseStatus {
   };
 }
 
-/** Validação real (assinatura + device match + data). */
+/** ValidaÃƒÂ§ÃƒÂ£o real (assinatura + device match + data). */
 export async function getLicenseStatusAsync(): Promise<LicenseStatus> {
+  if (isLicenseDevBypassEnabled()) {
+    console.warn('[License] DEV bypass ativo: getLicenseStatusAsync liberado somente em localhost.');
+    return getDevBypassLicenseStatus() as LicenseStatus;
+  }
   if (!isLicenseEnabled()) {
     const ok: LicenseStatus = {
       status: 'active',
-      message: 'Licença desativada (modo local)',
+      message: 'LicenÃƒÂ§a desativada (modo local)',
       source: 'local',
       lastValidatedAt: new Date().toISOString(),
     };
@@ -618,19 +633,19 @@ export async function getLicenseStatusAsync(): Promise<LicenseStatus> {
       // ignore
     }
   } else {
-    // garante que futuras leituras síncronas vejam o token (desktop)
+    // garante que futuras leituras sÃƒÂ­ncronas vejam o token (desktop)
     hydrateTokenFromDesktopKv();
   hydrateTrialFromDesktopKv();
   }
 
   if (!token) {
-    // Desktop/PROD (build de venda): trial automático por 15 dias.
+    // Desktop/PROD (build de venda): trial automÃƒÂ¡tico por 15 dias.
     if (isLicenseMandatory()) {
       const tr = await trialStatusAsync();
       writeCachedStatus(tr);
       return tr;
     }
-    const st: LicenseStatus = { status: 'not_found', message: 'Sem licença (cole o token)', source: 'local' };
+    const st: LicenseStatus = { status: 'not_found', message: 'Sem licenÃƒÂ§a (cole o token)', source: 'local' };
     writeCachedStatus(st);
     return st;
   }
@@ -641,10 +656,10 @@ export async function getLicenseStatusAsync(): Promise<LicenseStatus> {
 }
 
 export function activateLicense(token: string): { success: boolean; error?: string } {
-  // grava e valida async depois (para manter UX rápida)
+  // grava e valida async depois (para manter UX rÃƒÂ¡pida)
   try {
     const t = normalizeTokenInput(token || '');
-    if (!t || !t.includes('.')) return { success: false, error: 'Token inválido' };
+    if (!t || !t.includes('.')) return { success: false, error: 'Token invÃƒÂ¡lido' };
     writeToken(t);
     void persistDesktopToken(t);
     // limpa cache
@@ -759,12 +774,12 @@ async function verifyToken(token: string): Promise<LicenseStatus> {
   }
   const parts = cleaned.split('.');
   if (parts.length !== 2) {
-    return { status: 'invalid', message: 'Token inválido (formato)', source: 'local', lastValidatedAt: nowIso };
+    return { status: 'invalid', message: 'Token invÃƒÂ¡lido (formato)', source: 'local', lastValidatedAt: nowIso };
   }
 
   const payload = decodePayload(token);
   if (!payload) {
-    return { status: 'invalid', message: 'Token inválido (payload)', source: 'local', lastValidatedAt: nowIso };
+    return { status: 'invalid', message: 'Token invÃƒÂ¡lido (payload)', source: 'local', lastValidatedAt: nowIso };
   }
 
   // Validade
@@ -772,7 +787,7 @@ async function verifyToken(token: string): Promise<LicenseStatus> {
   if (daysRemaining < 0) {
     return {
       status: 'expired',
-      message: 'Licença expirada',
+      message: 'LicenÃƒÂ§a expirada',
       source: 'local',
       validUntil: payload.validUntil,
       daysRemaining,
@@ -781,7 +796,7 @@ async function verifyToken(token: string): Promise<LicenseStatus> {
     };
   }
 
-  // Anti-tamper: impede burlar expiração voltando o relógio do sistema.
+  // Anti-tamper: impede burlar expiraÃƒÂ§ÃƒÂ£o voltando o relÃƒÂ³gio do sistema.
   if (isDesktopApp()) {
     try {
       const prevRaw = await kvGet('last_seen_ms');
@@ -790,7 +805,7 @@ async function verifyToken(token: string): Promise<LicenseStatus> {
       if (prev > 0 && (nowMs + TOL) < prev) {
         return {
           status: 'blocked',
-          message: 'Relógio do sistema alterado',
+          message: 'RelÃƒÂ³gio do sistema alterado',
           source: 'local',
           validUntil: payload.validUntil,
           daysRemaining,
@@ -808,7 +823,7 @@ async function verifyToken(token: string): Promise<LicenseStatus> {
   if (payload.deviceId !== deviceId) {
     return {
       status: 'blocked',
-      message: 'Licença não é deste dispositivo',
+      message: 'LicenÃƒÂ§a nÃƒÂ£o ÃƒÂ© deste dispositivo',
       source: 'local',
       validUntil: payload.validUntil,
       daysRemaining,
@@ -840,20 +855,20 @@ async function verifyToken(token: string): Promise<LicenseStatus> {
     );
 
     if (!ok) {
-      return { status: 'invalid', message: 'Assinatura inválida', source: 'local', lastValidatedAt: nowIso, payload };
+      return { status: 'invalid', message: 'Assinatura invÃƒÂ¡lida', source: 'local', lastValidatedAt: nowIso, payload };
     }
   } catch {
     return { status: 'invalid', message: 'Falha ao validar assinatura', source: 'local', lastValidatedAt: nowIso, payload };
   }
 
-  // Marca último horário visto (desktop) para detectar rollback de relógio.
+  // Marca ÃƒÂºltimo horÃƒÂ¡rio visto (desktop) para detectar rollback de relÃƒÂ³gio.
   if (isDesktopApp()) {
     try { await kvSet('last_seen_ms', String(nowMs)); } catch { /* ignore */ }
   }
 
   return {
     status: 'active',
-    message: 'Licença ativa',
+    message: 'LicenÃƒÂ§a ativa',
     source: 'local',
     validUntil: payload.validUntil,
     daysRemaining,
@@ -884,7 +899,7 @@ export function isAdmin(): boolean {
 }
 
 export function canManageLicense(): boolean {
-  // Gestão de licença: admin/superadmin
+  // GestÃƒÂ£o de licenÃƒÂ§a: admin/superadmin
   return isAdmin();
 }
 
@@ -904,7 +919,7 @@ export function getTrialInfo(): { startedAt?: string; expiresAt?: string; lastSe
   };
 }
 
-/** Garante que o trial de 15 dias exista (cria na 1ª execução). */
+/** Garante que o trial de 15 dias exista (cria na 1Ã‚Âª execuÃƒÂ§ÃƒÂ£o). */
 export async function ensureTrial(): Promise<void> {
   if (!isLicenseMandatory()) return;
   const startMs = readNumberLS(TRIAL_START_LS);
@@ -917,7 +932,7 @@ export async function ensureTrial(): Promise<void> {
   }
 }
 
-/** Status simplificado para UI (rodapé/gate). */
+/** Status simplificado para UI (rodapÃƒÂ©/gate). */
 export function getLicenseGateStatus(): { state: LicenseGateState; daysLeft?: number; expiresAt?: string; startedAt?: string } {
   const st = getLicenseStatus();
   const trial = getTrialInfo();
@@ -929,14 +944,14 @@ export function getLicenseGateStatus(): { state: LicenseGateState; daysLeft?: nu
   if (st.status === 'trial') {
     return { state: 'TRIAL', daysLeft, expiresAt: st.validUntil, startedAt: trial.startedAt };
   }
-  // expired, blocked, invalid, not_found -> exigir ativação
+  // expired, blocked, invalid, not_found -> exigir ativaÃƒÂ§ÃƒÂ£o
   return { state: 'EXPIRED', daysLeft, expiresAt: st.validUntil || trial.expiresAt, startedAt: trial.startedAt };
 }
 
 /** Ativa por token (salva local + valida). */
 export async function activateFromToken(token: string): Promise<{ ok: boolean; error?: string; status?: LicenseStatus }> {
   const r = activateLicense(token);
-  if (!r.success) return { ok: false, error: r.error || 'Token inválido' };
+  if (!r.success) return { ok: false, error: r.error || 'Token invÃƒÂ¡lido' };
   try {
     const verified = await getLicenseStatusAsync();
     return { ok: verified.status === 'active', status: verified, error: verified.status === 'active' ? undefined : verified.message };

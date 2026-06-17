@@ -1,6 +1,6 @@
 {
   "name": "smart-tech",
-  "version": "2.0.80",
+  "version": "2.0.82",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -134,7 +134,10 @@
     "check:print-simple-p10o": "node scripts/check-print-simple-p10o.mjs",
     "smart:release:publish": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/smart-release-p10p.ps1 -AllowUnsigned -Publish",
     "check:p10p-release": "node scripts/check-release-p10p.mjs",
-    "check:release-p10q": "node scripts/check-release-p10q.mjs"
+    "check:release-p10q": "node scripts/check-release-p10q.mjs",
+    "check:persistence-p10r": "node scripts/check-persistence-p10r.mjs",
+    "check:license-dev-bypass-p10s": "node scripts/check-license-dev-bypass-p10s.mjs",
+    "check:release-p10t": "node scripts/check-release-p10t.mjs"
   },
   "dependencies": {
     "@razein97/tauri-plugin-rusqlite2": "^2.2.7",
