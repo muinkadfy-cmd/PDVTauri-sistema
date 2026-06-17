@@ -1,0 +1,16 @@
+# APLICAR P10M — HOTFIX RELEASE CHECK + VERSION LOCK
+cd "C:\PDVTauri-sistema"
+
+git status --short
+
+Expand-Archive -Path "C:\PATCHES\SMART_TECH_PDV_P10M_HOTFIX_RELEASE_CHECK_VERSION_LOCK.zip" -DestinationPath "C:\PDVTauri-sistema" -Force
+
+npm run check:version-lock-p10g
+npm run check:release-p10m
+npm run check:logs-terms-garantia-p8
+npm run check:vendas-estoque-numeracao-logs-p9
+npm run check:close-persistence-p10j
+npm run check:backup-restore-p10k
+npm run check:hybrid-license-p10l
+npm run release:check
+npm run type-check

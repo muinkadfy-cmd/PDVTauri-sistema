@@ -1,6 +1,6 @@
 {
   "name": "smart-tech",
-  "version": "2.0.59",
+  "version": "2.0.71",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -18,7 +18,7 @@
     "verify:pwa": "node scripts/verify-pwa-icons.mjs",
     "icons:all": "npm run icons:pwa && npm run verify:pwa",
     "screenshots:pwa": "node scripts/generate-pwa-screenshots.mjs",
-    "prebuild": "node scripts/generate-version-json.mjs && node scripts/generate-changelog.mjs",
+    "prebuild": "node scripts/sync-tauri-version.mjs && node scripts/generate-version-json.mjs && node scripts/generate-changelog.mjs",
     "dev:desktop": "vite --mode desktop",
     "build:desktop": "npm run prebuild && tsc && vite build --mode desktop",
     "tauri": "tauri",
@@ -72,6 +72,7 @@
     "release:msi:signed:auto": "node scripts/build-msi-signed-auto.mjs --release",
     "release:msi:signed-updater:auto": "node scripts/build-msi-signed-auto.mjs --release --with-updater",
     "check:msi-signed-auto-p39": "node scripts/check-msi-signed-auto-p39.mjs",
+    "check:build-msi-cli-local-p10c": "node scripts/check-build-msi-cli-local-p10c.mjs",
     "check:desktop-no-supabase": "node scripts/check-desktop-no-supabase.mjs",
     "release:admin:signed": "node scripts/release-admin-signed.mjs",
     "release:auto": "node scripts/release-auto-version-tag.mjs",
@@ -102,7 +103,29 @@
     "check:os-terms-login-vendas-p6": "node scripts/check-os-terms-login-vendas-p6.mjs",
     "check:login-loading-suave-p7": "node scripts/check-login-loading-suave-p7.mjs",
     "check:logs-terms-garantia-p8": "node scripts/check-logs-terms-garantia-p8.mjs",
-    "check:vendas-estoque-numeracao-logs-p9": "node scripts/check-vendas-estoque-numeracao-logs-p9.mjs"
+    "check:vendas-estoque-numeracao-logs-p9": "node scripts/check-vendas-estoque-numeracao-logs-p9.mjs",
+    "check:hybrid-license-p11": "node scripts/check-hybrid-license-p11.mjs",
+    "check:hybrid-license-p13": "node scripts/check-hybrid-license-p13.mjs",
+    "check:hybrid-license-p13b": "node scripts/check-hybrid-license-p13b.mjs",
+    "license:hybrid:keygen:p13b": "node scripts/generate-hybrid-license-keypair-p13b.mjs",
+    "check:license-worker:health:p13b": "node scripts/check-license-worker-health-p13b.mjs",
+    "verify:hybrid-license-online:p13b": "node scripts/verify-hybrid-license-online-p13b.mjs",
+    "updater:keygen:p10d": "node scripts/generate-updater-key-p10d.mjs",
+    "check:updater-signing-p10d": "node scripts/check-updater-signing-p10d.mjs",
+    "release:msi:signed-updater:p10d": "node scripts/build-msi-signed-auto.mjs --release --with-updater",
+    "diagnose:updater-signing-p10e": "node scripts/diagnose-updater-signing-p10e.mjs",
+    "check:updater-signing-p10e": "node scripts/check-updater-signing-p10e.mjs",
+    "check:version-lock-p10g": "node scripts/check-version-lock-p10g.mjs",
+    "check:hybrid-license-p10i": "node scripts/check-hybrid-license-p10i.mjs",
+    "check:close-persistence-p10j": "node scripts/check-close-persistence-p10j.mjs",
+    "check:backup-restore-p10k": "node scripts/check-backup-restore-p10k.mjs",
+    "check:release-zip-clean-p10k": "node scripts/check-release-zip-clean-p10k.mjs",
+    "check:appdata-db-manifest-p10k": "node scripts/check-appdata-db-manifest-p10k.mjs",
+    "diagnose:appdata-db-p10k": "node scripts/diagnose-appdata-db-p10k.mjs",
+    "release:zip:client:p10k": "node scripts/generate-client-clean-zip-p10k.mjs",
+    "license:admin:p10l": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/license-admin-p10l.ps1",
+    "check:hybrid-license-p10l": "node scripts/check-hybrid-license-p10l.mjs",
+    "check:release-p10m": "node scripts/check-release-p10m.mjs"
   },
   "dependencies": {
     "@razein97/tauri-plugin-rusqlite2": "^2.2.7",
@@ -119,6 +142,7 @@
     "react-window": "^2.2.6"
   },
   "devDependencies": {
+    "@eslint/js": "^9.22.0",
     "@playwright/test": "^1.50.0",
     "@tauri-apps/cli": "^2.10.0",
     "@testing-library/jest-dom": "^6.6.3",
@@ -128,16 +152,15 @@
     "@types/react-dom": "^19.2.3",
     "@types/trusted-types": "^2.0.7",
     "@vitejs/plugin-react": "^4.3.4",
+    "eslint": "^9.22.0",
+    "globals": "^15.15.0",
     "jsdom": "^25.0.1",
     "sharp": "^0.33.5",
     "terser": "^5.31.6",
     "typescript": "^5.9.3",
+    "typescript-eslint": "^8.26.1",
     "vite": "^7.2.4",
     "vite-plugin-pwa": "^1.2.0",
-    "vitest": "^4.0.18",
-    "eslint": "^9.22.0",
-    "@eslint/js": "^9.22.0",
-    "typescript-eslint": "^8.26.1",
-    "globals": "^15.15.0"
+    "vitest": "^4.0.18"
   }
 }
